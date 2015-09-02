@@ -7,54 +7,70 @@
 
 var headers = [
 	{
+		"header": "Name",
+		"id": "name",
+		"priority": 2,
+		"inputType": "text"
+	},
+	{
 		"header": "Gender",
 		"id": "gender",
-		"priority": 2
+		"priority": 2,
+		"inputType": "binary"
 	},
 	{
 		"header": "Reading",
 		"id": "reading",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
 	},
 	{
 		"header": "Writing",
 		"id": "writing",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
 	},
 	{
 		"header": "Math",
 		"id": "math",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
 	},
 	{
 		"header": "Red Dot",
 		"id": "red-dot",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
 	},
 	{
 		"header": "IEP",
 		"id": "iep",
-		"priority": 2
-	},
-	{
-		"header": "Teacher Requested",
-		"id": "teacher",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
 	},
 	{
 		"header": "Health Concerns",
 		"id": "health",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
 	},
 	{
 		"header": "Attended TK",
 		"id": "tk",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
+	},
+	{
+		"header": "Teacher Requested",
+		"id": "teacher",
+		"priority": 2,
+		"inputType": "text"
 	},
 	{
 		"header": "Separate From",
 		"id": "separate",
-		"priority": 2
+		"priority": 2,
+		"inputType": "text"
 	}
 ];
 
@@ -81,10 +97,15 @@ var addStudent = function() {
 
 	var newStudentElem = "<tr>";
 
+	// add name input
+	newStudentElem += "<td><input type='text'></td>";
+
+	// add gender input
+	newStudentElem += 
+
 	for (var i = 0; i < headers.length; i++) {
 
-		// newStudentElem += "<td><input type='text'></td>"
-		newStudentElem += "<td>5</td>";
+		newStudentElem += "<td><input type='radio'>Fart</td>";
 		
 	}
 
