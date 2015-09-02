@@ -16,36 +16,74 @@
     			<h1>Welcome to Roster Builder!</h1>
     		</div>
             <div class="row">
-                <table>
-                    <tr>
-                        <th id="name">Name</th>
-                        <th id="gender">Gender</th>
-                        <th id="reading">Reading</th>
-                        <th id="writing">Writing</th>
-                        <th id="math">Math</th>
-                        <th id="red-dot">Red Dot</th>
-                        <th id="iep">IEP</th>
-                        <th id="health">Health Concerns</th>
-                        <th id="tk">Attended TK</th>
-                        <th id="teacher">Teacher Requested</th>
-                        <th id="separate">Separate From</th>
-                    </tr>
-                    <tr id="new-student">
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                        <td>fart</td>
-                    </tr>
+                <table id="entry-table">
+                    <thead>
+                        <tr>
+                            <th id="name">Name</th>
+                            <th id="gender">Gender</th>
+                            <th id="reading">Reading</th>
+                            <th id="writing">Writing</th>
+                            <th id="math">Math</th>
+                            <th id="red-dot">Red Dot</th>
+                            <th id="iep">IEP</th>
+                            <th id="health">Health Concerns</th>
+                            <th id="tk">Attended TK</th>
+                            <th id="teacher">Teacher Requested</th>
+                            <th id="separate">Separate From</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <tr>
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <div class="row">Male</div>
+                                <div class="row">Female</div>
+                            </td>
+                            <td>
+                                <div class="row">High</div>
+                                <div class="row">Mid</div>
+                                <div class="row">Low</div>
+                            </td>
+                            <td>
+                                <div class="row">High</div>
+                                <div class="row">Mid</div>
+                                <div class="row">Low</div>
+                            </td>
+                            <td>
+                                <div class="row">High</div>
+                                <div class="row">Mid</div>
+                                <div class="row">Low</div>
+                            </td>
+                            <td>
+                                <div class="row">Yes</div>
+                                <div class="row">No</div>
+                            </td>
+                            <td>
+                                <div class="row">Yes</div>
+                                <div class="row">No</div>
+                            </td>
+                            <td>
+                                <div class="row">Yes</div>
+                                <div class="row">No</div>
+                            </td>
+                            <td>
+                                <div class="row">Yes</div>
+                                <div class="row">No</div>
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                            <td>
+                                <input type="text">
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
             <div class="row">
-                <button type="button">Add a student</button>
+                <button id="student-button" type="button">Add a student</button>
             </div>
     	</div>
     </body>

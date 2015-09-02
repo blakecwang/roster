@@ -1,14 +1,27 @@
-var newStudentTemplate = $("#new-student").html();
+var initApp = function() {
 
-var addStudent = function() {
+	var self = this;
 
-	$("#entry-table").append(newStudentTemplate);
+
+	// Add new student to table
+
+	this.newStudentElem = $("#table-body").html();
+
+	this.addStudent = function() {
+
+		$("#table-body").append(newStudentElem);
+
+	};
+
+
+	// set up click listener
+
+	$("#student-button").click(self.addStudent);
 
 };
 
-addStudent();
 
-
+initApp();
 
 
 
