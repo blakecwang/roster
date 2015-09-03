@@ -3,7 +3,7 @@ var initApp = function() {
 	var self = this;
 
 	// define replaceAll function
-	var replaceAll = function(str, find, replace) {
+	this.replaceAll = function(str, find, replace) {
 
 		return str.replace(new RegExp(find, 'g'), replace);
 
@@ -11,7 +11,6 @@ var initApp = function() {
 
 
 	// define 'add student' function
-
 	var newStudentElem = $("#table-body").html();
 	var students = 1;
 	this.addStudent = function() {
@@ -20,7 +19,7 @@ var initApp = function() {
 
 		var oneStr = 1 + ""; // convert 1 to string
 		var studentsStr = students + ""; // convert students to string
-		var newStudentElemMod = replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
+		var newStudentElemMod = self.replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
 
 		$("#table-body").append(newStudentElemMod);
 
