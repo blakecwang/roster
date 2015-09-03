@@ -12,24 +12,24 @@
 
     <body>
     	<div class="container">
-    		<div class="row">
+    		<div class="row centered">
     			<h1>Welcome to Roster Builder!</h1>
     		</div>
             <div class="row">
                 <table id="entry-table">
                     <thead>
                         <tr>
-                            <th id="name">Name</th>
-                            <th id="gender">Gender</th>
-                            <th id="reading">Reading</th>
-                            <th id="writing">Writing</th>
-                            <th id="math">Math</th>
-                            <th id="red-dot">Red Dot</th>
-                            <th id="iep">IEP</th>
-                            <th id="health">Health Concerns</th>
-                            <th id="tk">Attended TK</th>
-                            <th id="teacher">Teacher Requested</th>
-                            <th id="separate">Separate From</th>
+                            <th>Name</th>
+                            <th>Gender</th>
+                            <th>Reading</th>
+                            <th>Writing</th>
+                            <th>Math</th>
+                            <th>Red Dot</th>
+                            <th>IEP</th>
+                            <th>Health Concerns</th>
+                            <th>Attended TK</th>
+                            <th>Teacher Requested</th>
+                            <th>Separate From</th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -38,50 +38,50 @@
                                 <input type="text" placeholder=" Name of student">
                             </td>
                             <td>
-                                <input type="radio" name="gender"> Male
+                                <input type="radio" name="gender" value="m"> Male
                                 <br>
-                                <input type="radio" name="gender"> Female
+                                <input type="radio" name="gender" value="f"> Female
                             </td>
                             <td>
-                                <input type="radio" name="reading"> High
+                                <input type="radio" name="reading" value="hi"> High
                                 <br>
-                                <input type="radio" name="reading"> Mid
+                                <input type="radio" name="reading" value="mi"> Mid
                                 <br>
-                                <input type="radio" name="reading"> Low
+                                <input type="radio" name="reading" value="lo"> Low
                             </td>
                             <td>
-                                <input type="radio" name="writing"> High
+                                <input type="radio" name="writing" value="hi"> High
                                 <br>
-                                <input type="radio" name="writing"> Mid
+                                <input type="radio" name="writing" value="mi"> Mid
                                 <br>
-                                <input type="radio" name="writing"> Low
+                                <input type="radio" name="writing" value="lo"> Low
                             </td>
                             <td>
-                                <input type="radio" name="math"> High
+                                <input type="radio" name="math" value="hi"> High
                                 <br>
-                                <input type="radio" name="math"> Mid
+                                <input type="radio" name="math" value="mi"> Mid
                                 <br>
-                                <input type="radio" name="math"> Low
+                                <input type="radio" name="math" value="lo"> Low
                             </td>
                             <td>
-                                <input type="radio" name="red"> Yes
+                                <input type="radio" name="red" value="y"> Yes
                                 <br>
-                                <input type="radio" name="red"> No
+                                <input type="radio" name="red" value="n"> No
                             </td>
                             <td>
-                                <input type="radio" name="iep"> Yes
+                                <input type="radio" name="iep" value="y"> Yes
                                 <br>
-                                <input type="radio" name="iep"> No
+                                <input type="radio" name="iep" value="n"> No
                             </td>
                             <td>
-                                <input type="radio" name="health"> Yes
+                                <input type="radio" name="health" value="y"> Yes
                                 <br>
-                                <input type="radio" name="health"> No
+                                <input type="radio" name="health" value="n"> No
                             </td>
                             <td>
-                                <input type="radio" name="tk"> Yes
+                                <input type="radio" name="tk" value="y"> Yes
                                 <br>
-                                <input type="radio" name="tk"> No
+                                <input type="radio" name="tk" value="n"> No
                             </td>
                             <td>
                                 <input type="text" placeholder=" Name of teacher">
@@ -98,7 +98,11 @@
                 <button id="student-button" type="button">Add a student</button>
             </div>
             <br>
-            <div class="row" id="roster-row">
+            <div class="row centered">
+                Number of classes: <input type="text" size="3" id="classes">
+            </div>
+            <br>
+            <div class="row centered">
                 <button id="roster-button" type="button">Make rosters</button>
             </div>
     	</div>

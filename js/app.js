@@ -17,7 +17,30 @@ var initApp = function() {
 	// define 'make rosters' function
 
 	this.makeRosters = function() {
-		console.log("fart sandwich");
+
+		// put each row's information in an array
+		// put each rowArray into big array
+
+		// get number of classes to be sorted into
+		var classes = $("#classes").val();
+
+
+		var dataArr = [];
+	    $("input").each(function() {
+
+	    	if (this.type === "radio") {
+	    		if (this.checked === true) {
+	    			dataArr.push($(this).val());
+	    		}
+	    	} else {
+	    		dataArr.push($(this).val());
+	    	}
+
+		});
+
+		console.log(dataArr);
+
+
 	};
 
 
