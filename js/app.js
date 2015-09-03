@@ -2,11 +2,14 @@ var initApp = function() {
 
 	var self = this;
 
+	// init arrays in app level scope
+	var dataArr = [];
+	var masterArr = [];
+
 	// define replaceAll function
 	this.replaceAll = function(str, find, replace) {
 
 		return str.replace(new RegExp(find, 'g'), replace);
-
 	};
 
 
@@ -22,42 +25,156 @@ var initApp = function() {
 		var newStudentElemMod = self.replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
 
 		$("#table-body").append(newStudentElemMod);
-
 	};
 
 
-	// define 'make rosters' function
+	// define function to get all the data from inputs
+	this.getDataArr = function() {
 
-	this.makeRosters = function() {
-
-		// put each row's information in an array
-		// put each rowArray into big array
-
-		// get number of classes to be sorted into
-		var classes = $("#classes").val();
-
-
-		var dataArr = [];
 	    $("input").each(function() {
 
 	    	if (this.type === "radio") {
 	    		if (this.checked === true) {
-	    			dataArr.push($(this).val());
+	    			dataArr.push("checked");
+	    		} else {
+	    			dataArr.push("unchecked");
 	    		}
 	    	} else {
 	    		dataArr.push($(this).val());
 	    	}
 
 		});
+	};
 
-		console.log(dataArr);
 
+	// build individual rowArrs to be placed in masterArr
+	this.rowArrBuilder = function(arr, startIndex) {
+
+		var rowArr = [];
+
+		// push name
+		rowArr.push(arr[startIndex]);
+
+		// push gender
+		if (arr[startIndex + 1] === "checked") {
+			rowArr.push("male");
+		} else if (arr[startIndex + 2] === "checked"){
+			rowArr.push("female");
+		} else {
+			rowArr.push("");
+		}
+
+		// push reading
+		if (arr[startIndex + 3] === "checked") {
+			rowArr.push("high");
+		} else if (arr[startIndex + 4] === "checked") {
+			rowArr.push("mid");
+		} else if (arr[startIndex + 5] === "checked") {
+			rowArr.push("low");
+		} else {
+			rowArr.push("");
+		}
+
+		// push writing
+		if (arr[startIndex + 6] === "checked") {
+			rowArr.push("high");
+		} else if (arr[startIndex + 7] === "checked") {
+			rowArr.push("mid");
+		} else if (arr[startIndex + 8] === "checked") {
+			rowArr.push("low");
+		} else {
+			rowArr.push("");
+		}
+
+		// push math
+		if (arr[startIndex + 9] === "checked") {
+			rowArr.push("high");
+		} else if (arr[startIndex + 10] === "checked") {
+			rowArr.push("mid");
+		} else if (arr[startIndex + 11] === "checked") {
+			rowArr.push("low");
+		} else {
+			rowArr.push("");
+		}
+
+		// push red dot
+		if (arr[startIndex + 12] === "checked") {
+			rowArr.push("yes");
+		} else if (arr[startIndex + 13] === "checked"){
+			rowArr.push("no");
+		} else {
+			rowArr.push("");
+		}
+
+		// push IEP
+		if (arr[startIndex + 14] === "checked") {
+			rowArr.push("yes");
+		} else if (arr[startIndex + 15] === "checked"){
+			rowArr.push("no");
+		} else {
+			rowArr.push("");
+		}
+
+		// push health concerns
+		if (arr[startIndex + 16] === "checked") {
+			rowArr.push("yes");
+		} else if (arr[startIndex + 17] === "checked"){
+			rowArr.push("no");
+		} else {
+			rowArr.push("");
+		}
+
+		// push TK
+		if (arr[startIndex + 18] === "checked") {
+			rowArr.push("yes");
+		} else if (arr[startIndex + 19] === "checked"){
+			rowArr.push("no");
+		} else {
+			rowArr.push("");
+		}
+
+		// push teacher requests
+		rowArr.push(arr[startIndex + 20]);
+
+		// push separate from
+		rowArr.push(arr[startIndex + 21]);
+
+		return rowArr;
+	};
+
+
+	// add all individual rowArrs to masterArr
+	this.masterArrBuilder = function() {
+
+		// get number of rows
+		var rows = (dataArr.length - 1) / 22;
+
+		// iterate through rows and add them to masterArr
+		for (var i = 0; i < rows; i ++) {
+
+			masterArr.push(rowArrBuilder(dataArr, i * 22));
+
+		}
+	};
+
+
+	// organize students into balanced rosters
+	this.makeRosters = function() {
+
+		self.getDataArr();
+
+		self.masterArrBuilder();
+		console.log(masterArr);
+
+		// get number of rosters
+		var rosters = dataArr[dataArr.length - 1];
 
 	};
 
 
-	// add click listeners to buttons
 
+
+	// add click listeners to buttons
 	$("#student-button").click(self.addStudent);
 	$("#roster-button").click(self.makeRosters);
 
