@@ -3,7 +3,7 @@ var initApp = function() {
 	var self = this;
 
 
-	// Add new student to table
+	// define 'add student' function
 
 	this.newStudentElem = $("#table-body").html();
 
@@ -14,9 +14,20 @@ var initApp = function() {
 	};
 
 
-	// set up click listener
+	// define 'make rosters' function
+
+	this.makeRosters = function() {
+		console.log("fart sandwich");
+	};
+
+
+	// add click listeners to buttons
 
 	$("#student-button").click(self.addStudent);
+	$("#roster-button").click(self.makeRosters);
+
+
+
 
 };
 
