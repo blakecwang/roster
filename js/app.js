@@ -32,12 +32,16 @@ function getDataArr() {
 
     	if (this.type === "radio") {
     		if (this.checked === true) {
-    			dataArr.push("checked");
+    			dataArr.push(true);
     		} else {
-    			dataArr.push("unchecked");
+    			dataArr.push(false);
     		}
     	} else {
-    		dataArr.push($(this).val());
+    		if ($(this).val() === "") {
+    			dataArr.push(undefined);
+    		} else {
+    			dataArr.push($(this).val());
+    		}
     	}
 
 	});
@@ -53,81 +57,81 @@ function rowObjBuilder(arr, startIndex) {
 	rowObj.name = arr[startIndex];
 
 	// push gender
-	if (arr[startIndex + 1] === "checked") {
+	if (arr[startIndex + 1]) {
 		rowObj.gender = "male";
-	} else if (arr[startIndex + 2] === "checked"){
+	} else if (arr[startIndex + 2]){
 		rowObj.gender = "female";
 	} else {
-		rowObj.gender = "";
+		rowObj.gender = undefined;
 	}
 
 	// push reading
-	if (arr[startIndex + 3] === "checked") {
+	if (arr[startIndex + 3]) {
 		rowObj.reading = "high";
-	} else if (arr[startIndex + 4] === "checked") {
+	} else if (arr[startIndex + 4]) {
 		rowObj.reading = "mid";
-	} else if (arr[startIndex + 5] === "checked") {
+	} else if (arr[startIndex + 5]) {
 		rowObj.reading = "low";
 	} else {
-		rowObj.reading = "";
+		rowObj.reading = undefined;
 	}
 
 	// push writing
-	if (arr[startIndex + 6] === "checked") {
+	if (arr[startIndex + 6]) {
 		rowObj.writing = "high";
-	} else if (arr[startIndex + 7] === "checked") {
+	} else if (arr[startIndex + 7]) {
 		rowObj.writing = "mid";
-	} else if (arr[startIndex + 8] === "checked") {
+	} else if (arr[startIndex + 8]) {
 		rowObj.writing = "low";
 	} else {
-		rowObj.writing = "";
+		rowObj.writing = undefined;
 	}
 
 	// push math
-	if (arr[startIndex + 9] === "checked") {
+	if (arr[startIndex + 9]) {
 		rowObj.math = "high";
-	} else if (arr[startIndex + 10] === "checked") {
+	} else if (arr[startIndex + 10]) {
 		rowObj.math = "mid";
-	} else if (arr[startIndex + 11] === "checked") {
+	} else if (arr[startIndex + 11]) {
 		rowObj.math = "low";
 	} else {
-		rowObj.math = "";
+		rowObj.math = undefined;
 	}
 
 	// push red dot
-	if (arr[startIndex + 12] === "checked") {
-		rowObj.reddot = "yes";
-	} else if (arr[startIndex + 13] === "checked"){
-		rowObj.reddot = "no";
+	if (arr[startIndex + 12]) {
+		rowObj.reddot = true;
+	} else if (arr[startIndex + 13]){
+		rowObj.reddot = false;
 	} else {
-		rowObj.reddot = "";
+		rowObj.reddot = undefined;
 	}
 
 	// push IEP
-	if (arr[startIndex + 14] === "checked") {
-		rowObj.iep = "yes";
-	} else if (arr[startIndex + 15] === "checked"){
-		rowObj.iep = "no";
+	if (arr[startIndex + 14]) {
+		rowObj.iep = true;
+	} else if (arr[startIndex + 15]){
+		rowObj.iep = false;
 	} else {
-		rowObj.iep = "";
+		rowObj.iep = undefined;
 	}
 
 	// push health concerns
-	if (arr[startIndex + 16] === "checked") {
-		rowObj.health = "yes";
-	} else if (arr[startIndex + 17] === "checked"){
-		rowObj.health = "no";
+	if (arr[startIndex + 16]) {
+		rowObj.health = true;
+	} else if (arr[startIndex + 17]){
+		rowObj.health = false;
 	} else {
-		rowObj.health = "";
+		rowObj.health = undefined;
 	}
 
 	// push TK
-	if (arr[startIndex + 18] === "checked") {
-		rowObj.tk = "yes";
-	} else if (arr[startIndex + 19] === "checked"){
-		rowObj.tk = "no";
+	if (arr[startIndex + 18]) {
+		rowObj.tk = true;
+	} else if (arr[startIndex + 19]){
+		rowObj.tk = false;
 	} else {
-		rowObj.tk = "";
+		rowObj.tk = undefined;
 	}
 
 	// push teacher requests
@@ -137,6 +141,7 @@ function rowObjBuilder(arr, startIndex) {
 	rowObj.separate = arr[startIndex + 21];
 
 	return rowObj;
+
 };
 
 
