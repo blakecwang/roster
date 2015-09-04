@@ -161,24 +161,32 @@ var initApp = function() {
 	// organize students into balanced rosters
 	this.makeRosters = function() {
 
+		// get data from input fields
 		self.getDataArr();
 
+		// organize that data into masterArr
 		self.masterArrBuilder();
-		console.log(masterArr);
 
-		// get number of rosters
+		// get number of rosters and students
 		var rosters = dataArr[dataArr.length - 1];
+		var students = masterArr.length;
+
+		// get number of male students
+		var males = 0;
+		for (var i = 0; i < students; i++) {
+			if (masterArr[i][1] === "male") {
+				males++;
+			}
+		}
+
+		console.log(males);
 
 	};
-
-
 
 
 	// add click listeners to buttons
 	$("#student-button").click(self.addStudent);
 	$("#roster-button").click(self.makeRosters);
-
-
 
 
 };
