@@ -1,336 +1,196 @@
-var initApp = function() {
 
-	var self = this;
+// init arrays in app level scope
+var dataArr = [];
+var masterArr = [];
 
-	// init arrays in app level scope
-	var dataArr = [];
-	var masterArr = [];
+// define replaceAll function
+function replaceAll(str, find, replace) {
 
-	// define replaceAll function
-	this.replaceAll = function(str, find, replace) {
-
-		return str.replace(new RegExp(find, 'g'), replace);
-	};
+	return str.replace(new RegExp(find, 'g'), replace);
+};
 
 
-	// define 'add student' function
-	var newStudentElem = $("#table-body").html();
-	var students = 1;
-	this.addStudent = function() {
-		
-		students++;
+// define 'add student' function
+var newStudentElem = $("#table-body").html();
+var students = 1;
+function addStudent() {
+	
+	students++;
 
-		var oneStr = 1 + ""; // convert 1 to string
-		var studentsStr = students + ""; // convert students to string
-		var newStudentElemMod = self.replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
+	var oneStr = 1 + ""; // convert 1 to string
+	var studentsStr = students + ""; // convert students to string
+	var newStudentElemMod = self.replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
 
-		$("#table-body").append(newStudentElemMod);
-	};
-
-
-	// define function to get all the data from inputs
-	this.getDataArr = function() {
-
-	    $("input").each(function() {
-
-	    	if (this.type === "radio") {
-	    		if (this.checked === true) {
-	    			dataArr.push("checked");
-	    		} else {
-	    			dataArr.push("unchecked");
-	    		}
-	    	} else {
-	    		dataArr.push($(this).val());
-	    	}
-
-		});
-	};
+	$("#table-body").append(newStudentElemMod);
+};
 
 
-	// build individual rowArrs to be placed in masterArr
-	this.rowArrBuilder = function(arr, startIndex) {
+// define function to get all the data from inputs
+function getDataArr() {
 
-		var rowArr = [];
+    $("input").each(function() {
 
-		// push name
-		rowArr.push(arr[startIndex]);
+    	if (this.type === "radio") {
+    		if (this.checked === true) {
+    			dataArr.push("checked");
+    		} else {
+    			dataArr.push("unchecked");
+    		}
+    	} else {
+    		dataArr.push($(this).val());
+    	}
 
-		// push gender
-		if (arr[startIndex + 1] === "checked") {
-			rowArr.push("male");
-		} else if (arr[startIndex + 2] === "checked"){
-			rowArr.push("female");
-		} else {
-			rowArr.push("");
-		}
-
-		// push reading
-		if (arr[startIndex + 3] === "checked") {
-			rowArr.push("high");
-		} else if (arr[startIndex + 4] === "checked") {
-			rowArr.push("mid");
-		} else if (arr[startIndex + 5] === "checked") {
-			rowArr.push("low");
-		} else {
-			rowArr.push("");
-		}
-
-		// push writing
-		if (arr[startIndex + 6] === "checked") {
-			rowArr.push("high");
-		} else if (arr[startIndex + 7] === "checked") {
-			rowArr.push("mid");
-		} else if (arr[startIndex + 8] === "checked") {
-			rowArr.push("low");
-		} else {
-			rowArr.push("");
-		}
-
-		// push math
-		if (arr[startIndex + 9] === "checked") {
-			rowArr.push("high");
-		} else if (arr[startIndex + 10] === "checked") {
-			rowArr.push("mid");
-		} else if (arr[startIndex + 11] === "checked") {
-			rowArr.push("low");
-		} else {
-			rowArr.push("");
-		}
-
-		// push red dot
-		if (arr[startIndex + 12] === "checked") {
-			rowArr.push("yes");
-		} else if (arr[startIndex + 13] === "checked"){
-			rowArr.push("no");
-		} else {
-			rowArr.push("");
-		}
-
-		// push IEP
-		if (arr[startIndex + 14] === "checked") {
-			rowArr.push("yes");
-		} else if (arr[startIndex + 15] === "checked"){
-			rowArr.push("no");
-		} else {
-			rowArr.push("");
-		}
-
-		// push health concerns
-		if (arr[startIndex + 16] === "checked") {
-			rowArr.push("yes");
-		} else if (arr[startIndex + 17] === "checked"){
-			rowArr.push("no");
-		} else {
-			rowArr.push("");
-		}
-
-		// push TK
-		if (arr[startIndex + 18] === "checked") {
-			rowArr.push("yes");
-		} else if (arr[startIndex + 19] === "checked"){
-			rowArr.push("no");
-		} else {
-			rowArr.push("");
-		}
-
-		// push teacher requests
-		rowArr.push(arr[startIndex + 20]);
-
-		// push separate from
-		rowArr.push(arr[startIndex + 21]);
-
-		return rowArr;
-	};
+	});
+};
 
 
-	// add all individual rowArrs to masterArr
-	this.masterArrBuilder = function() {
+// build individual rowArrs to be placed in masterArr
+function rowObjBuilder(arr, startIndex) {
 
-		// get number of rows
-		var rows = (dataArr.length - 1) / 22;
+	var rowObj = {};
 
-		// iterate through rows and add them to masterArr
-		for (var i = 0; i < rows; i ++) {
+	// push name
+	rowObj.name = arr[startIndex];
 
-			masterArr.push(rowArrBuilder(dataArr, i * 22));
+	// push gender
+	if (arr[startIndex + 1] === "checked") {
+		rowObj.gender = "male";
+	} else if (arr[startIndex + 2] === "checked"){
+		rowObj.gender = "female";
+	} else {
+		rowObj.gender = "";
+	}
 
-		}
-	};
+	// push reading
+	if (arr[startIndex + 3] === "checked") {
+		rowObj.reading = "high";
+	} else if (arr[startIndex + 4] === "checked") {
+		rowObj.reading = "mid";
+	} else if (arr[startIndex + 5] === "checked") {
+		rowObj.reading = "low";
+	} else {
+		rowObj.reading = "";
+	}
+
+	// push writing
+	if (arr[startIndex + 6] === "checked") {
+		rowObj.writing = "high";
+	} else if (arr[startIndex + 7] === "checked") {
+		rowObj.writing = "mid";
+	} else if (arr[startIndex + 8] === "checked") {
+		rowObj.writing = "low";
+	} else {
+		rowObj.writing = "";
+	}
+
+	// push math
+	if (arr[startIndex + 9] === "checked") {
+		rowObj.math = "high";
+	} else if (arr[startIndex + 10] === "checked") {
+		rowObj.math = "mid";
+	} else if (arr[startIndex + 11] === "checked") {
+		rowObj.math = "low";
+	} else {
+		rowObj.math = "";
+	}
+
+	// push red dot
+	if (arr[startIndex + 12] === "checked") {
+		rowObj.reddot = "yes";
+	} else if (arr[startIndex + 13] === "checked"){
+		rowObj.reddot = "no";
+	} else {
+		rowObj.reddot = "";
+	}
+
+	// push IEP
+	if (arr[startIndex + 14] === "checked") {
+		rowObj.iep = "yes";
+	} else if (arr[startIndex + 15] === "checked"){
+		rowObj.iep = "no";
+	} else {
+		rowObj.iep = "";
+	}
+
+	// push health concerns
+	if (arr[startIndex + 16] === "checked") {
+		rowObj.health = "yes";
+	} else if (arr[startIndex + 17] === "checked"){
+		rowObj.health = "no";
+	} else {
+		rowObj.health = "";
+	}
+
+	// push TK
+	if (arr[startIndex + 18] === "checked") {
+		rowObj.tk = "yes";
+	} else if (arr[startIndex + 19] === "checked"){
+		rowObj.tk = "no";
+	} else {
+		rowObj.tk = "";
+	}
+
+	// push teacher requests
+	rowObj.teacher = arr[startIndex + 20];
+
+	// push separate from
+	rowObj.separate = arr[startIndex + 21];
+
+	return rowObj;
+};
 
 
-	// organize students into balanced rosters
-	this.makeRosters = function() {
+// add all individual rowArrs to masterArr
+function masterArrBuilder() {
 
-		// get data from input fields
-		self.getDataArr();
+	// get number of rows
+	var rows = (dataArr.length - 1) / 22;
 
-		// organize that data into masterArr
-		self.masterArrBuilder();
+	// iterate through rows and add them to masterArr
+	for (var i = 0; i < rows; i ++) {
 
-		// get number of rosters and students
-		var rosters = dataArr[dataArr.length - 1];
-		var students = masterArr.length;
+		masterArr.push(rowObjBuilder(dataArr, i * 22));
 
-		// get number of male students
-		var males = 0;
-		for (var i = 0; i < students; i++) {
-			if (masterArr[i][1] === "male") {
-				males++;
-			}
-		}
-
-		console.log(males);
-
-	};
-
-
-	// add click listeners to buttons
-	$("#student-button").click(self.addStudent);
-	$("#roster-button").click(self.makeRosters);
-
+	}
 
 };
 
 
-initApp();
+// organize students into balanced rosters
+function makeRosters() {
+
+	// get data from input fields
+	getDataArr();
+
+	// organize that data into masterArr
+	masterArrBuilder();
+
+	// get number of rosters and students
+	var rosters = dataArr[dataArr.length - 1];
+	var students = masterArr.length;
+
+	// get number of male students
+	var males = 0;
+	for (var i = 0; i < students; i++) {
+		if (masterArr[i][1] === "male") {
+			males++;
+		}
+	}
+
+	console.log(masterArr);
+
+};
+
+
+// add click listeners to buttons
+$("#student-button").click(self.addStudent);
+$("#roster-button").click(self.makeRosters);
 
 
 
 
+// SORTING STRATEGY
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // ---------- MODEL ---------- //
-
-// // priorities
-// // 1 = absolutely must be true
-// // 2 = important
-// // 3 = nice to have
-
-// var headers = [
-// 	{
-// 		"header": "Name",
-// 		"id": "name",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Gender",
-// 		"id": "gender",
-// 		"priority": 2,
-// 		"inputType": "binary"
-// 	},
-// 	{
-// 		"header": "Reading",
-// 		"id": "reading",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Writing",
-// 		"id": "writing",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Math",
-// 		"id": "math",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Red Dot",
-// 		"id": "red-dot",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "IEP",
-// 		"id": "iep",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Health Concerns",
-// 		"id": "health",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Attended TK",
-// 		"id": "tk",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Teacher Requested",
-// 		"id": "teacher",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	},
-// 	{
-// 		"header": "Separate From",
-// 		"id": "separate",
-// 		"priority": 2,
-// 		"inputType": "text"
-// 	}
-// ];
-
-// var initHeaders = function() {
-
-// 	var headerElem = "<tr>";
-
-// 	for (var i = 0; i < headers.length; i++) {
-
-// 		var header = headers[i].header;
-// 		var id = headers[i].id;
-
-// 		headerElem += "<th id=" + id + ">" + header + "</th>";
-
-// 	}
-
-// 	headerElem += "</tr>";
-
-// 	$("#headers").append(headerElem);
-// };
-
-
-// var addStudent = function() {
-
-// 	var newStudentElem = "<tr>";
-
-// 	// add name input
-// 	newStudentElem += "<td><input type='text'></td>";
-
-// 	// add gender input
-// 	newStudentElem += 
-
-// 	for (var i = 0; i < headers.length; i++) {
-
-// 		newStudentElem += "<td><input type='radio'>Fart</td>";
-		
-// 	}
-
-// 	newStudentElem += "</tr>";
-
-// 	$("#headers").append(newStudentElem);
-// };
-
-
-// initHeaders();
-// addStudent();
+// loop through all students
+// if they are male, add them to rosters one by one
+// then, if they are not male, add them to rosters one by one
