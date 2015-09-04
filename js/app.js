@@ -3,25 +3,28 @@
 var dataArr = [];
 var masterArr = [];
 
+
 // define replaceAll function
 function replaceAll(str, find, replace) {
 
 	return str.replace(new RegExp(find, 'g'), replace);
+
 };
 
 
 // define 'add student' function
 var newStudentElem = $("#table-body").html();
-var students = 1;
+var n = 1;
 function addStudent() {
 	
-	students++;
+	n++;
 
 	var oneStr = 1 + ""; // convert 1 to string
-	var studentsStr = students + ""; // convert students to string
-	var newStudentElemMod = self.replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
+	var studentsStr = n + ""; // convert students to string
+	var newStudentElemMod = replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
 
 	$("#table-body").append(newStudentElemMod);
+
 };
 
 
@@ -45,6 +48,7 @@ function getDataArr() {
     	}
 
 	});
+
 };
 
 
@@ -161,6 +165,38 @@ function masterArrBuilder() {
 };
 
 
+function permutator(inputArr) {
+
+	var results = [];
+
+	function permute(arr, memo) {
+	var cur, memo = memo || [];
+
+		for (var i = 0; i < arr.length; i++) {
+
+			cur = arr.splice(i, 1);
+
+			if (arr.length === 0) {
+
+				results.push(memo.concat(cur));
+
+			}
+
+			permute(arr.slice(), memo.concat(cur));
+
+			arr.splice(i, 0, cur[0]);
+		}
+
+		return results;
+
+	}
+
+	return permute(inputArr);
+
+}
+
+
+
 // organize students into balanced rosters
 function makeRosters() {
 
@@ -182,9 +218,13 @@ function makeRosters() {
 		}
 	}
 
-	console.log(masterArr);
+	var myArr = [];
+	for (var i = 0; i < 75; i++) {
+		myArr.push(i);
+	}
+	console.log(permutator(myArr));
 
-};
+	};
 
 
 // add click listeners to buttons
@@ -194,8 +234,14 @@ $("#roster-button").click(self.makeRosters);
 
 
 
+
+
+
+
+
 // SORTING STRATEGY
 
-// loop through all students
-// if they are male, add them to rosters one by one
-// then, if they are not male, add them to rosters one by one
+// priorities
+// separate from
+
+
