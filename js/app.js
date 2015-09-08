@@ -1,7 +1,9 @@
 
 // init arrays in app level scope
-var dataArr = [];
-var masterArr = [];
+var dataArr = [],
+	masterArr = [],
+	rosterArr = [];
+
 
 
 // define replaceAll function
@@ -9,7 +11,7 @@ function replaceAll(str, find, replace) {
 
 	return str.replace(new RegExp(find, 'g'), replace);
 
-};
+}
 
 
 // define 'add student' function
@@ -25,7 +27,7 @@ function addStudent() {
 
 	$("#table-body").append(newStudentElemMod);
 
-};
+}
 
 
 // define function to get all the data from inputs
@@ -49,7 +51,7 @@ function getDataArr() {
 
 	});
 
-};
+}
 
 
 // build individual rowArrs to be placed in masterArr
@@ -146,7 +148,7 @@ function rowObjBuilder(arr, startIndex) {
 
 	return rowObj;
 
-};
+}
 
 
 // add all individual rowArrs to masterArr
@@ -161,37 +163,6 @@ function masterArrBuilder() {
 		masterArr.push(rowObjBuilder(dataArr, i * 22));
 
 	}
-
-};
-
-
-function permutator(inputArr) {
-
-	var results = [];
-
-	function permute(arr, memo) {
-	var cur, memo = memo || [];
-
-		for (var i = 0; i < arr.length; i++) {
-
-			cur = arr.splice(i, 1);
-
-			if (arr.length === 0) {
-
-				results.push(memo.concat(cur));
-
-			}
-
-			permute(arr.slice(), memo.concat(cur));
-
-			arr.splice(i, 0, cur[0]);
-		}
-
-		return results;
-
-	}
-
-	return permute(inputArr);
 
 }
 
@@ -210,21 +181,39 @@ function makeRosters() {
 	var rosters = dataArr[dataArr.length - 1];
 	var students = masterArr.length;
 
-	// get number of male students
-	var males = 0;
-	for (var i = 0; i < students; i++) {
-		if (masterArr[i][1] === "male") {
-			males++;
+	// add empty rosters to rosterArr
+	for (var i = 0; i < rosters; i++) {
+
+		var r = [];
+		rosterArr.push(r);
+
+	}
+
+	// add one male student to each array repeatedly
+	// until all male students are accounted for
+	var rosterPicker = 0;
+	for (var j = 0; j < students; j++) {
+
+		if (masterArr[j].gender === "male") {
+			rosterArr[rosterPicker].push(masterArr[j]);
 		}
+
+		if (rosterPicker < rosters) {
+			rosterPicker++;
+		} else {
+			rosterPicker = 0;
+		}
+
 	}
 
-	var myArr = [];
-	for (var i = 0; i < 75; i++) {
-		myArr.push(i);
-	}
-	console.log(permutator(myArr));
+	console.log(rosterArr);
 
-	};
+
+
+
+
+
+}
 
 
 // add click listeners to buttons
@@ -234,14 +223,65 @@ $("#roster-button").click(self.makeRosters);
 
 
 
+// STRATEGY
+// create one roster with balanced gender
+// test for parameter x
+// if x is low, switch out students with x=false for
+//		those with x=true until x is balanced
+// if x is high, do the opposite
+// test for parameter y
+// if y is low, switch out students with y=false for
+//		those with y=true that don't change x until y is balanced
+// if y is high, do the opposite
+
+// balanced-tolerance can be a function of 
 
 
 
 
 
-// SORTING STRATEGY
 
-// priorities
-// separate from
+// test how long it takes to do something
+// function doSomething() {
+	
+// }
+
+// var t0 = performance.now();
+// doSomething();
+// var t1 = performance.now();
+// console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
 
 
+
+
+
+
+// function permutator(inputArr) {
+
+// 	var results = [];
+
+// 	function permute(arr, memo) {
+// 	var cur, memo = memo || [];
+
+// 		for (var i = 0; i < arr.length; i++) {
+
+// 			cur = arr.splice(i, 1);
+
+// 			if (arr.length === 0) {
+
+// 				results.push(memo.concat(cur));
+
+// 			}
+
+// 			permute(arr.slice(), memo.concat(cur));
+
+// 			arr.splice(i, 0, cur[0]);
+// 		}
+
+// 		return results;
+
+// 	}
+
+// 	return permute(inputArr);
+
+// }
