@@ -167,6 +167,61 @@ function masterArrBuilder() {
 }
 
 
+// create first roster with balanced gender
+function initRoster(inputArr, inputRosters) {
+
+	// create outputArr
+	var outputArr = [];
+
+	// get number of students in inputArr
+	var students = inputArr.length;
+
+	// get number of males in inputArr
+	var males = 0;
+	for (var i = 0; i < students; i++) {
+
+		if (inputArr[i].gender = "male") {
+			males++;
+		}
+
+	}
+
+	// calculate number of students per gender per roster
+	var studentsPerRoster = Math.floor(students / inputRosters);
+	var malesPerRoster = Math.floor(males / inputRosters);
+	var femalesPerRoster = studentsPerRoster - malesPerRoster;
+
+	// add males to outputArr
+	var maleCounter = 0;
+	for (var j = 0; j < students; j++) {
+
+		if (inputArr[j].gender === "male" &&
+			maleCounter < malesPerRoster) {
+
+			outputArr.push(inputArr[j]);
+
+		}
+
+	}
+
+	// add females to outputArr
+	var femaleCounter = 0;
+	for (var k = 0; k < students; k++) {
+
+		if (inputArr[k].gender === "female" &&
+			femaleCounter < femalesPerRoster) {
+
+			outputArr.push(inputArr[k]);
+
+		}
+
+	}
+
+	return outputArr;
+
+}
+
+
 
 // organize students into balanced rosters
 function makeRosters() {
@@ -206,7 +261,11 @@ function makeRosters() {
 
 	}
 
-	console.log(rosterArr);
+
+
+
+
+	// console.log(masterArr);
 
 
 
