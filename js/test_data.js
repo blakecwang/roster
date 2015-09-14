@@ -1,4 +1,6 @@
+// declare testData array
 var testData = [];
+
 
 function initTestData() {
 
@@ -25,11 +27,18 @@ function initTestData() {
 
 	// calculate actual numbers of students with each parameter
 	var actualNumbers = ratios;
-	for (var j in actualNumbers) {
+	for (var i in actualNumbers) {
 
-		var n = Math.round(actualNumbers[j] * students);
-		actualNumbers[j] = n;
+		var n = Math.round(actualNumbers[i] * students);
+		actualNumbers[i] = n;
 
+	}
+
+
+	// populate array of indices
+	var indicesArr = [];
+	for (var i = 0; i < students; i++) {
+		indicesArr.push(i);
 	}
 		
 
@@ -43,7 +52,7 @@ function initTestData() {
 			"reading": undefined,
 			"writing": undefined,
 			"math": undefined,
-			"reddot": undefined,
+			"redDot": undefined,
 			"iep": undefined,
 			"health": undefined,
 			"tk": undefined,
@@ -54,6 +63,12 @@ function initTestData() {
 
 		testData.push(testDataTemplate);
 
+	}
+
+
+	// name the students
+	for (var i = 0; i < students; i++) {
+		testData[i].name = "Student" + i;
 	}
 
 
@@ -90,6 +105,7 @@ function initTestData() {
 	}
 
 	
+	// remove a subset from a superset and return new superset
 	function removeSubset(superset, subset) {
 
 		var newSet = [];
@@ -110,70 +126,224 @@ function initTestData() {
 	}
 
 
-	function setGender() {
+	function setParams() {
 
-		// make subset
-		var testDataIndices = [];
-		for (var k = 0; k < testData.length; k++) {
-			testDataIndices.push(k);
-		}
-		var s = makeSubset(testDataIndices, actualNumbers.males);
+		function setGender() {
 
-		// set subset indices to male
-		for (var j = 0; j < s.length; j++) {
-			testData[s[j]].gender = "male";
-		}
+			// make subset
+			var sub = makeSubset(indicesArr, actualNumbers.males);
 
-		// set the rest as female
-		for (var k = 0; k < testData.length; k++) {
-			if (testData[k].gender === undefined) {
-				testData[k].gender = "female";
+			// set subset indices to male
+			for (var j = 0; j < sub.length; j++) {
+				testData[sub[j]].gender = "male";
 			}
-		}
 
-	}
-	setGender();
-
-
-	function setReading() {
-
-		// make subset
-		var testDataIndices = [];
-		for (var k = 0; k < testData.length; k++) {
-			testDataIndices.push(k);
-		}
-		var s = makeSubset(testDataIndices, actualNumbers.males);
-
-		// set subset indices to male
-		for (var j = 0; j < s.length; j++) {
-			testData[s[j]].gender = "male";
-		}
-
-		// set the rest as female
-		for (var k = 0; k < testData.length; k++) {
-			if (testData[k].gender === undefined) {
-				testData[k].gender = "female";
+			// set the rest as female
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].gender === undefined) {
+					testData[k].gender = "female";
+				}
 			}
+
 		}
-
-	}
-	setReading();
-
 		
 
+		function setReading() {
+
+			var iArr = indicesArr;
+
+			// make subset of random indices
+			var sub1 = makeSubset(iArr, actualNumbers.readingHigh);
+
+			// set sub1 indices to high
+			for (var i = 0; i < sub1.length; i++) {
+				testData[sub1[i]].reading = "high";
+			}
+
+			// remove sub1 from iArr
+			iArr = removeSubset(iArr, sub1);
+
+			// make new random subset from iArr
+			var sub2 = makeSubset(iArr, actualNumbers.readingMid);
+
+			// set sub2 indices to mid
+			for (var j = 0; j < sub2.length; j++) {
+				testData[sub2[j]].reading = "mid";
+			}
+
+			// set the rest as low
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].reading === undefined) {
+					testData[k].reading = "low";
+				}
+			}
+
+		}
+		
+
+		function setWriting() {
+
+			var iArr = indicesArr;
+
+			// make subset of random indices
+			var sub1 = makeSubset(iArr, actualNumbers.writingHigh);
+
+			// set sub1 indices to high
+			for (var i = 0; i < sub1.length; i++) {
+				testData[sub1[i]].writing = "high";
+			}
+
+			// remove sub1 from iArr
+			iArr = removeSubset(iArr, sub1);
+
+			// make new random subset from iArr
+			var sub2 = makeSubset(iArr, actualNumbers.writingMid);
+
+			// set sub2 indices to mid
+			for (var j = 0; j < sub2.length; j++) {
+				testData[sub2[j]].writing = "mid";
+			}
+
+			// set the rest as low
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].writing === undefined) {
+					testData[k].writing = "low";
+				}
+			}
+
+		}
+		
+
+		function setMath() {
+
+			var iArr = indicesArr;
+
+			// make subset of random indices
+			var sub1 = makeSubset(iArr, actualNumbers.mathHigh);
+
+			// set sub1 indices to high
+			for (var i = 0; i < sub1.length; i++) {
+				testData[sub1[i]].math = "high";
+			}
+
+			// remove sub1 from iArr
+			iArr = removeSubset(iArr, sub1);
+
+			// make new random subset from iArr
+			var sub2 = makeSubset(iArr, actualNumbers.mathMid);
+
+			// set sub2 indices to mid
+			for (var j = 0; j < sub2.length; j++) {
+				testData[sub2[j]].math = "mid";
+			}
+
+			// set the rest as low
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].math === undefined) {
+					testData[k].math = "low";
+				}
+			}
+
+		}
 
 
+		function setRedDot() {
 
-	
+			// make subset
+			var sub = makeSubset(indicesArr, actualNumbers.redDot);
+
+			// set subset indices to male
+			for (var j = 0; j < sub.length; j++) {
+				testData[sub[j]].redDot = true;
+			}
+
+			// set the rest as female
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].redDot === undefined) {
+					testData[k].redDot = false;
+				}
+			}
+
+		}
+
+
+		function setIEP() {
+
+			// make subset
+			var sub = makeSubset(indicesArr, actualNumbers.iep);
+
+			// set subset indices to male
+			for (var j = 0; j < sub.length; j++) {
+				testData[sub[j]].iep = true;
+			}
+
+			// set the rest as female
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].iep === undefined) {
+					testData[k].iep = false;
+				}
+			}
+
+		}
+
+
+		function setHealth() {
+
+			// make subset
+			var sub = makeSubset(indicesArr, actualNumbers.health);
+
+			// set subset indices to male
+			for (var j = 0; j < sub.length; j++) {
+				testData[sub[j]].health = true;
+			}
+
+			// set the rest as female
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].health === undefined) {
+					testData[k].health = false;
+				}
+			}
+
+		}
+
+
+		function setTK() {
+
+			// make subset
+			var sub = makeSubset(indicesArr, actualNumbers.tk);
+
+			// set subset indices to male
+			for (var j = 0; j < sub.length; j++) {
+				testData[sub[j]].tk = true;
+			}
+
+			// set the rest as female
+			for (var k = 0; k < testData.length; k++) {
+				if (testData[k].tk === undefined) {
+					testData[k].tk = false;
+				}
+			}
+
+		}
+
+
+		// randomly assign parameters according to ratios
+		setGender();
+		setReading();
+		setWriting();
+		setMath();
+		setRedDot();
+		setIEP();
+		setHealth();
+		setTK();
+
+	}
+
+
+	setParams();
 
 }
 
+
 initTestData();
-
-
-
-
-// STRATEGY
-// ========
-// populate array with objects with all parameters undefined
-// define parameters randomly to objects
+console.log(testData);
