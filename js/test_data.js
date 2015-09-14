@@ -22,11 +22,6 @@ function initTestData() {
 		"tk": 0.4
 	};
 
-	// ratios.females = 1 - ratios.males;
-	// ratios.readingLow = 1 - ratios.readingHigh - ratios.readingMid;
-	// ratios.writingLow = 1 - ratios.writingHigh - ratios.writingMid;
-	// ratios.mathLow = 1 - ratios.mathHigh - ratios.mathMid;
-
 
 	// calculate actual numbers of students with each parameter
 	var actualNumbers = ratios;
@@ -114,31 +109,60 @@ function initTestData() {
 
 	}
 
-	// assign male and female randomly
-	var testDataIndices = [];
-	for (var k = 0; k < testData.length; k++) {
-		testDataIndices.push(k);
-	}
-	var s = makeSubset(testDataIndices, actualNumbers.males);
 
-	for (var j = 0; j < s.length; j++) {
-		testData[s[j]].gender = "male";
-	}
-	testData[3].gender = "male";
+	function setGender() {
 
-	for (var k = 0; k < testData.length; k++) {
-		if (testData[k].gender != "male") {
-			testData[k].gender = "female";
+		// make subset
+		var testDataIndices = [];
+		for (var k = 0; k < testData.length; k++) {
+			testDataIndices.push(k);
 		}
+		var s = makeSubset(testDataIndices, actualNumbers.males);
+
+		// set subset indices to male
+		for (var j = 0; j < s.length; j++) {
+			testData[s[j]].gender = "male";
+		}
+
+		// set the rest as female
+		for (var k = 0; k < testData.length; k++) {
+			if (testData[k].gender === undefined) {
+				testData[k].gender = "female";
+			}
+		}
+
 	}
+	setGender();
 
 
+	function setReading() {
 
-	var genderArr = [];
-	for (var p = 0; p < testData.length; p++) {
-		genderArr.push(testData[p].gender);
+		// make subset
+		var testDataIndices = [];
+		for (var k = 0; k < testData.length; k++) {
+			testDataIndices.push(k);
+		}
+		var s = makeSubset(testDataIndices, actualNumbers.males);
+
+		// set subset indices to male
+		for (var j = 0; j < s.length; j++) {
+			testData[s[j]].gender = "male";
+		}
+
+		// set the rest as female
+		for (var k = 0; k < testData.length; k++) {
+			if (testData[k].gender === undefined) {
+				testData[k].gender = "female";
+			}
+		}
+
 	}
-	console.log(genderArr);
+	setReading();
+
+		
+
+
+
 
 	
 
