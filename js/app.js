@@ -242,10 +242,11 @@ function makeRosters() {
 
 	// use testData to test functionality
 	masterArr = testData;
-	rosters = 3;
+	rosters = 5;
 
 
 	var students = masterArr.length;
+
 
 	// add empty rosters to rosterArr
 	for (var i = 0; i < rosters; i++) {
@@ -255,34 +256,81 @@ function makeRosters() {
 
 	}
 
-	// add one male student to each array repeatedly
-	// until all male students are accounted for
-	var rosterPicker = 0;
-	for (var j = 0; j < students; j++) {
-		
-		if (masterArr[j].gender === "male") {
-			
-			rosterArr[rosterPicker].push(masterArr[j]);
 
-			if (rosterPicker < rosters - 1) {
-				rosterPicker++;
-			} else {
-				rosterPicker = 0;
+	// add students to rosters by sex
+	function populateRosters(sex) {
+		
+		for (var j = 0; j < students; j++) {
+			
+			if (masterArr[j].gender === sex) {
+
+				rosterArr[rosterPicker].push(masterArr[j]);
+
+				if (rosterPicker < rosters - 1) {
+					rosterPicker++;
+				} else {
+					rosterPicker = 0;
+				}
+
 			}
 
 		}
 
 	}
 
-	console.log(rosterArr);
+	var rosterPicker = 0;
+	populateRosters("male");
+	populateRosters("female");
 
 
+	// display rosters
+	function displayRosters() {
+
+		// determine number of rows and columns
+		var columns = rosterArr.length;
+		var rows  = Math.ceil(columns / 3);
 
 
+		// append rows to DOM
+		for (var i = 0; i < rows; i++) {
+
+			var rowElem = "<div class='row' id='r" + i + "'></div>";
+			$(".container").append(rowElem);
+
+		}
 
 
+		// append columns to rows
+		for (var j = 0; j < columns; j++) {
+
+			var row = Math.floor(j / 3);
+
+			var rowId = "#r" + row;
+			var colElem = "<div class='col-md-4' id='c" + j +"'></div>";
+			$(rowId).append(colElem);
+
+		}
+
+
+		// append headers to columns
+		for (var k = 0; k < columns; k++) {
+
+			var letter = String.fromCharCode(k + 97).toUpperCase();
+			var headerElem = "<h3>Roster " + letter + "</h3>";
+			var colId = "#c" + k;
+			$(colId).append(headerElem);
+
+		}
+
+
+	}
+
+	displayRosters();
 
 }
+
+
+
 
 
 // add click listeners to buttons

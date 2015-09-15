@@ -4,7 +4,6 @@ var testData = [];
 
 function initTestData() {
 
-
 	// set total number of students
 	var students = 75;
 
