@@ -106,11 +106,11 @@ function rowObjBuilder(arr, startIndex) {
 
 	// push red dot
 	if (arr[startIndex + 12]) {
-		rowObj.reddot = true;
+		rowObj.redDot = true;
 	} else if (arr[startIndex + 13]){
-		rowObj.reddot = false;
+		rowObj.redDot = false;
 	} else {
-		rowObj.reddot = undefined;
+		rowObj.redDot = undefined;
 	}
 
 	// push IEP
@@ -226,6 +226,9 @@ function initRoster(inputArr, inputRosters) {
 // organize students into balanced rosters
 function makeRosters() {
 
+/*	Use these functions to get inputs from table when ready
+	but for now, we'll just use testData
+
 	// get data from input fields
 	getDataArr();
 
@@ -234,6 +237,14 @@ function makeRosters() {
 
 	// get number of rosters and students
 	var rosters = dataArr[dataArr.length - 1];
+
+*/
+
+	// use testData to test functionality
+	masterArr = testData;
+	rosters = 3;
+
+
 	var students = masterArr.length;
 
 	// add empty rosters to rosterArr
@@ -248,24 +259,23 @@ function makeRosters() {
 	// until all male students are accounted for
 	var rosterPicker = 0;
 	for (var j = 0; j < students; j++) {
-
+		
 		if (masterArr[j].gender === "male") {
+			
 			rosterArr[rosterPicker].push(masterArr[j]);
-		}
 
-		if (rosterPicker < rosters) {
-			rosterPicker++;
-		} else {
-			rosterPicker = 0;
+			if (rosterPicker < rosters - 1) {
+				rosterPicker++;
+			} else {
+				rosterPicker = 0;
+			}
+
 		}
 
 	}
 
+	console.log(rosterArr);
 
-
-
-
-	// console.log(masterArr);
 
 
 

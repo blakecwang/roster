@@ -346,4 +346,3 @@ function initTestData() {
 
 
 initTestData();
-console.log(testData);
