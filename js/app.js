@@ -222,70 +222,21 @@ function initRoster(inputArr, inputRosters) {
 }
 
 
+// function to count number of students with a given parameter
+function paramCounter(arr, param, val) {
 
-// organize students into balanced rosters
-function makeRosters() {
-
-/*	Use these functions to get inputs from table when ready
-	but for now, we'll just use testData
-
-	// get data from input fields
-	getDataArr();
-
-	// organize that data into masterArr
-	masterArrBuilder();
-
-	// get number of rosters and students
-	var rosters = dataArr[dataArr.length - 1];
-
-*/
-
-	// use testData to test functionality
-	masterArr = testData;
-	rosters = 5;
-
-
-	var students = masterArr.length;
-
-
-	// add empty rosters to rosterArr
-	for (var i = 0; i < rosters; i++) {
-
-		var r = [];
-		rosterArr.push(r);
-
-	}
-
-
-	// add students to rosters by sex
-	function populateRosters(sex) {
-		
-		for (var j = 0; j < students; j++) {
-			
-			if (masterArr[j].gender === sex) {
-
-				rosterArr[rosterPicker].push(masterArr[j]);
-
-				if (rosterPicker < rosters - 1) {
-					rosterPicker++;
-				} else {
-					rosterPicker = 0;
-				}
-
-			}
-
+	var counter = 0;
+	for (var i = 0; i < masterArr.length; i++) {
+		if (arr[i][param] === val) {
+			counter++;
 		}
-
 	}
-
-	var rosterPicker = 0;
-	populateRosters("male");
-	populateRosters("female");
+	return counter;
 
 }
 
 
-// display rosters
+// add rosters to DOM
 function displayRosters() {
 
 	// determine number of rows and columns
@@ -343,6 +294,7 @@ function displayRosters() {
 
 	}
 
+
 	// append parameters to columns
 	for (var x = 0; x < columns; x++) {
 
@@ -364,21 +316,68 @@ function displayRosters() {
 		var colId = "#c" + x;
 		$(colId).append(boyGirlElem);
 
-
 	}
 
 }
 
 
 
-// add click listeners to buttons
-$("#student-button").click(addStudent);
-$("#roster-button").click(function() {
-	
-	makeRosters();
+// organize students into gender-balanced rosters
+function makeRosters() {
+
+/*	Use these functions to get inputs from table when ready
+	but for now, we'll just use testData
+
+	// get data from input fields
+	getDataArr();
+
+	// organize that data into masterArr
+	masterArrBuilder();
+
+	// get number of rosters and students
+	var rosters = dataArr[dataArr.length - 1];
+
+*/
+
+	// use testData to test functionality
+	masterArr = testData;
+	rosters = testRosters;
+
+
+	var students = masterArr.length;
+
+
+	// add empty rosters to rosterArr
+	for (var i = 0; i < rosters; i++) {
+
+		var r = [];
+		rosterArr.push(r);
+
+	}
+
+
 	displayRosters();
 
-});
+}
+
+
+
+
+
+// add click listeners to buttons
+$("#student-button").click(addStudent);
+$("#roster-button").click(makeRosters);
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -445,3 +444,32 @@ $("#roster-button").click(function() {
 // 	return permute(inputArr);
 
 // }
+
+
+
+
+
+// add students to rosters by sex
+// function populateRosters(sex) {
+	
+// 	for (var j = 0; j < students; j++) {
+		
+// 		if (masterArr[j].gender === sex) {
+
+// 			rosterArr[rosterPicker].push(masterArr[j]);
+
+// 			if (rosterPicker < rosters - 1) {
+// 				rosterPicker++;
+// 			} else {
+// 				rosterPicker = 0;
+// 			}
+
+// 		}
+
+// 	}
+
+// }
+
+// var rosterPicker = 0;
+// populateRosters("male");
+// populateRosters("female");

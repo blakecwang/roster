@@ -1,16 +1,18 @@
 // declare testData array
 var testData = [];
+var testRosters;
 
 
 function initTestData() {
 
-	// set total number of students
+	// set total number of students and rosters
 	var students = 100;
+	testRosters = 5
 
 
 	// set ratios  for different perameters
 	var ratios = {
-		"males": 0.5,
+		"males": 0.49,
 		"readingHigh": 0.1,
 		"readingMid": 0.5,
 		"writingHigh": 0.2,
