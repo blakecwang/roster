@@ -5,7 +5,7 @@ var testData = [];
 function initTestData() {
 
 	// set total number of students
-	var students = 75;
+	var students = 100;
 
 
 	// set ratios  for different perameters

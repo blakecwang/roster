@@ -282,60 +282,103 @@ function makeRosters() {
 	populateRosters("male");
 	populateRosters("female");
 
-
-	// display rosters
-	function displayRosters() {
-
-		// determine number of rows and columns
-		var columns = rosterArr.length;
-		var rows  = Math.ceil(columns / 3);
+}
 
 
-		// append rows to DOM
-		for (var i = 0; i < rows; i++) {
+// display rosters
+function displayRosters() {
 
-			var rowElem = "<div class='row' id='r" + i + "'></div>";
-			$(".container").append(rowElem);
-
-		}
-
-
-		// append columns to rows
-		for (var j = 0; j < columns; j++) {
-
-			var row = Math.floor(j / 3);
-
-			var rowId = "#r" + row;
-			var colElem = "<div class='col-md-4' id='c" + j +"'></div>";
-			$(rowId).append(colElem);
-
-		}
+	// determine number of rows and columns
+	var columns = rosterArr.length;
+	var rows  = Math.ceil(columns / 3);
 
 
-		// append headers to columns
-		for (var k = 0; k < columns; k++) {
+	// append rows to DOM
+	for (var i = 0; i < rows; i++) {
 
-			var letter = String.fromCharCode(k + 97).toUpperCase();
-			var headerElem = "<h3>Roster " + letter + "</h3>";
-			var colId = "#c" + k;
-			$(colId).append(headerElem);
-
-		}
-
+		var rowElem = "<div class='row' id='r" + i + "'></div>";
+		$(".container").append(rowElem);
 
 	}
 
-	displayRosters();
+
+	// append columns to rows
+	for (var j = 0; j < columns; j++) {
+
+		var row = Math.floor(j / 3);
+
+		var rowId = "#r" + row;
+		var colElem = "<div class='col-md-4' id='c" + j +"'></div>";
+		$(rowId).append(colElem);
+
+	}
+
+
+	// append headers to columns
+	for (var k = 0; k < columns; k++) {
+
+		var letter = String.fromCharCode(k + 97).toUpperCase();
+		var headerElem = "<h3>Roster " + letter + "</h3>";
+		var colId = "#c" + k;
+		$(colId).append(headerElem);
+
+	}
+
+
+	// append lists to columns
+	for (var m = 0; m < columns; m++) {
+
+		var ulElem = "<ul id=u" + m + "></ul>";
+		var colId = "#c" + m;
+		$(colId).append(ulElem);
+
+		for (var n = 0; n < rosterArr[m].length; n++) {
+
+			var ulId = "#u" + m;
+			var studentName = rosterArr[m][n].name;
+			var liElem = "<li>" + studentName + "</li>";
+			$(ulId).append(liElem);
+
+		}
+
+	}
+
+	// append parameters to columns
+	for (var x = 0; x < columns; x++) {
+
+		var boys = 0, girls = 0;
+		for (var y = 0; y < rosterArr[x].length; y++) {
+
+			if (rosterArr[x][y].gender === "male") {
+				boys++;
+			} else {
+				girls++;
+			}
+
+		}
+
+		var boyElem = "<h4>Boys: " + boys + "</h4>";
+		var girlElem = "<h4>Girls: " + girls + "</h4>";
+		var boyGirlElem = boyElem + girlElem;
+
+		var colId = "#c" + x;
+		$(colId).append(boyGirlElem);
+
+
+	}
 
 }
 
 
 
-
-
 // add click listeners to buttons
-$("#student-button").click(self.addStudent);
-$("#roster-button").click(self.makeRosters);
+$("#student-button").click(addStudent);
+$("#roster-button").click(function() {
+	
+	makeRosters();
+	displayRosters();
+
+});
 
 
 
