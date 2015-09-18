@@ -1,9 +1,8 @@
 
-// init arrays in app level scope
+// init global arrays
 var dataArr = [],
 	masterArr = [],
 	rosterArr = [];
-
 
 
 // define replaceAll function
@@ -223,14 +222,18 @@ function initRoster(inputArr, inputRosters) {
 
 
 // function to count number of students with a given parameter
-function paramCounter(arr, param, val) {
+function paramTargetCounter(arr, rstrs, param, val) {
 
 	var counter = 0;
-	for (var i = 0; i < masterArr.length; i++) {
+	for (var i = 0; i < arr.length; i++) {
 		if (arr[i][param] === val) {
 			counter++;
 		}
+
 	}
+
+	// var target = Math.round(counter / rstrs);
+
 	return counter;
 
 }
@@ -321,8 +324,7 @@ function displayRosters() {
 }
 
 
-
-// organize students into gender-balanced rosters
+// organize students into balanced rosters
 function makeRosters() {
 
 /*	Use these functions to get inputs from table when ready
@@ -344,8 +346,32 @@ function makeRosters() {
 	rosters = testRosters;
 
 
+	// get total nnumber of students
 	var students = masterArr.length;
 
+	// get target number of students of each param per roster
+	var maleTarget = paramTargetCounter(masterArr, rosters, "gender", "male");
+	var readingHighTarget = paramTargetCounter(masterArr, rosters, "reading", "high");
+	var readingMidTarget = paramTargetCounter(masterArr, rosters, "reading", "mid");
+	var writingHighTarget = paramTargetCounter(masterArr, rosters, "writing", "high");
+	var writingMidTarget = paramTargetCounter(masterArr, rosters, "writing", "mid");
+	var mathHighTarget = paramTargetCounter(masterArr, rosters, "math", "high");
+	var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
+	var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
+	var redDotTarget = paramTargetCounter(masterArr, rosters, "redDot", true);
+	var iepTarget = paramTargetCounter(masterArr, rosters, "iep", true);
+	var healthTarget = paramTargetCounter(masterArr, rosters, "health", true);
+	var tkTarget = paramTargetCounter(masterArr, rosters, "tk", true);
+
+	console.log(maleTarget);
+	console.log(readingHighTarget);
+	console.log(readingMidTarget);
+	console.log(writingHighTarget);
+	console.log(writingMidTarget);
+	console.log(mathHighTarget);
+	console.log(mathMidTarget);
+
+	// console.log(masterArr);
 
 	// add empty rosters to rosterArr
 	for (var i = 0; i < rosters; i++) {
@@ -357,7 +383,6 @@ function makeRosters() {
 
 
 	displayRosters();
-
 }
 
 
