@@ -19,12 +19,26 @@ var n = 1;
 function addStudent() {
 	
 	n++;
-
 	var oneStr = 1 + ""; // convert 1 to string
 	var studentsStr = n + ""; // convert students to string
 	var newStudentElemMod = replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
 
 	$("#table-body").append(newStudentElemMod);
+
+}
+
+
+// define 'add teacher' function
+var newTeacherElem = $("#teacher-input").html();
+var m = 1;
+function addTeacher() {
+
+	m++;
+	var oneStr = 1 + ""; // convert 1 to string
+	var teachersStr = m + ""; // convert teachers to string
+	var newTeacherElemMod = replaceAll(newTeacherElem, oneStr, teachersStr); // replace first string with second
+
+	$("#teacher-input").append(newTeacherElemMod);
 
 }
 
@@ -342,47 +356,47 @@ function makeRosters() {
 */
 
 	// use testData to test functionality
-	masterArr = testData;
-	rosters = testRosters;
+	// masterArr = testData;
+	// rosters = testRosters;
 
 
-	// get total nnumber of students
-	var students = masterArr.length;
+	// // get total nnumber of students
+	// var students = masterArr.length;
 
-	// get target number of students of each param per roster
-	var maleTarget = paramTargetCounter(masterArr, rosters, "gender", "male");
-	var readingHighTarget = paramTargetCounter(masterArr, rosters, "reading", "high");
-	var readingMidTarget = paramTargetCounter(masterArr, rosters, "reading", "mid");
-	var writingHighTarget = paramTargetCounter(masterArr, rosters, "writing", "high");
-	var writingMidTarget = paramTargetCounter(masterArr, rosters, "writing", "mid");
-	var mathHighTarget = paramTargetCounter(masterArr, rosters, "math", "high");
-	var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
-	var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
-	var redDotTarget = paramTargetCounter(masterArr, rosters, "redDot", true);
-	var iepTarget = paramTargetCounter(masterArr, rosters, "iep", true);
-	var healthTarget = paramTargetCounter(masterArr, rosters, "health", true);
-	var tkTarget = paramTargetCounter(masterArr, rosters, "tk", true);
+	// // get target number of students of each param per roster
+	// var maleTarget = paramTargetCounter(masterArr, rosters, "gender", "male");
+	// var readingHighTarget = paramTargetCounter(masterArr, rosters, "reading", "high");
+	// var readingMidTarget = paramTargetCounter(masterArr, rosters, "reading", "mid");
+	// var writingHighTarget = paramTargetCounter(masterArr, rosters, "writing", "high");
+	// var writingMidTarget = paramTargetCounter(masterArr, rosters, "writing", "mid");
+	// var mathHighTarget = paramTargetCounter(masterArr, rosters, "math", "high");
+	// var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
+	// var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
+	// var redDotTarget = paramTargetCounter(masterArr, rosters, "redDot", true);
+	// var iepTarget = paramTargetCounter(masterArr, rosters, "iep", true);
+	// var healthTarget = paramTargetCounter(masterArr, rosters, "health", true);
+	// var tkTarget = paramTargetCounter(masterArr, rosters, "tk", true);
 
-	console.log(maleTarget);
-	console.log(readingHighTarget);
-	console.log(readingMidTarget);
-	console.log(writingHighTarget);
-	console.log(writingMidTarget);
-	console.log(mathHighTarget);
-	console.log(mathMidTarget);
+	// console.log(maleTarget);
+	// console.log(readingHighTarget);
+	// console.log(readingMidTarget);
+	// console.log(writingHighTarget);
+	// console.log(writingMidTarget);
+	// console.log(mathHighTarget);
+	// console
 
-	// console.log(masterArr);
+	// // add empty rosters to rosterArr
+	// for (var i = 0; i < rosters; i++) {
 
-	// add empty rosters to rosterArr
-	for (var i = 0; i < rosters; i++) {
+	// 	var r = [];
+	// 	rosterArr.push(r);
 
-		var r = [];
-		rosterArr.push(r);
-
-	}
+	// }
 
 
-	displayRosters();
+	// displayRosters();
+
+
 }
 
 
@@ -391,6 +405,7 @@ function makeRosters() {
 
 // add click listeners to buttons
 $("#student-button").click(addStudent);
+$("#teacher-button").click(addTeacher);
 $("#roster-button").click(makeRosters);
 
 

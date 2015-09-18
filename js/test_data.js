@@ -12,17 +12,18 @@ function initTestData() {
 
 	// set ratios  for different perameters
 	var ratios = {
-		"males": 0.49,
+		"male": 0.49,
+		"redDot": 0.1,
+		"celdt": 0.2,
+		"iep": 0.1,
+		"health": 0.1,
+		"tk": 0.4,
 		"readingHigh": 0.05,
 		"readingMid": 0.47,
 		"writingHigh": 0.46,
 		"writingMid": 0.45,
 		"mathHigh": 0.44,
-		"mathMid": 0.6,
-		"redDot": 0.1,
-		"iep": 0.1,
-		"health": 0.1,
-		"tk": 0.4
+		"mathMid": 0.6
 	};
 
 

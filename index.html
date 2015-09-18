@@ -20,16 +20,17 @@
                     <thead>
                         <tr>
                             <th>Name</th>
+                            <th>Separate From</th>
+                            <th>Teacher Requested</th>
                             <th>Gender</th>
-                            <th>Reading</th>
-                            <th>Writing</th>
-                            <th>Math</th>
                             <th>Red Dot</th>
+                            <th>CELDT 1 or 2</th>
                             <th>IEP</th>
                             <th>Health Concerns</th>
                             <th>Attended TK</th>
-                            <th>Teacher Requested</th>
-                            <th>Separate From</th>
+                            <th>Reading</th>
+                            <th>Writing</th>
+                            <th>Math</th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -38,9 +39,40 @@
                                 <input type="text" placeholder=" Name of student">
                             </td>
                             <td>
+                                <input type="text" placeholder=" Name of student">
+                            </td>
+                            <td>
+                                <input type="text" placeholder=" Name of teacher">
+                            </td>
+                            <td>
                                 <input type="radio" name="gender-1"> Male
                                 <br>
                                 <input type="radio" name="gender-1"> Female
+                            </td>
+                            <td>
+                                <input type="radio" name="red-1"> Yes
+                                <br>
+                                <input type="radio" name="red-1"> No
+                            </td>
+                            <td>
+                                <input type="radio" name="celdt-1"> Yes
+                                <br>
+                                <input type="radio" name="celdt-1"> No
+                            </td>
+                            <td>
+                                <input type="radio" name="iep-1"> Yes
+                                <br>
+                                <input type="radio" name="iep-1"> No
+                            </td>
+                            <td>
+                                <input type="radio" name="health-1"> Yes
+                                <br>
+                                <input type="radio" name="health-1"> No
+                            </td>
+                            <td>
+                                <input type="radio" name="tk-1"> Yes
+                                <br>
+                                <input type="radio" name="tk-1"> No
                             </td>
                             <td>
                                 <input type="radio" name="reading-1"> High
@@ -63,32 +95,6 @@
                                 <br>
                                 <input type="radio" name="math-1"> Low
                             </td>
-                            <td>
-                                <input type="radio" name="red-1"> Yes
-                                <br>
-                                <input type="radio" name="red-1"> No
-                            </td>
-                            <td>
-                                <input type="radio" name="iep-1"> Yes
-                                <br>
-                                <input type="radio" name="iep-1"> No
-                            </td>
-                            <td>
-                                <input type="radio" name="health-1"> Yes
-                                <br>
-                                <input type="radio" name="health-1"> No
-                            </td>
-                            <td>
-                                <input type="radio" name="tk-1"> Yes
-                                <br>
-                                <input type="radio" name="tk-1"> No
-                            </td>
-                            <td>
-                                <input type="text" placeholder=" Name of teacher">
-                            </td>
-                            <td>
-                                <input type="text" placeholder=" Name of student">
-                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -97,16 +103,19 @@
             <div class="row">
                 <button id="student-button" type="button">Add a student</button>
             </div>
-            <br>
-            <div class="row centered">
-                Number of rosters to build: <input type="text" size="3" id="rosters">
+            <br><br><br>
+            <div class="row" id="teacher-input">
+                <div>
+                    Teacher #1: <input type="text" placeholder=" Name of teacher">
+                </div>
+                <br>
             </div>
-            <br>
+            <div class="row">
+                <button id="teacher-button" type="button">Add a teacher</button>
+    	    </div>
             <div class="row centered">
                 <button id="roster-button" type="button">Make rosters</button>
             </div>
-            <br>
-    	</div>
     </body>
 
     <script src="js/jQuery.js"></script>
