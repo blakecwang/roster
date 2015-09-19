@@ -1,6 +1,7 @@
 
 // init global arrays
 var dataArr = [],
+	teacherArr = [],
 	masterArr = [],
 	rosterArr = [];
 
@@ -29,7 +30,7 @@ function addStudent() {
 
 
 // define 'add teacher' function
-var newTeacherElem = $("#teacher-input").html();
+var newTeacherElem = $("#teacher-row").html();
 var m = 1;
 function addTeacher() {
 
@@ -38,7 +39,7 @@ function addTeacher() {
 	var teachersStr = m + ""; // convert teachers to string
 	var newTeacherElemMod = replaceAll(newTeacherElem, oneStr, teachersStr); // replace first string with second
 
-	$("#teacher-input").append(newTeacherElemMod);
+	$("#teacher-row").append(newTeacherElemMod);
 
 }
 
@@ -46,7 +47,8 @@ function addTeacher() {
 // define function to get all the data from inputs
 function getDataArr() {
 
-    $("input").each(function() {
+	// get student data
+    $(".student-input").each(function() {
 
     	if (this.type === "radio") {
     		if (this.checked === true) {
@@ -64,6 +66,18 @@ function getDataArr() {
 
 	});
 
+
+    // get teacher data
+	$(".teacher-input").each(function() {
+
+		if ($(this).val() === "") {
+			teacherArr.push(undefined);
+		} else {
+			teacherArr.push($(this).val());
+		}
+
+	});
+
 }
 
 
@@ -72,92 +86,94 @@ function rowObjBuilder(arr, startIndex) {
 
 	var rowObj = {};
 
-	// push name
-	rowObj.name = arr[startIndex];
 
-	// push gender
-	if (arr[startIndex + 1]) {
-		rowObj.gender = "male";
-	} else if (arr[startIndex + 2]){
-		rowObj.gender = "female";
-	} else {
-		rowObj.gender = undefined;
+	// define function to set data from text inputs
+	function setTextInput(param, index) {
+
+		if (arr[index] != "") {
+
+			rowObj[param] = arr[index];
+		
+		} else {
+		
+			rowObj[param] = undefined;
+		
+		}
+	
 	}
 
-	// push reading
-	if (arr[startIndex + 3]) {
-		rowObj.reading = "high";
-	} else if (arr[startIndex + 4]) {
-		rowObj.reading = "mid";
-	} else if (arr[startIndex + 5]) {
-		rowObj.reading = "low";
-	} else {
-		rowObj.reading = undefined;
+
+	// define function to set data from two choice radio groups
+	function setTwoChoiceInput(param, index1, index2) {
+
+		if (arr[index1]) {
+
+			rowObj[param] = true;
+
+		} else if (arr[index2]) {
+
+			rowObj[param] = false;
+
+		} else {
+
+			rowObj[param] = undefined;
+
+		}
+
 	}
 
-	// push writing
-	if (arr[startIndex + 6]) {
-		rowObj.writing = "high";
-	} else if (arr[startIndex + 7]) {
-		rowObj.writing = "mid";
-	} else if (arr[startIndex + 8]) {
-		rowObj.writing = "low";
-	} else {
-		rowObj.writing = undefined;
+
+	// define function to set data from three choice radio groups
+	function setThreeChoiceInput(param1, param2, index1, index2, index3) {
+
+		if (arr[index1]) {
+
+			rowObj[param1] = true;
+			rowObj[param2] = false;
+
+		} else if (arr[index2]) {
+
+			rowObj[param1] = false;
+			rowObj[param2] = true;
+
+		} else if (arr[index3]) {
+
+			rowObj[param1] = false;
+			rowObj[param2] = false;
+
+		} else {
+
+			rowObj[param1] = undefined;
+			rowObj[param2] = undefined;
+
+		}
+
 	}
 
-	// push math
-	if (arr[startIndex + 9]) {
-		rowObj.math = "high";
-	} else if (arr[startIndex + 10]) {
-		rowObj.math = "mid";
-	} else if (arr[startIndex + 11]) {
-		rowObj.math = "low";
-	} else {
-		rowObj.math = undefined;
-	}
 
-	// push red dot
-	if (arr[startIndex + 12]) {
-		rowObj.redDot = true;
-	} else if (arr[startIndex + 13]){
-		rowObj.redDot = false;
-	} else {
-		rowObj.redDot = undefined;
-	}
+	// set text inputs
+	setTextInput("name", startIndex);
+	setTextInput("separate", startIndex + 1);
+	setTextInput("request", startIndex + 2);
 
-	// push IEP
-	if (arr[startIndex + 14]) {
-		rowObj.iep = true;
-	} else if (arr[startIndex + 15]){
-		rowObj.iep = false;
-	} else {
-		rowObj.iep = undefined;
-	}
 
-	// push health concerns
-	if (arr[startIndex + 16]) {
-		rowObj.health = true;
-	} else if (arr[startIndex + 17]){
-		rowObj.health = false;
-	} else {
-		rowObj.health = undefined;
-	}
+	// set two choice inputs
+	setTwoChoiceInput("male", startIndex + 3, startIndex + 4);
+	setTwoChoiceInput("redDot", startIndex + 5, startIndex + 6);
+	setTwoChoiceInput("celdt", startIndex + 7, startIndex + 8);
+	setTwoChoiceInput("iep", startIndex + 9, startIndex + 10);
+	setTwoChoiceInput("health", startIndex + 11, startIndex + 12);
+	setTwoChoiceInput("tk", startIndex + 13, startIndex + 14);
 
-	// push TK
-	if (arr[startIndex + 18]) {
-		rowObj.tk = true;
-	} else if (arr[startIndex + 19]){
-		rowObj.tk = false;
-	} else {
-		rowObj.tk = undefined;
-	}
 
-	// push teacher requests
-	rowObj.teacher = arr[startIndex + 20];
+	// set three choice inputs
+	setThreeChoiceInput("readingHigh", "readingMid",
+		startIndex + 15, startIndex + 16, startIndex + 17);
+	setThreeChoiceInput("writingHigh", "writingMid",
+		startIndex + 18, startIndex + 19, startIndex + 20);
+	setThreeChoiceInput("mathHigh", "mathMid",
+		startIndex + 21, startIndex + 22, startIndex + 23);
 
-	// push separate from
-	rowObj.separate = arr[startIndex + 21];
 
 	return rowObj;
 
@@ -236,19 +252,20 @@ function initRoster(inputArr, inputRosters) {
 
 
 // function to count number of students with a given parameter
-function paramTargetCounter(arr, rstrs, param, val) {
+function getTarget(arr, rstrs, param) {
 
 	var counter = 0;
 	for (var i = 0; i < arr.length; i++) {
-		if (arr[i][param] === val) {
+		
+		if (arr[i][param]) {
 			counter++;
 		}
 
 	}
 
-	// var target = Math.round(counter / rstrs);
+	var target = Math.round(counter / rstrs);
 
-	return counter;
+	return target;
 
 }
 
@@ -355,35 +372,34 @@ function makeRosters() {
 
 */
 
-	// use testData to test functionality
-	// masterArr = testData;
-	// rosters = testRosters;
-
-
 	// // get total nnumber of students
 	// var students = masterArr.length;
 
-	// // get target number of students of each param per roster
-	// var maleTarget = paramTargetCounter(masterArr, rosters, "gender", "male");
-	// var readingHighTarget = paramTargetCounter(masterArr, rosters, "reading", "high");
-	// var readingMidTarget = paramTargetCounter(masterArr, rosters, "reading", "mid");
-	// var writingHighTarget = paramTargetCounter(masterArr, rosters, "writing", "high");
-	// var writingMidTarget = paramTargetCounter(masterArr, rosters, "writing", "mid");
-	// var mathHighTarget = paramTargetCounter(masterArr, rosters, "math", "high");
-	// var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
-	// var mathMidTarget = paramTargetCounter(masterArr, rosters, "math", "mid");
-	// var redDotTarget = paramTargetCounter(masterArr, rosters, "redDot", true);
-	// var iepTarget = paramTargetCounter(masterArr, rosters, "iep", true);
-	// var healthTarget = paramTargetCounter(masterArr, rosters, "health", true);
-	// var tkTarget = paramTargetCounter(masterArr, rosters, "tk", true);
+	// use testData to test functionality
+	masterArr = testData;
+	rosters = testRosters;
 
-	// console.log(maleTarget);
-	// console.log(readingHighTarget);
-	// console.log(readingMidTarget);
-	// console.log(writingHighTarget);
-	// console.log(writingMidTarget);
-	// console.log(mathHighTarget);
-	// console
+
+	// get target number of students of each param per roster
+	var maleTarget = getTarget(masterArr, rosters, "male");
+	var redDotTarget = getTarget(masterArr, rosters, "redDot");
+	var celdtTarget = getTarget(masterArr, rosters, "celdt");
+	var iepTarget = getTarget(masterArr, rosters, "iep");
+	var healthTarget = getTarget(masterArr, rosters, "health");
+	var tkTarget = getTarget(masterArr, rosters, "tk");
+	var readingHighTarget = getTarget(masterArr, rosters, "readingHigh");
+	var readingMidTarget = getTarget(masterArr, rosters, "readingMid");
+	var writingHighTarget = getTarget(masterArr, rosters, "writingHigh");
+	var writingMidTarget = getTarget(masterArr, rosters, "writingMid");
+	var mathHighTarget = getTarget(masterArr, rosters, "mathHigh");
+	var mathMidTarget = getTarget(masterArr, rosters, "mathMid");
+
+	console.log(maleTarget);
+	console.log(redDotTarget);
+	console.log(celdtTarget);
+	console.log(iepTarget);
+	console.log(healthTarget);
+
 
 	// // add empty rosters to rosterArr
 	// for (var i = 0; i < rosters; i++) {
@@ -395,7 +411,6 @@ function makeRosters() {
 
 
 	// displayRosters();
-
 
 }
 
@@ -423,19 +438,10 @@ $("#roster-button").click(makeRosters);
 
 
 // STRATEGY
-// create one roster with balanced gender
-// test for parameter x
-// if x is low, switch out students with x=false for
-//		those with x=true until x is balanced
-// if x is high, do the opposite
-// test for parameter y
-// if y is low, switch out students with y=false for
-//		those with y=true that don't change x until y is balanced
-// if y is high, do the opposite
-
-// balanced-tolerance can be a function of 
-
-
+// move in order of highest to lowest priority
+// create rosters one at a time
+// start with gender balanced roster
+// make trades to improve params with widening tolerances
 
 
 
