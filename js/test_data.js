@@ -13,18 +13,18 @@ function initTestData() {
 	// set ratios  for different perameters
 	var ratios = {
 
-		"male": 0.49,
-		"redDot": 0.11,
+		"male": 0.48,
+		"redDot": 0.27,
 		"celdt": 0.23,
 		"iep": 0.05,
 		"health": 0.16,
-		"tk": 0.4,
+		"tk": 0.41,
 		"readingHigh": 0.05,
 		"readingMid": 0.47,
 		"writingHigh": 0.46,
-		"writingMid": 0.45,
-		"mathHigh": 0.44,
-		"mathMid": 0.6
+		"writingMid": 0.30,
+		"mathHigh": 0.22,
+		"mathMid": 0.69
 
 	};
 		
@@ -117,43 +117,6 @@ function initTestData() {
 	}
 
 
-	// function to randomly assign parameters with two possible values
-	function setTwoParams(param, rat) {
-
-		// populate array of indices
-		var iArr = [];
-		for (var i = 0; i < students; i++) {
-			iArr.push(i);
-		}
-
-
-		// make first subset of n1 indices
-		var n1 = Math.round(rat * students);
-		var sub1 = makeSubset(iArr, n1);
-
-
-		// set sub1 indices of testData to true
-		for (var i = 0; i < sub1.length; i++) {
-
-			testData[sub1[i]][param] = true;
-
-		}
-
-
-		// set the rest to false
-		for (var j = 0; j < testData.length; j++) {
-
-			if (!testData[j][param]) {
-
-				testData[j][param] = false;
-
-			}
-			
-		}
-
-	}
-
-
 	// function to randomly assign parameters with three possible values
 	function setParams(param1, param2) {
 
@@ -167,7 +130,7 @@ function initTestData() {
 		// make first subset
 		var sublength1 = Math.round(ratios[param1] * students);
 		var sub1 = makeSubset(iArr1, sublength1);
-
+		
 
 		// set param1 of sub1 indices to true
 		for (var i = 0; i < sub1.length; i++) {
@@ -183,7 +146,7 @@ function initTestData() {
 			// set the rest to false
 			for (var j = 0; j < students; j++) {
 
-				if (testData[j] != true) {
+				if (testData[j][param1] != true) {
 
 					testData[j][param1] = false;
 
@@ -222,25 +185,19 @@ function initTestData() {
 
 		}
 
-		
-
-
 	}
 
 
-	// set two parameters
-	setParams("male", ratios.male);
-	setParams("redDot", true, ratios.redDot);
-	setParams("celdt", ratios.celdt);
-	setParams("iep", true, false, ratios.iep);
-	setParams("health", true, false, ratios.health);
-	setParams("tk", true, false, ratios.tk);
-	setParams("readingHigh", "readingMid",
-		ratios.readingHigh, ratios.readingMid);
-	setParams("writingHigh", "writingMid",
-		ratios.writingHigh, ratios.writingMid);
-	setParams("mathHigh", "mathMid",
-		ratios.mathHigh, ratios.mathMid);
+	// set parameters
+	setParams("male");
+	setParams("redDot");
+	setParams("celdt");
+	setParams("iep");
+	setParams("health");
+	setParams("tk");
+	setParams("readingHigh", "readingMid");
+	setParams("writingHigh", "writingMid");
+	setParams("mathHigh", "mathMid");
 
 	// console.log(testData);
 
