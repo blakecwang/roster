@@ -256,7 +256,7 @@ function getTarget(arr, rstrs, param) {
 
 	var counter = 0;
 	for (var i = 0; i < arr.length; i++) {
-		
+
 		if (arr[i][param]) {
 			counter++;
 		}
@@ -264,7 +264,7 @@ function getTarget(arr, rstrs, param) {
 	}
 
 	var target = Math.round(counter / rstrs);
-
+	console.log(target);
 	return target;
 
 }
@@ -393,12 +393,6 @@ function makeRosters() {
 	var writingMidTarget = getTarget(masterArr, rosters, "writingMid");
 	var mathHighTarget = getTarget(masterArr, rosters, "mathHigh");
 	var mathMidTarget = getTarget(masterArr, rosters, "mathMid");
-
-	console.log(maleTarget);
-	console.log(redDotTarget);
-	console.log(celdtTarget);
-	console.log(iepTarget);
-	console.log(healthTarget);
 
 
 	// // add empty rosters to rosterArr

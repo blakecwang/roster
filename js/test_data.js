@@ -19,12 +19,12 @@ function initTestData() {
 		"iep": 0.05,
 		"health": 0.16,
 		"tk": 0.41,
-		"readingHigh": 0.05,
-		"readingMid": 0.47,
-		"writingHigh": 0.46,
-		"writingMid": 0.30,
-		"mathHigh": 0.22,
-		"mathMid": 0.69
+		"readingHigh": 0.03,
+		"readingMid": 0.75,
+		"writingHigh": 0.09,
+		"writingMid": 0.39,
+		"mathHigh": 0.15,
+		"mathMid": 0.50
 
 	};
 		
@@ -102,13 +102,19 @@ function initTestData() {
 		var newSet = [];
 		for (var i = 0; i < superset.length; i++) {
 
+			var p = true;
 			for (var j = 0; j < subset.length; j++) {
 
-				if (superset[i] != subset[j]) {
-					newSet.push(superset[i]);
+				if (superset[i] === subset[j]) {
+					p = false;
 				}
 
 			}
+
+			if (p) {
+				newSet.push(superset[i]);
+			}
+			
 
 		}
 
@@ -133,9 +139,9 @@ function initTestData() {
 		
 
 		// set param1 of sub1 indices to true
-		for (var i = 0; i < sub1.length; i++) {
+		for (var j = 0; j < sub1.length; j++) {
 
-			testData[sub1[i]][param1] = true;
+			testData[sub1[j]][param1] = true;
 
 		}
 
@@ -144,11 +150,11 @@ function initTestData() {
 		if (param2 === undefined) {
 
 			// set the rest to false
-			for (var j = 0; j < students; j++) {
+			for (var k = 0; k < testData.length; k++) {
 
-				if (testData[j][param1] != true) {
+				if (testData[k][param1] != true) {
 
-					testData[j][param1] = false;
+					testData[k][param1] = false;
 
 				}
 
@@ -160,25 +166,29 @@ function initTestData() {
 			var iArr2 = removeSubset(iArr1, sub1);
 			var sublength2 = Math.round(ratios[param2] * students);
 			var sub2 = makeSubset(iArr2, sublength2);
-
+			
 
 			// set param2 of sub2 indices to true
-			for (var k = 0; k < sub2.length; k++) {
+			for (var n = 0; n < sub2.length; n++) {
 
-				testData[sub2[k]][param2] = true;
+				testData[sub2[n]][param2] = true;
 
 			}
 
-
+	
 			// set param1 and param2 to false for the rest
-			for (var m = 0; m < students.length; m++) {
+			for (var m = 0; m < testData.length; m++) {
 
-				if (testData[m][param1] != true
-					&& testData[m][param2] != true) {
+				if (testData[m][param1] != true) {
 
-					testData[k][param1] = false;
-					testData[k][param2] = false;
+					testData[m][param1] = false;
 
+				}
+
+				if (testData[m][param2] != true) {
+						
+					testData[m][param2] = false;
+				
 				}
 				
 			}
@@ -199,9 +209,8 @@ function initTestData() {
 	setParams("writingHigh", "writingMid");
 	setParams("mathHigh", "mathMid");
 
-	// console.log(testData);
-
 }
 
 
 initTestData();
+console.log(testData);
