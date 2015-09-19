@@ -7,7 +7,7 @@ function initTestData() {
 
 	// set total number of students and rosters
 	var students = 100;
-	testRosters = 1;
+	testRosters = 5;
 
 
 	// set ratios  for different perameters
@@ -34,6 +34,7 @@ function initTestData() {
 
 		var testDataTemplate = {
 
+			"studentIndex": undefined,
 			"name": undefined,
 			"separate": undefined,
 			"request": undefined,
@@ -57,8 +58,9 @@ function initTestData() {
 	}
 
 
-	// name the students
+	// name the students and set studentIndex
 	for (var i = 0; i < students; i++) {
+		testData[i].studentIndex = i;
 		testData[i].name = "Student" + i;
 	}
 

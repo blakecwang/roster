@@ -196,61 +196,6 @@ function masterArrBuilder() {
 }
 
 
-// create first roster with balanced gender
-function initRoster(inputArr, inputRosters) {
-
-	// create outputArr
-	var outputArr = [];
-
-	// get number of students in inputArr
-	var students = inputArr.length;
-
-	// get number of males in inputArr
-	var males = 0;
-	for (var i = 0; i < students; i++) {
-
-		if (inputArr[i].gender = "male") {
-			males++;
-		}
-
-	}
-
-	// calculate number of students per gender per roster
-	var studentsPerRoster = Math.floor(students / inputRosters);
-	var malesPerRoster = Math.floor(males / inputRosters);
-	var femalesPerRoster = studentsPerRoster - malesPerRoster;
-
-	// add males to outputArr
-	var maleCounter = 0;
-	for (var j = 0; j < students; j++) {
-
-		if (inputArr[j].gender === "male" &&
-			maleCounter < malesPerRoster) {
-
-			outputArr.push(inputArr[j]);
-
-		}
-
-	}
-
-	// add females to outputArr
-	var femaleCounter = 0;
-	for (var k = 0; k < students; k++) {
-
-		if (inputArr[k].gender === "female" &&
-			femaleCounter < femalesPerRoster) {
-
-			outputArr.push(inputArr[k]);
-
-		}
-
-	}
-
-	return outputArr;
-
-}
-
-
 // function to count number of students with a given parameter
 function getTarget(arr, rstrs, param) {
 
@@ -264,9 +209,13 @@ function getTarget(arr, rstrs, param) {
 	}
 
 	var target = Math.round(counter / rstrs);
-	console.log(target);
-	return target;
 
+	if (target === undefined) {
+		return 0;
+	} else {
+		return target;
+	}
+	
 }
 
 
@@ -359,7 +308,7 @@ function displayRosters() {
 function makeRosters() {
 
 /*	Use these functions to get inputs from table when ready
-	but for now, we'll just use testData
+	but for now, well just use testData
 
 	// get data from input fields
 	getDataArr();
@@ -368,40 +317,79 @@ function makeRosters() {
 	masterArrBuilder();
 
 	// get number of rosters and students
-	var rosters = dataArr[dataArr.length - 1];
+	var rosters = rosterArr.length;
 
 */
 
-	// // get total nnumber of students
-	// var students = masterArr.length;
+
 
 	// use testData to test functionality
 	masterArr = testData;
 	rosters = testRosters;
 
 
-	// get target number of students of each param per roster
-	var maleTarget = getTarget(masterArr, rosters, "male");
-	var redDotTarget = getTarget(masterArr, rosters, "redDot");
-	var celdtTarget = getTarget(masterArr, rosters, "celdt");
-	var iepTarget = getTarget(masterArr, rosters, "iep");
-	var healthTarget = getTarget(masterArr, rosters, "health");
-	var tkTarget = getTarget(masterArr, rosters, "tk");
-	var readingHighTarget = getTarget(masterArr, rosters, "readingHigh");
-	var readingMidTarget = getTarget(masterArr, rosters, "readingMid");
-	var writingHighTarget = getTarget(masterArr, rosters, "writingHigh");
-	var writingMidTarget = getTarget(masterArr, rosters, "writingMid");
-	var mathHighTarget = getTarget(masterArr, rosters, "mathHigh");
-	var mathMidTarget = getTarget(masterArr, rosters, "mathMid");
+	// get total nnumber of students
+	var students = masterArr.length;
+	var classSize = Math.round(students / rosters);
 
 
-	// // add empty rosters to rosterArr
-	// for (var i = 0; i < rosters; i++) {
+	// list parameters to find targets for
+	var targetParams = [
 
-	// 	var r = [];
-	// 	rosterArr.push(r);
+		"male",
+		"redDot",
+		"celdt",
+		"iep",
+		"health",
+		"tk",
+		"readingHigh",
+		"readingMid",
+		"writingHigh",
+		"writingMid",
+		"mathHigh",
+		"mathMid"
 
-	// }
+	];
+
+
+	// get target number of students of each param
+	// and add them to targets
+	var targets = {};
+	for (var i = 0; i < targetParams.length; i++) {
+
+		var t = getTarget(masterArr, rosters, targetParams[i]);
+
+		targets[targetParams[i]] = t;
+
+	}
+
+
+	// create initial gender-balanced roster
+	var roster1 = [];
+	var maleCount = 0,
+		femaleCount = 0;
+	while (roster1.length < targets.male) {
+
+		if (masterArr[maleCount].male) {
+
+			roster1.push(masterArr[maleCount]);
+
+		}
+
+		maleCount++;
+
+	}
+	while (roster1.length < classSize) {
+
+		if (!masterArr[femaleCount].male) {
+
+			roster1.push(masterArr[femaleCount]);
+
+		}
+
+		femaleCount++;
+
+	}
 
 
 	// displayRosters();
