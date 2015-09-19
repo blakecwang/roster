@@ -2,7 +2,7 @@
 // init global arrays
 var dataArr = [],
 	teacherArr = [],
-	masterArr = [],
+	studentArr = [],
 	rosterArr = [];
 
 
@@ -81,7 +81,7 @@ function getDataArr() {
 }
 
 
-// build individual rowArrs to be placed in masterArr
+// build individual rowArrs to be placed in studentArr
 function rowObjBuilder(arr, startIndex) {
 
 	var rowObj = {};
@@ -180,16 +180,16 @@ function rowObjBuilder(arr, startIndex) {
 }
 
 
-// add all individual rowArrs to masterArr
-function masterArrBuilder() {
+// add all individual rowArrs to studentArr
+function studentArrBuilder() {
 
 	// get number of rows
 	var rows = (dataArr.length - 1) / 22;
 
-	// iterate through rows and add them to masterArr
+	// iterate through rows and add them to studentArr
 	for (var i = 0; i < rows; i ++) {
 
-		masterArr.push(rowObjBuilder(dataArr, i * 22));
+		studentArr.push(rowObjBuilder(dataArr, i * 22));
 
 	}
 
@@ -313,8 +313,8 @@ function makeRosters() {
 	// get data from input fields
 	getDataArr();
 
-	// organize that data into masterArr
-	masterArrBuilder();
+	// organize that data into studentArr
+	studentArrBuilder();
 
 	// get number of rosters and students
 	var rosters = rosterArr.length;
@@ -322,14 +322,16 @@ function makeRosters() {
 */
 
 
-
 	// use testData to test functionality
-	masterArr = testData;
-	rosters = testRosters;
+	// DELETE THESE LINES WHEN DONE TESTING APP
+	studentArr = testData;
+	rosters = testTeacherArr.length;
 
 
-	// get total nnumber of students
-	var students = masterArr.length;
+	// declare some makeRosters level variables
+	var remainingArr = studentArr;
+	var fixedParams = ["male"];
+	var students = studentArr.length;
 	var classSize = Math.round(students / rosters);
 
 
@@ -357,42 +359,238 @@ function makeRosters() {
 	var targets = {};
 	for (var i = 0; i < targetParams.length; i++) {
 
-		var t = getTarget(masterArr, rosters, targetParams[i]);
+		var t = getTarget(studentArr, rosters, targetParams[i]);
 
 		targets[targetParams[i]] = t;
 
 	}
 
 
-	// create initial gender-balanced roster
-	var roster1 = [];
-	var maleCount = 0,
-		femaleCount = 0;
-	while (roster1.length < targets.male) {
+	// create initial gender-balanced roster from remainingArr
+	function initNewRoster() {
 
-		if (masterArr[maleCount].male) {
+		var currentRoster = [];
+		var maleCount = 0,
+			femaleCount = 0;
 
-			roster1.push(masterArr[maleCount]);
 
-		}
+		// add males until male target is reached
+		while (currentRoster.length < targets.male) {
 
-		maleCount++;
+			if (remainingArr[maleCount].male) {
 
-	}
-	while (roster1.length < classSize) {
+				currentRoster.push(remainingArr[maleCount]);
 
-		if (!masterArr[femaleCount].male) {
+			}
 
-			roster1.push(masterArr[femaleCount]);
+			maleCount++;
 
 		}
 
-		femaleCount++;
+
+		// add females until classSize is reached
+		while (currentRoster.length < classSize) {
+
+			if (!remainingArr[femaleCount].male) {
+
+				currentRoster.push(remainingArr[femaleCount]);
+
+			}
+
+			femaleCount++;
+
+		}
+
+
+		return currentRoster;
 
 	}
 
 
-	// displayRosters();
+	// remove given roster from remainingArr
+	function removeRoster(rstr) {
+
+		var newRemainingArr = [];
+		for (var i = 0; i < remainingArr.length; i++) {
+
+			var contains = false;
+			for (var j = 0; j < rstr.length; j++) {
+
+				if (remainingArr[i] === rstr[j].studentIndex) {
+
+					contains = true;
+
+				}
+
+			}
+
+			if (contains = false) {
+
+				newRemainingArr.push
+
+			}
+
+
+		}
+
+		remainingArr = newRemainingArr;
+
+	}
+
+
+	// test whether roster has target number of students
+	// for given param
+	function testRosterParam(rstr, param, tol) {
+
+		var paramCount = 0;
+
+		// count how many students have param = true
+		for (var i = 0; i < rstr.length; i++) {
+
+			if (rstr[i][param]) {
+
+				paramCount++;
+			
+			}
+
+		}
+
+
+		// calculate difference and absolute difference
+		var diff = paramCount - targets[param];
+		var absDiff = Math.abs(diff);
+
+		var low = "L",		// paramCount is lower than target
+			high = "H",		// paramCount is higher than target
+			nailedIt = "N"; // paramCount is equal to target
+
+		if (absDiff <= tol) {
+
+			return nailedIt;
+
+		} else {
+
+			if (diff > 0) {return high;}
+			else {return low;}
+
+		}
+
+	}
+
+
+	// make a trade that gets paramCount closer to its target
+	// without compromising fixed params
+	function tradeStudent(rstr, param, dir) {
+
+		// init array for pairs of indices that 
+		var indexPairs = [];
+
+
+		for (var i = 0; i < rstr.length; i++) {
+
+			for (var j = 0; j < remainingArr.length; j++) {
+
+				if (rstr[i][param] === remainingArr[j][param]) {
+
+					var pair = [];
+					pair.push(rstr[i].studentIndex);
+					pair.push(remainingArr[j].studentIndex);
+
+				}
+
+			}
+
+		}
+
+
+
+		// find next combinations of indices that, if
+		// traded would get paramCount closer to target
+		function findNextIndices() {
+
+			// if paramCount is too high
+			// trade param=true for param=false
+			if (dir === "H") {
+
+
+
+			} else {
+
+
+
+			}
+
+
+
+			if (dir === "H") {
+
+				// find index of student to trade from rstr
+
+
+				if (!rstr[rstrIndex][param])
+
+					rstrIndices.push(rstr[i]);
+
+				}
+
+				// find index of student to trade from remainingArr
+				while (remainingArr[remainingArrIndex][param]) {
+
+					remainingArrIndex++;
+
+				}
+
+
+			// if paramCount is too low
+			// trade param=false for param=true
+			} else {
+
+				// find index of student to trade from rstr
+				while (rstr[param])
+
+					rstrIndex++;
+
+				}
+
+				// find index of student to trade from remainingArr
+				while (!remainingArr[param]) {
+
+					remainingArrIndex++;
+
+				}
+
+			}
+
+
+		}
+
+
+
+
+		// find out if trade would compromise fixed params
+		var compromised = true;
+		var passed = [];
+		for (var i = 0; i < fixedParams.length; i++) {
+
+			var p = fixedParams[i];
+
+			if (remainingArrIndex[p] === rstrIndex[p]) {
+
+				passed.push(1);
+
+			}
+
+		}
+
+		if (passed.length === fixedParams.length) {
+
+			compromised = false;
+
+		}
+
+	}
+
+
 
 }
 
@@ -482,9 +680,9 @@ $("#roster-button").click(makeRosters);
 	
 // 	for (var j = 0; j < students; j++) {
 		
-// 		if (masterArr[j].gender === sex) {
+// 		if (studentArr[j].gender === sex) {
 
-// 			rosterArr[rosterPicker].push(masterArr[j]);
+// 			rosterArr[rosterPicker].push(studentArr[j]);
 
 // 			if (rosterPicker < rosters - 1) {
 // 				rosterPicker++;

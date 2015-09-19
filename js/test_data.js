@@ -1,6 +1,6 @@
 // declare global testData and testRosters arrays
 var testData = [];
-var testRosters;
+var testTeacherArr = [];
 
 
 function initTestData() {
@@ -8,6 +8,15 @@ function initTestData() {
 	// set total number of students and rosters
 	var students = 100;
 	testRosters = 5;
+
+
+	// name teachers
+	for (var i = 0; i < testRosters; i ++) {
+
+		var teacherName = "teacher" + i;
+		testTeacherArr.push(teacherName);
+		
+	}
 
 
 	// set ratios  for different perameters
