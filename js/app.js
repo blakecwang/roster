@@ -327,8 +327,18 @@ function makeRosters() {
 	studentArr = testData;
 	rosters = testTeacherArr.length;
 
+	// count params - FOR TESTING
+	function countParams(arr, param) {
+		var count = 0;
+		for (var i = 0; i < arr.length; i++) {
+			if (arr[i][param]) {count++;}
+		}
+		return param + ": " + count;
+	}
+
 
 	// declare some makeRosters level variables
+	var currentRoster = [];
 	var remainingArr = studentArr;
 	var fixedParams = ["male"];
 	var students = studentArr.length;
@@ -366,20 +376,39 @@ function makeRosters() {
 	}
 
 
+	// given a studentID and array of students, return a student object
+	function getStudentByID(arr, index) {
+
+		var s = undefined;
+
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i].studentID === index) {
+
+				s = arr[i];
+
+			}
+		}
+
+		return s;
+
+	}
+
+
 	// create initial gender-balanced roster from remainingArr
 	function initNewRoster() {
 
-		var currentRoster = [];
+		var newRoster = [];
 		var maleCount = 0,
 			femaleCount = 0;
 
 
 		// add males until male target is reached
-		while (currentRoster.length < targets.male) {
+		while (newRoster.length < targets.male) {
 
 			if (remainingArr[maleCount].male) {
 
-				currentRoster.push(remainingArr[maleCount]);
+				newRoster.push(remainingArr[maleCount]);
 
 			}
 
@@ -389,11 +418,11 @@ function makeRosters() {
 
 
 		// add females until classSize is reached
-		while (currentRoster.length < classSize) {
+		while (newRoster.length < classSize) {
 
 			if (!remainingArr[femaleCount].male) {
 
-				currentRoster.push(remainingArr[femaleCount]);
+				newRoster.push(remainingArr[femaleCount]);
 
 			}
 
@@ -402,7 +431,7 @@ function makeRosters() {
 		}
 
 
-		return currentRoster;
+		return newRoster;
 
 	}
 
@@ -416,7 +445,7 @@ function makeRosters() {
 			var contains = false;
 			for (var j = 0; j < rstr.length; j++) {
 
-				if (remainingArr[i] === rstr[j].studentIndex) {
+				if (remainingArr[i].studentID === rstr[j].studentID) {
 
 					contains = true;
 
@@ -478,23 +507,118 @@ function makeRosters() {
 	}
 
 
-	// make a trade that gets paramCount closer to its target
+	// find trades that get paramCount closer to its target
 	// without compromising fixed params
-	function tradeStudent(rstr, param, dir) {
+	// function findTradePairs(param, dir) {
 
-		// init array for pairs of indices that 
-		var indexPairs = [];
+	// 	// find all student ID pairs that would bring paramCount closer to target
+	// 	var idPairs = [],
+	// 		passedIDPairs = [];
+
+	// 	for (var i = 0; i < currentRoster.length; i++) {
+
+	// 		for (var j = 0; j < remainingArr.length; j++) {
+
+	// 			var pair = [];
+
+	// 			if (dir === "H") {
+
+	// 				if (currentRoster[i][param] && !remainingArr[j][param]) {
+
+	// 					pair.push(currentRoster[i].studentID);
+	// 					pair.push(remainingArr[j].studentID);
+
+	// 					idPairs.push(pair);
+
+	// 				}
 
 
-		for (var i = 0; i < rstr.length; i++) {
+
+	// 			} else {
+
+	// 				if (!currentRoster[i][param] && remainingArr[j][param]) {
+
+	// 					pair.push(currentRoster[i].studentID);
+	// 					pair.push(remainingArr[j].studentID);
+
+	// 					idPairs.push(pair);
+
+	// 				}
+
+	// 			}
+
+	// 		}
+
+	// 	}
+
+
+	// 	// filter out trades that would compromise fixed params
+	// 	for (var j = 0; j < idPairs.length; j++) {
+
+	// 		var paramsPassed = 0;
+	// 		for (var i = 0; i < fixedParams.length; i++) {
+
+	// 			var p = fixedParams[i];
+
+	// 			var x = idPairs[j][0];
+	// 			var y = idPairs[j][1];
+
+	// 			var studentX = getStudentByID(currentRoster, x);
+	// 			var studentY = getStudentByID(remainingArr, y);
+
+	// 			if (studentX[p] === studentY[p]) {
+
+	// 				paramsPassed++;
+
+	// 			}
+
+	// 		}
+
+	// 		if (paramsPassed === fixedParams.length) {
+
+	// 			passedIDPairs.push(idPairs[j]);
+
+	// 		}
+
+	// 	}
+
+	// 	return passedIDPairs;
+
+	// }
+
+
+
+	function findTradePairs(param, dir) {
+
+		//find trades tat would move param closer to target
+		var idPairs = [];
+		for (var i = 0; i < currentRoster.length; i++) {
 
 			for (var j = 0; j < remainingArr.length; j++) {
 
-				if (rstr[i][param] === remainingArr[j][param]) {
+				if (dir === "H") {
 
-					var pair = [];
-					pair.push(rstr[i].studentIndex);
-					pair.push(remainingArr[j].studentIndex);
+					if (currentRoster[i][param] === true
+						&& remainingArr[j][param] === false) {
+
+						var pair = [];
+						pair.push(currentRoster[i].studentID);
+						pair.push(remainingArr[j].studentID);
+						idPairs.push(pair);
+
+					}
+
+				} else {
+
+					if (currentRoster[i][param] === false
+						&& remainingArr[j][param] === true) {
+
+						var pair = [];
+						pair.push(currentRoster[i].studentID);
+						pair.push(remainingArr[j].studentID);
+						idPairs.push(pair);
+
+					}
 
 				}
 
@@ -502,94 +626,105 @@ function makeRosters() {
 
 		}
 
-
-
-		// find next combinations of indices that, if
-		// traded would get paramCount closer to target
-		function findNextIndices() {
-
-			// if paramCount is too high
-			// trade param=true for param=false
-			if (dir === "H") {
-
-
-
-			} else {
-
-
-
-			}
-
-
-
-			if (dir === "H") {
-
-				// find index of student to trade from rstr
-
-
-				if (!rstr[rstrIndex][param])
-
-					rstrIndices.push(rstr[i]);
-
-				}
-
-				// find index of student to trade from remainingArr
-				while (remainingArr[remainingArrIndex][param]) {
-
-					remainingArrIndex++;
-
-				}
-
-
-			// if paramCount is too low
-			// trade param=false for param=true
-			} else {
-
-				// find index of student to trade from rstr
-				while (rstr[param])
-
-					rstrIndex++;
-
-				}
-
-				// find index of student to trade from remainingArr
-				while (!remainingArr[param]) {
-
-					remainingArrIndex++;
-
-				}
-
-			}
-
-
-		}
-
-
-
-
-		// find out if trade would compromise fixed params
-		var compromised = true;
-		var passed = [];
-		for (var i = 0; i < fixedParams.length; i++) {
-
-			var p = fixedParams[i];
-
-			if (remainingArrIndex[p] === rstrIndex[p]) {
-
-				passed.push(1);
-
-			}
-
-		}
-
-		if (passed.length === fixedParams.length) {
-
-			compromised = false;
-
-		}
+		return idPairs;
 
 	}
 
+
+	// given a pair of studentIDs, trade students between
+	// currentRoster and remainingArr
+	function trade(pairArr) {
+
+		// find the student objects to be traded
+		var studentX = getStudentByID(currentRoster, pairArr[0]);
+		var studentY = getStudentByID(remainingArr, pairArr[1]);
+
+
+		// find indices of those objets within their current arrays
+		var indexX = 0;
+		while (studentX.studentID != currentRoster[indexX].studentID) {
+
+			indexX++;
+
+		}
+
+		var indexY = 0;
+		while (studentY.studentID != remainingArr[indexY].studentID) {
+
+			indexY++;
+
+		}
+
+
+		// remove student objects from their current arrays
+		currentRoster.splice(indexX, 1);
+		remainingArr.splice(indexY, 1);
+
+
+		// add student objects to opposite arrays
+		currentRoster.push(studentY);
+		remainingArr.push(studentX);
+
+	}
+
+
+
+
+
+	// set currentRoster to new roster made from remainingArr
+	currentRoster = initNewRoster();
+	removeRoster(currentRoster);
+	// var balanced = false;
+
+	// var z = findTradePairs("male", "H");
+	// console.log(z);
+
+	console.log(currentRoster.length);
+	console.log(remainingArr.length);
+
+
+	// console.log(countParams(currentRoster, "redDot"));
+	// console.log("target: " + targets["redDot"]);
+
+	// // test whether the new roster is balanced
+	// var dirCode = testRosterParam(currentRoster, "redDot", 0);
+
+	// // depending on the dirCode, do noting or trade
+	// // until balanced === true
+	// if (dirCode === "N") {
+
+	// 	balanced = true;
+
+	// } else {
+
+	// 	var pairs = findTradePairs(currentRoster, "redDot", dirCode);
+
+	// 	var pairIndex = 0;
+	// 	while (balanced === false) {
+
+	// 		trade(pairs[pairIndex]);
+
+	// 		dirCode = testRosterParam(currentRoster, "redDot", 0);
+
+	// 		if (dirCode === "N") {
+
+	// 			balanced = true;
+
+	// 		}
+
+	// 		pairIndex++;
+
+	// 	}
+
+	// }
+
+	
+
+
+
+
+	console.log(countParams(currentRoster, "redDot"));
+	console.log("target: " + targets["redDot"]);
 
 
 }
