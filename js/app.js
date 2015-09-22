@@ -284,7 +284,7 @@ function displayRosters() {
 		var boys = 0, girls = 0;
 		for (var y = 0; y < rosterArr[x].length; y++) {
 
-			if (rosterArr[x][y].gender === "male") {
+			if (rosterArr[x][y].male === true) {
 				boys++;
 			} else {
 				girls++;
@@ -307,34 +307,24 @@ function displayRosters() {
 // organize students into balanced rosters
 function makeRosters() {
 
-/*	Use these functions to get inputs from table when ready
-	but for now, well just use testData
+	// Use these functions to get inputs from table when ready
+	// but for now, well just use testData
 
 	// get data from input fields
-	getDataArr();
+	// getDataArr();
 
 	// organize that data into studentArr
-	studentArrBuilder();
+	// studentArrBuilder();
 
 	// get number of rosters and students
-	var rosters = rosterArr.length;
+	// var rosters = rosterArr.length;
 
-*/
 
 
 	// use testData to test functionality
 	// DELETE THESE LINES WHEN DONE TESTING APP
 	studentArr = testData;
 	rosters = testTeacherArr.length;
-
-	// count params - FOR TESTING
-	function countParams(arr, param) {
-		var count = 0;
-		for (var i = 0; i < arr.length; i++) {
-			if (arr[i][param]) {count++;}
-		}
-		return param + ": " + count;
-	}
 
 
 	// declare some makeRosters level variables
@@ -373,6 +363,21 @@ function makeRosters() {
 		var t = getTarget(studentArr, rosters, targetParams[i]);
 
 		targets[targetParams[i]] = t;
+
+	}
+
+
+	// count students with given param in given array
+	function countParams(arr, param) {
+
+		var count = 0;
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i][param]) {count++;}
+
+		}
+
+		return count;
 
 	}
 
@@ -707,8 +712,9 @@ function makeRosters() {
 
 	}
 
-	console.log("there are " + rosters + " rosters");
 
+	// create all but the last balanced roster and
+	// push them to rosterArr
 	for (var i = 0; i < rosters - 1; i++) {
 
 		// set currentRoster to new roster made from remainingArr
@@ -722,37 +728,15 @@ function makeRosters() {
 
 		}
 
-		
-		for (var k = 0; k < targetParams.length; k++) {
-
-			console.log(countParams(currentRoster, targetParams[k]));
-
-		}
-
-		console.log("Class size: " + currentRoster.length);
-		console.log("-------------");
-
-	// 	rosterArr.push(currentRoster);
+		rosterArr.push(currentRoster);
 
 	}
 
-	for (var k = 0; k < targetParams.length; k++) {
 
-		console.log(countParams(remainingArr, targetParams[k]));
+	// push the remaining students to rosterArr
+	rosterArr.push(remainingArr);
 
-	}
-	console.log("Class size: " + remainingArr.length);
-
-
-	
-	// rosterArr.push(remainingArr);
-
-	
-	// console.log(rosterArr);
-
-
-
-
+	displayRosters();
 
 }
 
@@ -771,23 +755,6 @@ $("#roster-button").click(makeRosters);
 
 
 
-// once i've traded a student, all trades involving that student
-// don't work anymore
-
-// solution: after trading students, remove all elems of tradePairs
-// that involve those students
-
-
-
-
-
-
-
-// STRATEGY
-// move in order of highest to lowest priority
-// create rosters one at a time
-// start with gender balanced roster
-// make trades to improve params with widening tolerances
 
 
 
@@ -804,64 +771,3 @@ $("#roster-button").click(makeRosters);
 
 
 
-
-
-
-// function permutator(inputArr) {
-
-// 	var results = [];
-
-// 	function permute(arr, memo) {
-// 	var cur, memo = memo || [];
-
-// 		for (var i = 0; i < arr.length; i++) {
-
-// 			cur = arr.splice(i, 1);
-
-// 			if (arr.length === 0) {
-
-// 				results.push(memo.concat(cur));
-
-// 			}
-
-// 			permute(arr.slice(), memo.concat(cur));
-
-// 			arr.splice(i, 0, cur[0]);
-// 		}
-
-// 		return results;
-
-// 	}
-
-// 	return permute(inputArr);
-
-// }
-
-
-
-
-
-// add students to rosters by sex
-// function populateRosters(sex) {
-	
-// 	for (var j = 0; j < students; j++) {
-		
-// 		if (studentArr[j].gender === sex) {
-
-// 			rosterArr[rosterPicker].push(studentArr[j]);
-
-// 			if (rosterPicker < rosters - 1) {
-// 				rosterPicker++;
-// 			} else {
-// 				rosterPicker = 0;
-// 			}
-
-// 		}
-
-// 	}
-
-// }
-
-// var rosterPicker = 0;
-// populateRosters("male");
-// populateRosters("female");
