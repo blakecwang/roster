@@ -43,7 +43,7 @@ function initTestData() {
 
 		var testDataTemplate = {
 
-			"studentIndex": undefined,
+			"studentID": undefined,
 			"name": undefined,
 			"separate": undefined,
 			"request": undefined,
@@ -67,9 +67,9 @@ function initTestData() {
 	}
 
 
-	// name the students and set studentIndex
+	// name the students and set studentID
 	for (var i = 0; i < students; i++) {
-		testData[i].studentIndex = i;
+		testData[i].studentID = i;
 		testData[i].name = "Student" + i;
 	}
 
