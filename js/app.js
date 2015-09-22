@@ -196,29 +196,6 @@ function studentArrBuilder() {
 }
 
 
-// function to count number of students with a given parameter
-function getTarget(arr, rstrs, param) {
-
-	var counter = 0;
-	for (var i = 0; i < arr.length; i++) {
-
-		if (arr[i][param]) {
-			counter++;
-		}
-
-	}
-
-	var target = Math.round(counter / rstrs);
-
-	if (target === undefined) {
-		return 0;
-	} else {
-		return target;
-	}
-	
-}
-
-
 // add rosters to DOM
 function displayRosters() {
 
@@ -306,6 +283,38 @@ function displayRosters() {
 
 function initRosters(stdntArr, rstrs) {
 	
+	// function to push students of given param to
+	// rosters of rosterArr one at a time (moncola style)
+	var rstrIndex = 0;
+	function pushStudents(param, bool) {
+		
+		var i = 0;
+		while (i < stdntArr.length) {
+
+			if ((bool && stdntArr[i][param])
+				|| (!bool && !stdntArr[i][param])) {
+
+				rosterArr[rstrIndex].push(stdntArr[i]);
+
+				if (rstrIndex < rstrs - 1) {
+
+					rstrIndex++;
+
+				} else {
+
+					rstrIndex = 0;
+
+				}
+
+			}
+
+			i++;
+
+		}
+
+	}
+
+
 	// init empty rosters
 	for (var i = 0; i < rstrs; i++) {
 
@@ -315,32 +324,12 @@ function initRosters(stdntArr, rstrs) {
 	}
 
 
-	// push males to rosters
-	var rstrIndex = 0,
-		i = 0;
-	while (i < stdntArr.length) {
-
-		if (stdntArr[i].male) {
-
-			rosterArr[rstrIndex].push(stdntArr[i]);
-
-			if (rstrIndex < rstrs - 1) {
-
-				rstrIndex++;
-
-			} else {
-
-				rstrIndex = 0;
-
-			}
-
-		}
-
-		i++;
-
-	}
+	// push males then females one by one
+	pushStudents("male", true);
+	pushStudents("male", false);
 
 }
+
 initRosters(testData, testTeacherArr.length);
 
 for (var i = 0; i < rosterArr.length; i++) {
