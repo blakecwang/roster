@@ -304,8 +304,53 @@ function displayRosters() {
 }
 
 
+function initRosters(stdntArr, rstrs) {
+	
+	// init empty rosters
+	for (var i = 0; i < rstrs; i++) {
+
+		var emptyArr = [];
+		rosterArr.push(emptyArr);
+
+	}
+
+
+	// push males to rosters
+	var rstrIndex = 0,
+		i = 0;
+	while (i < stdntArr.length) {
+
+		if (stdntArr[i].male) {
+
+			rosterArr[rstrIndex].push(stdntArr[i]);
+
+			if (rstrIndex < rstrs - 1) {
+
+				rstrIndex++;
+
+			} else {
+
+				rstrIndex = 0;
+
+			}
+
+		}
+
+		i++;
+
+	}
+
+}
+initRosters(testData, testTeacherArr.length);
+
+for (var i = 0; i < rosterArr.length; i++) {
+	console.log(rosterArr[i].length);
+}
+
+
+
 // organize students into balanced rosters
-function makeRosters() {
+function balanceRosters() {
 
 	// Use these functions to get inputs from table when ready
 	// but for now, well just use testData
@@ -328,12 +373,8 @@ function makeRosters() {
 
 
 	// declare some makeRosters level variables
-	var currentRoster = [];
-	var remainingArr = studentArr;
 	var fixedParams = ["male"];
 	var students = studentArr.length;
-	var classSize = Math.round(students / rosters);
-	var tradePairs;
 
 
 	// list parameters to find targets for
@@ -353,18 +394,6 @@ function makeRosters() {
 		"mathMid"
 
 	];
-
-
-	// get target number of students of each param
-	// and add them to targets
-	var targets = {};
-	for (var i = 0; i < targetParams.length; i++) {
-
-		var t = getTarget(studentArr, rosters, targetParams[i]);
-
-		targets[targetParams[i]] = t;
-
-	}
 
 
 	// count students with given param in given array
@@ -397,78 +426,6 @@ function makeRosters() {
 		}
 
 		return s;
-
-	}
-
-
-	// create initial gender-balanced roster from remainingArr
-	function initNewRoster() {
-
-		var newRoster = [];
-		var maleCount = 0,
-			femaleCount = 0;
-
-
-		// add males until male target is reached
-		while (newRoster.length < targets.male) {
-
-			if (remainingArr[maleCount].male) {
-
-				newRoster.push(remainingArr[maleCount]);
-
-			}
-
-			maleCount++;
-
-		}
-
-
-		// add females until classSize is reached
-		while (newRoster.length < classSize) {
-
-			if (!remainingArr[femaleCount].male) {
-
-				newRoster.push(remainingArr[femaleCount]);
-
-			}
-
-			femaleCount++;
-
-		}
-
-
-		return newRoster;
-
-	}
-
-
-	// remove given roster from remainingArr
-	function removeRoster() {
-
-		var newRemainingArr = [];
-		for (var i = 0; i < remainingArr.length; i++) {
-
-			var contains = false;
-			for (var j = 0; j < currentRoster.length; j++) {
-
-				if (remainingArr[i].studentID === currentRoster[j].studentID) {
-
-					contains = true;
-
-				}
-
-			}
-
-			if (contains === false) {
-
-				newRemainingArr.push(remainingArr[i]);
-
-			}
-
-
-		}
-
-		remainingArr = newRemainingArr;
 
 	}
 
@@ -513,230 +470,6 @@ function makeRosters() {
 	}
 
 
-	// find trades that get paramCount closer to its target
-	// without compromising fixed params
-	// - returns an array of arrays of form [studentID1, index1, studentID2, index2]
-	function getTradePairs(param, dir) {
-
-		// find all student ID tradePairs that would bring paramCount closer to target
-		var idPairs = [],
-			passedIDPairs = [];
-
-		for (var i = 0; i < currentRoster.length; i++) {
-
-			for (var j = 0; j < remainingArr.length; j++) {
-
-				var pair = [];
-
-				if (dir === "H") {
-
-					if (currentRoster[i][param] && !remainingArr[j][param]) {
-
-						pair.push(currentRoster[i].studentID);
-						// pair.push(i);
-						pair.push(remainingArr[j].studentID);
-						// pair.push(j);
-
-						idPairs.push(pair);
-
-					}
-
-
-
-				} else if (dir === "L") {
-
-					if (!currentRoster[i][param] && remainingArr[j][param]) {
-
-						pair.push(currentRoster[i].studentID);
-						// pair.push(i);
-						pair.push(remainingArr[j].studentID);
-						// pair.push(j);
-
-						idPairs.push(pair);
-
-					}
-
-				}
-
-			}
-
-		}
-
-
-		// filter out trades that would compromise fixed params
-		for (var j = 0; j < idPairs.length; j++) {
-
-			var paramsPassed = 0;
-			for (var i = 0; i < fixedParams.length; i++) {
-
-				var p = fixedParams[i];
-
-				var x = idPairs[j][0];
-				var y = idPairs[j][1];
-				// console.log(x + " " + y);
-				var studentX = getStudentByID(currentRoster, x);
-				var studentY = getStudentByID(remainingArr, y);
-				// var studentX = currentRoster[x];
-				// var studentY = currentRoster[y];
-
-				if (studentX[p] === studentY[p]) {
-
-					paramsPassed++;
-
-				}
-
-			}
-
-			if (paramsPassed === fixedParams.length) {
-
-				passedIDPairs.push(idPairs[j]);
-
-			}
-
-		}
-
-		return passedIDPairs;
-
-	}
-
-
-	// given a pair of studentIDs, trade students between
-	// currentRoster and remainingArr
-	function trade(pairArr) {
-
-		// get the student objects to be traded and their indices
-		// within current arrays
-		var studentX = getStudentByID(currentRoster, pairArr[0]);
-
-		var indexX = 0;
-		while (currentRoster[indexX].studentID != studentX.studentID) {
-
-			indexX++;
-		
-		}
-
-		var studentY = getStudentByID(remainingArr, pairArr[1]);
-		
-		var indexY = 0;
-		while (remainingArr[indexY].studentID != studentY.studentID) {
-
-			indexY++;
-		
-		}
-
-
-		// remove student objects from their current arrays
-		currentRoster.splice(indexX, 1);
-		remainingArr.splice(indexY, 1);
-
-
-		// add student objects to opposite arrays
-		currentRoster.push(studentY);
-		remainingArr.push(studentX);
-
-		// remove all trades involving those students from tradePairs
-		var newTradePairs = [];
-		for (var i = 0; i < tradePairs.length; i++) {
-
-			if (tradePairs[i][0] != studentX.studentID
-				&& tradePairs[i][0] != studentY.studentID
-				&& tradePairs[i][1] != studentX.studentID
-				&& tradePairs[i][1] != studentY.studentID) {
-
-				newTradePairs.push(tradePairs[i]);
-
-			}
-
-		}
-
-		tradePairs = newTradePairs;
-
-	}
-	
-
-	// balance the current roster on param to as close to
-	// target as possible
-	function balanceCurrentRoster(param) {
-
-		// test whether the new roster is balanced
-		var dirCode = testRosterParam(param, 0);
-
-
-		// if currentRoster is not balanced on parameter, 
-		// trade until it's balanced
-		if (dirCode != "N") {
-
-			// create array of tradePairs that would improve given param
-			// by moving it in direction indicated by dirCode
-			tradePairs = getTradePairs(param, dirCode);
-			
-
-			// make trades until balanced
-			// var tradePairsIndex = 0;
-			var balanced = false;
-			var tolerance = 0;
-			while (!balanced) {
-
-				// if there are still possible trades with current tolerance...
-				if (tradePairs.length > 0) {
-
-					// trade student from currentRoster for student
-					// from remainingArr
-					trade(tradePairs[tolerance]);
-
-
-					// test whether currentRoster is balanced on param
-					var dirCode = testRosterParam(param, 0);
-
-
-					// if currentRoster is still not balanced, keep trading...
-					if (dirCode === "N") {
-
-						balanced = true;
-
-					} 
-
-				} else {
-
-					// increase tolerance
-					tolerance++;
-
-				}
-
-			}
-
-		}
-
-		// console.log(countParams(currentRoster, param));
-		// console.log("target: " + targets[param]);
-
-	}
-
-
-	// create all but the last balanced roster and
-	// push them to rosterArr
-	for (var i = 0; i < rosters - 1; i++) {
-
-		// set currentRoster to new roster made from remainingArr
-		// then remove it from remainingArr
-		currentRoster = initNewRoster();
-		removeRoster();
-
-		for (var j = targetParams.length - 1; j >= 0; j--) {
-
-			balanceCurrentRoster(targetParams[j]);
-
-		}
-
-		rosterArr.push(currentRoster);
-
-	}
-
-
-	// push the remaining students to rosterArr
-	rosterArr.push(remainingArr);
-
-	displayRosters();
 
 }
 
@@ -747,7 +480,7 @@ function makeRosters() {
 // add click listeners to buttons
 $("#student-button").click(addStudent);
 $("#teacher-button").click(addTeacher);
-$("#roster-button").click(makeRosters);
+$("#roster-button").click(balanceRosters);
 
 
 
