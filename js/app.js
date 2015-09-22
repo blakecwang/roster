@@ -707,15 +707,16 @@ function makeRosters() {
 
 	}
 
+	console.log("there are " + rosters + " rosters");
 
-	// for (var i = 0; i < rosters - 1; i++) {
+	for (var i = 0; i < rosters - 1; i++) {
 
 		// set currentRoster to new roster made from remainingArr
 		// then remove it from remainingArr
 		currentRoster = initNewRoster();
 		removeRoster();
 
-		for (var j = 0; j < targetParams.length; j++) {
+		for (var j = targetParams.length - 1; j >= 0; j--) {
 
 			balanceCurrentRoster(targetParams[j]);
 
@@ -728,14 +729,20 @@ function makeRosters() {
 
 		}
 
-
-
-
-
+		console.log("Class size: " + currentRoster.length);
+		console.log("-------------");
 
 	// 	rosterArr.push(currentRoster);
 
-	// }
+	}
+
+	for (var k = 0; k < targetParams.length; k++) {
+
+		console.log(countParams(remainingArr, targetParams[k]));
+
+	}
+	console.log("Class size: " + remainingArr.length);
+
 
 	
 	// rosterArr.push(remainingArr);

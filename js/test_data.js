@@ -6,8 +6,8 @@ var testTeacherArr = [];
 function initTestData() {
 
 	// set total number of students and rosters
-	var students = 100;
-	testRosters = 5;
+	var students = 94;
+	testRosters = 4;
 
 
 	// name teachers
@@ -22,18 +22,18 @@ function initTestData() {
 	// set ratios  for different perameters
 	var ratios = {
 
-		"male": 0.48,
+		"male": 0.55,
 		"redDot": 0.27,
 		"celdt": 0.23,
 		"iep": 0.05,
 		"health": 0.16,
-		"tk": 0.41,
-		"readingHigh": 0.03,
-		"readingMid": 0.75,
-		"writingHigh": 0.09,
-		"writingMid": 0.39,
-		"mathHigh": 0.15,
-		"mathMid": 0.50
+		"tk": 0.25,
+		"readingHigh": 0.20,
+		"readingMid": 0.60,
+		"writingHigh": 0.10,
+		"writingMid": 0.60,
+		"mathHigh": 0.20,
+		"mathMid": 0.60
 
 	};
 		
