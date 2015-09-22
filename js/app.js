@@ -511,7 +511,7 @@ function makeRosters() {
 	// find trades that get paramCount closer to its target
 	// without compromising fixed params
 	// - returns an array of arrays of form [studentID1, index1, studentID2, index2]
-	function findTradePairs(param, dir) {
+	function getTradePairs(param, dir) {
 
 		// find all student ID tradePairs that would bring paramCount closer to target
 		var idPairs = [],
@@ -647,70 +647,104 @@ function makeRosters() {
 		tradePairs = newTradePairs;
 
 	}
+	
+
+	// balance the current roster on param to as close to
+	// target as possible
+	function balanceCurrentRoster(param) {
+
+		// test whether the new roster is balanced
+		var dirCode = testRosterParam(param, 0);
 
 
+		// if currentRoster is not balanced on parameter, 
+		// trade until it's balanced
+		if (dirCode != "N") {
+
+			// create array of tradePairs that would improve given param
+			// by moving it in direction indicated by dirCode
+			tradePairs = getTradePairs(param, dirCode);
+			
+
+			// make trades until balanced
+			// var tradePairsIndex = 0;
+			var balanced = false;
+			var tolerance = 0;
+			while (!balanced) {
+
+				// if there are still possible trades with current tolerance...
+				if (tradePairs.length > 0) {
+
+					// trade student from currentRoster for student
+					// from remainingArr
+					trade(tradePairs[tolerance]);
 
 
+					// test whether currentRoster is balanced on param
+					var dirCode = testRosterParam(param, 0);
 
 
-	// set currentRoster to new roster made from remainingArr
-	// then remove it from remainingArr
-	currentRoster = initNewRoster();
-	removeRoster();
+					// if currentRoster is still not balanced, keep trading...
+					if (dirCode === "N") {
 
+						balanced = true;
 
-	console.log(countParams(currentRoster, "redDot"));
-	console.log("target: " + targets["redDot"]);
+					} 
 
+				} else {
 
-	// test whether the new roster is balanced
-	var dirCode = testRosterParam("redDot", 0);
+					// increase tolerance
+					tolerance++;
 
+				}
 
-	// if currentRoster is not balanced on parameter, 
-	// trade until it's balanced
-	if (dirCode != "N") {
-
-		// create array of tradePairs that would improve given param
-		// by moving it in direction indicated by dirCode
-		tradePairs = findTradePairs("redDot", dirCode);
-		
-
-		// make trades until balanced
-		// var tradePairsIndex = 0;
-		var balanced = false;
-		while (!balanced) {
-
-			// trade student from currentRoster for student
-			// from remainingArr
-			trade(tradePairs[0]);
-
-
-			// test whether currentRoster is balanced on param
-			var dirCode = testRosterParam("redDot", 0);
-
-
-			// if currentRoster is still not balanced, keep trading...
-			if (dirCode === "N") {
-
-				balanced = true;
-
-			} 
-
-			console.log(countParams(currentRoster, "redDot"));
-			console.log("target: " + targets["redDot"]);
+			}
 
 		}
 
+		// console.log(countParams(currentRoster, param));
+		// console.log("target: " + targets[param]);
+
 	}
 
+
+	// for (var i = 0; i < rosters - 1; i++) {
+
+		// set currentRoster to new roster made from remainingArr
+		// then remove it from remainingArr
+		currentRoster = initNewRoster();
+		removeRoster();
+
+		for (var j = 0; j < targetParams.length; j++) {
+
+			balanceCurrentRoster(targetParams[j]);
+
+		}
+
+		
+		for (var k = 0; k < targetParams.length; k++) {
+
+			console.log(countParams(currentRoster, targetParams[k]));
+
+		}
+
+
+
+
+
+
+	// 	rosterArr.push(currentRoster);
+
+	// }
+
 	
+	// rosterArr.push(remainingArr);
+
+	
+	// console.log(rosterArr);
 
 
 
-
-	// console.log(countParams(currentRoster, "redDot"));
-	// console.log("target: " + targets["redDot"]);
 
 
 }
