@@ -1,5 +1,5 @@
-// declare global testData and testRosters arrays
-var testData = [];
+// declare global testStudentArr and testRosters arrays
+var testStudentArr = [];
 var testTeacherArr = [];
 
 
@@ -10,11 +10,15 @@ function initTestData() {
 		testRosters = 4;
 
 
-	// name teachers
+	// creat teacher objects
 	for (var i = 0; i < testRosters; i ++) {
 
-		var teacherName = "teacher" + i;
-		testTeacherArr.push(teacherName);
+		var teacherObj = {};
+
+		teacherObj.teacherName = "Teacher" + i;
+		teacherObj.teacherID = i;
+
+		testTeacherArr.push(teacherObj);
 		
 	}
 
@@ -40,13 +44,13 @@ function initTestData() {
 	};
 		
 
-	// add template objects to testData
+	// add template objects to testStudentArr
 	for (var i = 0; i < students; i++) {
 
 		var testDataTemplate = {
 
 			"studentID": undefined,
-			"name": undefined,
+			"studentName": undefined,
 			"separate": undefined,
 			"request": undefined,
 			"male": undefined,
@@ -64,15 +68,15 @@ function initTestData() {
 			
 		};
 
-		testData.push(testDataTemplate);
+		testStudentArr.push(testDataTemplate);
 
 	}
 
 
 	// name the students and set studentID
 	for (var i = 0; i < students; i++) {
-		testData[i].studentID = i;
-		testData[i].name = "Student" + i;
+		testStudentArr[i].studentID = i;
+		testStudentArr[i].StudentName = "Student" + i;
 	}
 
 
@@ -154,7 +158,7 @@ function initTestData() {
 		// set param1 of sub1 indices to true
 		for (var j = 0; j < sub1.length; j++) {
 
-			testData[sub1[j]][param1] = true;
+			testStudentArr[sub1[j]][param1] = true;
 
 		}
 
@@ -163,11 +167,11 @@ function initTestData() {
 		if (param2 === undefined) {
 
 			// set the rest to false
-			for (var k = 0; k < testData.length; k++) {
+			for (var k = 0; k < testStudentArr.length; k++) {
 
-				if (testData[k][param1] != true) {
+				if (testStudentArr[k][param1] != true) {
 
-					testData[k][param1] = false;
+					testStudentArr[k][param1] = false;
 
 				}
 
@@ -184,23 +188,23 @@ function initTestData() {
 			// set param2 of sub2 indices to true
 			for (var n = 0; n < sub2.length; n++) {
 
-				testData[sub2[n]][param2] = true;
+				testStudentArr[sub2[n]][param2] = true;
 
 			}
 
 	
 			// set param1 and param2 to false for the rest
-			for (var m = 0; m < testData.length; m++) {
+			for (var m = 0; m < testStudentArr.length; m++) {
 
-				if (testData[m][param1] != true) {
+				if (testStudentArr[m][param1] != true) {
 
-					testData[m][param1] = false;
+					testStudentArr[m][param1] = false;
 
 				}
 
-				if (testData[m][param2] != true) {
+				if (testStudentArr[m][param2] != true) {
 						
-					testData[m][param2] = false;
+					testStudentArr[m][param2] = false;
 				
 				}
 				
@@ -245,9 +249,9 @@ function initTestData() {
 		// set random teacher requests on random indices
 		for (var i = 0; i < indices.length; i++) {
 
-			var separateIndex = Math.floor(Math.random() * testData.length);
+			var separateIndex = Math.floor(Math.random() * testStudentArr.length);
 
-			testData[indices[i]].separate = testData[separateIndex].name;
+			testStudentArr[indices[i]].separate = testStudentArr[separateIndex].name;
 
 		}
 
@@ -290,7 +294,7 @@ function initTestData() {
 
 			var teacherIndex = Math.floor(Math.random() * testTeacherArr.length);
 
-			testData[indices[i]].request = testTeacherArr[teacherIndex];
+			testStudentArr[indices[i]].request = testTeacherArr[teacherIndex];
 
 		}
 
@@ -313,11 +317,11 @@ function initTestData() {
 	setRequests();
 	setSeparates();
 
-	for (var i = 0; i < testData.length; i++) {
+	// for (var i = 0; i < testStudentArr.length; i++) {
 
-		console.log(testData[i].separate);
+	// 	console.log(testStudentArr[i].separate);
 
-	}
+	// }
 }
 
 

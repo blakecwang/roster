@@ -5,58 +5,6 @@ CREATE BALANCED ROSTERS
 ----------------------------------------*/
 
 
-// function to push males and females to rosters
-// in rosterArr moncola style
-function initRosters(stdntArr, rstrs) {
-	
-	// function to push students of given param to
-	// rosters of rosterArr one at a time (moncola style)
-	var rstrIndex = 0;
-	function pushStudents(param, bool) {
-		
-		var i = 0;
-		while (i < stdntArr.length) {
-
-			if ((bool && stdntArr[i][param])
-				|| (!bool && !stdntArr[i][param])) {
-
-				rosterArr[rstrIndex].push(stdntArr[i]);
-
-				if (rstrIndex < rstrs - 1) {
-
-					rstrIndex++;
-
-				} else {
-
-					rstrIndex = 0;
-
-				}
-
-			}
-
-			i++;
-
-		}
-
-	}
-
-
-	// init empty rosters
-	for (var i = 0; i < rstrs; i++) {
-
-		var emptyArr = [];
-		rosterArr.push(emptyArr);
-
-	}
-
-
-	// push males then females one by one
-	pushStudents("male", true);
-	pushStudents("male", false);
-
-}
-
-
 // function to count students with given param in given array
 function countParams(arr, param) {
 
@@ -72,22 +20,80 @@ function countParams(arr, param) {
 }
 
 
-// function to return student, given a
-// studentID and array of students
-function getStudentByID(arr, id) {
+// function to return student object, given studentID
+function getStudentByID(id) {
 
 	var s = undefined;
 
-	for (var i = 0; i < arr.length; i++) {
+	for (var i = 0; i < STUDENT_ARR.length; i++) {
 
-		if (arr[i].studentID === id) {
+		if (STUDENT_ARR[i].studentID === id) {
 
-			s = arr[i];
+			s = STUDENT_ARR[i];
 
 		}
 	}
 
 	return s;
+
+}
+
+
+// function to return student object, given studentName
+function getStudentByName(name) {
+
+	var s = undefined;
+
+	for (var i = 0; i < STUDENT_ARR.length; i++) {
+
+		if (isEquiv(STUDENT_ARR[i].studentName, name)) {
+
+			s = STUDENT_ARR[i];
+
+		}
+
+	}
+
+	return s;
+
+}
+
+
+// function to return teacher object, given teacherID
+function getTeacherByID(id) {
+
+	var t = undefined;
+
+	for (var i = 0; i < TEACHER_ARR.length; i++) {
+
+		if (TEACHER_ARR[i].teacherID === id) {
+
+			t = TEACHER_ARR[i];
+
+		}
+	}
+
+	return t;
+
+}
+
+
+// function to return teacher object, given teacherName
+function getStudentByName(name) {
+
+	var t = undefined;
+
+	for (var i = 0; i < TEACHER_ARR.length; i++) {
+
+		if (isEquiv(TEACHER_ARR[i].teacherName, name)) {
+
+			t = TEACHER_ARR[i];
+
+		}
+
+	}
+
+	return t;
 
 }
 
@@ -132,51 +138,123 @@ function testRosterParam(param, tol) {
 }
 
 
-// organize students into balanced rosters
-function balanceRosters() {
+// function to push males and females to rosters
+// in ROSTER_OBJ moncola style
+function initRosterObj() {
 
-	// Use these functions to get inputs from table when ready
-	// but for now, well just use testData
+	// init rosters with teachers set but no students
+	for (var i = 0; i < TEACHER_ARR.length; i++) {
 
-	// get data from input fields
-	// getDataArr();
+		var newRoster = {};
+		newRoster.teacher = TEACHER_ARR[i];
+		newRoster.students = [];
+		newRoster.rosterID = i;
 
-	// organize that data into studentArr
-	// studentArrBuilder();
+		ROSTER_OBJ[i] = newRoster;
 
-	// get number of rosters and students
-	// var rosters = rosterArr.length;
-
-
-
-	// use testData to test functionality
-	// DELETE THESE LINES WHEN DONE TESTING APP
-	studentArr = testData;
-	rosters = testTeacherArr.length;
+	}
 
 
-	// declare some makeRosters level variables
-	var fixedParams = ["male"];
-	var students = studentArr.length;
+	// get students with teacher requests and place them
+	// in an array
+	var studentsWithRequests = [];
+	for (var i = 0; i < STUDENT_ARR.length; i++) {
+
+		if (STUDENT_ARR[i].request != undefined) {
+
+			studentsWithRequests.push(STUDENT_ARR[i]);
+
+		}
+
+	}
 
 
-	initRosters(testData, testTeacherArr.length);
+	// place students from studentsWithRequests into
+	// appropriate rosters
+	for (var i = 0; i < studentsWithRequests.length; i++) {
 
-	for (var i = 0; i < rosterArr.length; i++) {
-		console.log(rosterArr[i].length);
+		var requestedTeacher = studentsWithRequests[i].request;
+
+		for (var j = 0; j < ROSTER_OBJ.length; j++) {
+
+			var rosterTeacher = ROSTER_OBJ[j].taacher.teacherName;
+
+			if (isEquiv(requestedTeacher, rosterTeacher)) {
+
+				ROSTER_OBJ[j].students.push(studentsWithRequests[i]);
+			}
+
+		}
+
 	}
 
 
 
+	// function to push students of given param to
+	// rosters of ROSTER_OBJ one at a time (moncola style)
+	var rstrIndex = 0;
+	function pushMaleStudents(bool) {
+		
+		var i = 0;
+		while (i < STUDENT_ARR.length) {
+
+			if ((bool && STUDENT_ARR[i]["male"])
+				|| (!bool && !STUDENT_ARR[i]["male"])) {
+
+				ROSTER_OBJ[rstrIndex]["students"].push(STUDENT_ARR[i]);
+
+				if (rstrIndex < TEACHER_ARR.length - 1) {
+
+					rstrIndex++;
+
+				} else {
+
+					rstrIndex = 0;
+
+				}
+
+			}
+
+			i++;
+
+		}
+
+	}
 
 
+	// push males then females one by one
+	// pushMaleStudents(true);
+	// pushMaleStudents(false);
+
+}
+
+
+// function to organize students into balanced rosters
+function balanceRosters() {
+
+}
+
+
+// function to get the whole thing started
+function initApp() {
+
+	// FOR TESTING ONLY!! - hook up app to testData
+	TEACHER_ARR = testTeacherArr;
+	STUDENT_ARR = testStudentArr;
+
+
+	// create initial rosters with separates, requests,
+	// and balanced gender
+	initRosterObj();
+
+	console.log(ROSTER_OBJ);
 
 }
 
 
 
 
-$("#roster-button").click(balanceRosters);
+
 
 
 

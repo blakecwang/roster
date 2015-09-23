@@ -132,3 +132,4 @@ function displayRosters() {
 // add click listeners to buttons
 $("#student-button").click(addStudent);
 $("#teacher-button").click(addTeacher);
+$("#roster-button").click(initApp);
