@@ -6,8 +6,8 @@ var testTeacherArr = [];
 function initTestData() {
 
 	// set total number of students and rosters
-	var students = 94;
-	testRosters = 4;
+	var students = 94,
+		testRosters = 4;
 
 
 	// name teachers
@@ -22,6 +22,8 @@ function initTestData() {
 	// set ratios  for different perameters
 	var ratios = {
 
+		"separate": 0.02,
+		"request": 0.15,
 		"male": 0.55,
 		"redDot": 0.27,
 		"celdt": 0.23,
@@ -209,6 +211,94 @@ function initTestData() {
 	}
 
 
+	// function to randomly set separate froms
+	function setSeparates() {
+
+		var separates = Math.round(ratios.separate * students);
+
+		// get some random indices to set teacher requests on
+		var indices = [];
+		for (var i = 0; i < separates; i++) {
+
+			var index = Math.floor(Math.random() * students);
+
+			var used = false;
+			for (var j = 0; j < indices.length; j++) {
+
+				if (index === indices[j]) {
+
+					used = true;
+
+				}
+
+			}
+
+			if (!used) {
+
+				indices.push(index);
+
+			}
+
+		}
+
+
+		// set random teacher requests on random indices
+		for (var i = 0; i < indices.length; i++) {
+
+			var separateIndex = Math.floor(Math.random() * testData.length);
+
+			testData[indices[i]].separate = testData[separateIndex].name;
+
+		}
+
+	}
+
+
+	// function to randomly set some teacher requests
+	function setRequests() {
+
+		var requests = Math.round(ratios.request * students);
+
+
+		// get some random indices to set teacher requests on
+		var indices = [];
+		for (var i = 0; i < requests; i++) {
+
+			var index = Math.floor(Math.random() * students);
+
+			var used = false;
+			for (var j = 0; j < indices.length; j++) {
+
+				if (index === indices[j]) {
+
+					used = true;
+
+				}
+
+			}
+
+			if (!used) {
+
+				indices.push(index);
+			}
+
+		}
+
+
+		// set random teacher requests on random indices
+		for (var i = 0; i < indices.length; i++) {
+
+			var teacherIndex = Math.floor(Math.random() * testTeacherArr.length);
+
+			testData[indices[i]].request = testTeacherArr[teacherIndex];
+
+		}
+
+	}
+
+
+
+
 	// set parameters
 	setParams("male");
 	setParams("redDot");
@@ -220,7 +310,14 @@ function initTestData() {
 	setParams("writingHigh", "writingMid");
 	setParams("mathHigh", "mathMid");
 
+	setRequests();
+	setSeparates();
 
+	for (var i = 0; i < testData.length; i++) {
+
+		console.log(testData[i].separate);
+
+	}
 }
 
 
