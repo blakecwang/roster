@@ -16,11 +16,22 @@ function replaceAll(str, find, replace) {
 }
 
 
+// function to remove non letters and
+// set all letters to lower case
+function simplify(str) {
+
+	var newStr = str.replace(/\W/g, '');
+	
+	return newStr;
+
+}
+
+
 // function to determine if strings are "equivalent"
 function isEquiv(str1, str2) {
 	
-	var str1Mod = replaceAll(str1.replace(/[^a-zA-Z-]/g, '').toLowerCase(), '-', '');
-	var str2Mod = replaceAll(str2.replace(/[^a-zA-Z-]/g, '').toLowerCase(), '-', '');
+	var str1Mod = simplify(str1);
+	var str2Mod = simplify(str2);
 
 	if (str1Mod === str2Mod) {
 
@@ -31,3 +42,6 @@ function isEquiv(str1, str2) {
 	return false;
 
 }
+
+// var x = simplify(". -,@#$$%asdf123");
+// console.log(x);

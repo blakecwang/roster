@@ -139,7 +139,7 @@ function testRosterParam(param, tol) {
 
 
 // function to push males and females to rosters
-// in ROSTER_OBJ moncola style
+// in ROSTER_ARR moncola style
 function initRosterObj() {
 
 	// init rosters with teachers set but no students
@@ -148,9 +148,9 @@ function initRosterObj() {
 		var newRoster = {};
 		newRoster.teacher = TEACHER_ARR[i];
 		newRoster.students = [];
-		newRoster.rosterID = i;
+		// newRoster.rosterID = i;
 
-		ROSTER_OBJ[i] = newRoster;
+		ROSTER_ARR.push(newRoster);
 
 	}
 
@@ -173,15 +173,21 @@ function initRosterObj() {
 	// appropriate rosters
 	for (var i = 0; i < studentsWithRequests.length; i++) {
 
+		// get the name of each students requested teacher
 		var requestedTeacher = studentsWithRequests[i].request;
+		
+		// loop through all the rosters
+		for (var j = 0; j < ROSTER_ARR.length; j++) {
 
-		for (var j = 0; j < ROSTER_OBJ.length; j++) {
-
-			var rosterTeacher = ROSTER_OBJ[j].taacher.teacherName;
-
+			// get the name of the teacher assigned to roster
+			var rosterTeacher = ROSTER_ARR[j].teacher.teacherName;
+			
+			// if the rquested teacher matches the roster teacher...
 			if (isEquiv(requestedTeacher, rosterTeacher)) {
 
-				ROSTER_OBJ[j].students.push(studentsWithRequests[i]);
+				// add student to roster
+				ROSTER_ARR[j].students.push(studentsWithRequests[i]);
+
 			}
 
 		}
@@ -191,7 +197,7 @@ function initRosterObj() {
 
 
 	// function to push students of given param to
-	// rosters of ROSTER_OBJ one at a time (moncola style)
+	// rosters of ROSTER_ARR one at a time (moncola style)
 	var rstrIndex = 0;
 	function pushMaleStudents(bool) {
 		
@@ -201,7 +207,7 @@ function initRosterObj() {
 			if ((bool && STUDENT_ARR[i]["male"])
 				|| (!bool && !STUDENT_ARR[i]["male"])) {
 
-				ROSTER_OBJ[rstrIndex]["students"].push(STUDENT_ARR[i]);
+				ROSTER_ARR[rstrIndex]["students"].push(STUDENT_ARR[i]);
 
 				if (rstrIndex < TEACHER_ARR.length - 1) {
 
@@ -247,7 +253,7 @@ function initApp() {
 	// and balanced gender
 	initRosterObj();
 
-	console.log(ROSTER_OBJ);
+	console.log(ROSTER_ARR);
 
 }
 

@@ -76,7 +76,7 @@ function initTestData() {
 	// name the students and set studentID
 	for (var i = 0; i < students; i++) {
 		testStudentArr[i].studentID = i;
-		testStudentArr[i].StudentName = "Student" + i;
+		testStudentArr[i].studentName = "Student" + i;
 	}
 
 
@@ -251,7 +251,7 @@ function initTestData() {
 
 			var separateIndex = Math.floor(Math.random() * testStudentArr.length);
 
-			testStudentArr[indices[i]].separate = testStudentArr[separateIndex].name;
+			testStudentArr[indices[i]].separate = testStudentArr[separateIndex].studentName;
 
 		}
 
@@ -284,6 +284,7 @@ function initTestData() {
 			if (!used) {
 
 				indices.push(index);
+
 			}
 
 		}
@@ -294,7 +295,7 @@ function initTestData() {
 
 			var teacherIndex = Math.floor(Math.random() * testTeacherArr.length);
 
-			testStudentArr[indices[i]].request = testTeacherArr[teacherIndex];
+			testStudentArr[indices[i]].request = testTeacherArr[teacherIndex].teacherName;
 
 		}
 
@@ -319,7 +320,7 @@ function initTestData() {
 
 	// for (var i = 0; i < testStudentArr.length; i++) {
 
-	// 	console.log(testStudentArr[i].separate);
+		// console.log(testStudentArr[i].separate);
 
 	// }
 }

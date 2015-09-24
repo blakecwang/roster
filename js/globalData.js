@@ -3,7 +3,7 @@
 var DATA_ARR = [],
 	TEACHER_ARR = [],
 	STUDENT_ARR = [],
-	ROSTER_OBJ = {},
+	ROSTER_ARR = [],
 	TARGET_PARAMS = [
 
 		// "separate",
