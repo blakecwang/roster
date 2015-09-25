@@ -4,7 +4,8 @@ var DATA_ARR = [],
 	TEACHER_ARR = [],
 	STUDENT_ARR = [],
 	ROSTER_ARR = [],
-	TARGET_PARAMS = [
+	PARAM_TARGETS = [],
+	PARAMS = [
 
 		// "separate",
 		// "request",

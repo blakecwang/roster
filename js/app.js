@@ -142,6 +142,11 @@ function testRosterParam(param, tol) {
 // in ROSTER_ARR moncola style
 function initRosterObj() {
 
+	// declare local array of students to be
+	// placed into rosters
+	var unassigned = STUDENT_ARR;
+
+
 	// init rosters with teachers set but no students
 	for (var i = 0; i < TEACHER_ARR.length; i++) {
 
@@ -153,11 +158,6 @@ function initRosterObj() {
 		ROSTER_ARR.push(newRoster);
 
 	}
-
-
-	// declare local array of students to be
-	// placed into rosters
-	var unassigned = STUDENT_ARR;
 
 
 	// get students with teacher requests, place them
@@ -334,50 +334,43 @@ function initRosterObj() {
 	}
 
 
-	// function to push students of given param to
-	// rosters of ROSTER_ARR one at a time (moncola style)
-	var rstrSelector = 0;
-	function pushMaleStudents() {
-		
-		var i = 0;
-		while (i < unassigned.length) {
+	// push male students to rosters moncola style
+	var rstrSelector = 0,
+		i = 0;
+	while (i < unassigned.length) {
 
-			// if student is male...
-			if (unassigned[i].male) {
+		// if student is male...
+		if (unassigned[i].male) {
 
-				// add student object to roster and remove it from unassigned
-				ROSTER_ARR[rstrSelector].students.push(unassigned[i]);
-				unassigned.splice(i, 1);
+			// add student object to roster and remove it from unassigned
+			ROSTER_ARR[rstrSelector].students.push(unassigned[i]);
+			unassigned.splice(i, 1);
 
 
-				// increment rstrSelector
-				if (rstrSelector < TEACHER_ARR.length - 1) {
+			// increment rstrSelector
+			if (rstrSelector < TEACHER_ARR.length - 1) {
 
-					rstrSelector++;
+				rstrSelector++;
 
-				} else {
-
-					rstrSelector = 0;
-
-				}
-
-			// if student is female...
 			} else {
 
-				// increment loop index
-				i++;
+				rstrSelector = 0;
 
 			}
+
+		// if student is female...
+		} else {
+
+			// increment loop index
+			i++;
 
 		}
 
 	}
 
 
-	// push males to rosters moncola style
-	pushMaleStudents();
-
-
+	// push the rest of the students (females) to rosters
+	// moncola style
 	for (var i = 0; i < unassigned.length; i++) {
 
 		ROSTER_ARR[rstrSelector].students.push(unassigned[i]);
@@ -395,11 +388,38 @@ function initRosterObj() {
 
 	}
 
+
+	// clear unassigned
+	unassigned = [];
+
 }
 
 
 // function to organize students into balanced rosters
 function balanceRosters() {
+
+}
+
+
+// function to get target numbers for each param and add
+// them to PARAM_TARGETS
+function getTargets() {
+
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+
+		// declare a target object for each roster
+		var targetObj = {};
+
+		for (var j = 0; j < PARAMS.length; j++) {
+
+			// count each param for each roster
+			targetObj[PARAMS[j]] = countParams(ROSTER_ARR[i].students, [PARAMS[j]]);
+
+		}
+
+		PARAM_TARGETS.push(targetObj);
+
+	}
 
 }
 
@@ -416,6 +436,9 @@ function initApp() {
 	// and balanced gender
 	initRosterObj();
 
+	getTargets();
+	console.log(PARAM_TARGETS);
+
 
 	// log the number of males and females in each roster
 	var mCounts = [],
@@ -429,8 +452,8 @@ function initApp() {
 
 	}
 
-	console.log(fCounts);
-	console.log(mCounts);
+	// console.log(fCounts);
+	// console.log(mCounts);
 
 }
 
