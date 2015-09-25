@@ -21,7 +21,7 @@ function replaceAll(str, find, replace) {
 function simplify(str) {
 
 	var newStr = str.replace(/\W/g, '');
-	
+
 	return newStr;
 
 }
@@ -42,6 +42,26 @@ function isEquiv(str1, str2) {
 	return false;
 
 }
-
 // var x = simplify(". -,@#$$%asdf123");
 // console.log(x);
+
+
+// function to return index of given array
+// of elem with highest number
+function findHighest(arr) {
+
+	var highest = 0;
+
+	for (var i = 0; i < arr.length; i++) {
+
+		if (arr[i] > highest) {
+
+			highest = arr[i];
+
+		}
+
+	}
+
+	return highest;
+
+}
