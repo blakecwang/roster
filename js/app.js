@@ -201,20 +201,6 @@ function initRosterObj() {
 	}
 
 
-	// fill the rest of the students into rosters
-	// such that the are gender balanced
-
-	// count how many students in each roster and add those
-	// counts to studentCounts array
-	var studentCounts = [];
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
-
-		var s = ROSTER_ARR[i].students.length;
-		studentCounts.push(s);
-
-	}
-
-
 	// count how many males in each roster and add those
 	// counts to maleCounts array
 	var maleCounts = [];
@@ -225,14 +211,23 @@ function initRosterObj() {
 
 	}
 
-	// console.log(studentCounts);
-	// console.log(maleCounts);
 
-	// add males until all rosters have the same
-	// number of males
+	// count how many females in each roster and add those
+	// counts to femaleCounts array
+	var femaleCounts = [];
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
+		var m = countParams(ROSTER_ARR[i].students, "male");
+		var f = ROSTER_ARR[i].students.length - m;
+		femaleCounts.push(f);
+
+	}
+
+
+	// function to add students from unassigned into rosters
+	// until all rosters have equal number of males
 	var malesEqualized = false;
-	function equalizehMales() {
+	function equalizeMales() {
 
 		// find the the highest number of males in any roster
 		var highestMaleCount = findHighest(maleCounts);
@@ -248,7 +243,7 @@ function initRosterObj() {
 
 				// get the index of the next male in unassigned
 				var nextMaleIndex = 0;
-				// console.log(unassigned[nextMaleIndex]);
+
 
 				while (!unassigned[nextMaleIndex].male) {
 					
@@ -256,10 +251,10 @@ function initRosterObj() {
 
 				}
 
-				// push that student to the roster and remove
-				// it from unassigned
+				
+				// push that student to the roster, remove
+				// it from unassigned, and add one to its maleCount elem
 				ROSTER_ARR[i].students.push(unassigned[nextMaleIndex]);
-
 				unassigned.splice(nextMaleIndex, 1);
 				maleCounts[i] = maleCounts[i] + 1;
 
@@ -280,58 +275,125 @@ function initRosterObj() {
 	// execute equalizeMales until males are equalized
 	while (!malesEqualized) {
 
-		equalizehMales();
+		equalizeMales();
 
 	}
 
 
-	// add females until all rosters have the same
-	// number of students
+	// function to add students from unassigned into rosters
+	// until all rosters have equal number of females
+	var femalesEqualized = false;
+	function equalizeFemales() {
 
+		// find the the highest number of males in any roster
+		var highestFemaleCount = findHighest(femaleCounts);
 
-	// add males moncola style
+		var e = true;
 
+		// loop through maleCounts
+		for (var i = 0; i < femaleCounts.length; i++) {
 
-	// add females moncola style
+			if (femaleCounts[i] < highestFemaleCount) {
 
+				e = false;
 
+				// get the index of the next male in unassigned
+				var nextFemaleIndex = 0;
 
-
-	// function to push students of given param to
-	// rosters of ROSTER_ARR one at a time (moncola style)
-	var rstrIndex = 0;
-	function pushMaleStudents(bool) {
-		
-		var i = 0;
-		while (i < STUDENT_ARR.length) {
-
-			if ((bool && STUDENT_ARR[i]["male"])
-				|| (!bool && !STUDENT_ARR[i]["male"])) {
-
-				ROSTER_ARR[rstrIndex]["students"].push(STUDENT_ARR[i]);
-
-				if (rstrIndex < TEACHER_ARR.length - 1) {
-
-					rstrIndex++;
-
-				} else {
-
-					rstrIndex = 0;
+				while (unassigned[nextFemaleIndex].male) {
+					
+					nextFemaleIndex++;
 
 				}
 
+				// push that student to the roster and remove
+				// it from unassigned
+				ROSTER_ARR[i].students.push(unassigned[nextFemaleIndex]);
+
+				unassigned.splice(nextFemaleIndex, 1);
+				femaleCounts[i] = femaleCounts[i] + 1;
+
 			}
 
-			i++;
+		}
+
+		if (e) {
+		
+			femalesEqualized = true;
 
 		}
 
 	}
 
 
-	// push males then females one by one
-	// pushMaleStudents(true);
-	// pushMaleStudents(false);
+	// execute equalizeFemales until females are equalized
+	while (!femalesEqualized) {
+
+		equalizeFemales();
+
+	}
+
+
+	// function to push students of given param to
+	// rosters of ROSTER_ARR one at a time (moncola style)
+	var rstrSelector = 0;
+	function pushMaleStudents() {
+		
+		var i = 0;
+		while (i < unassigned.length) {
+
+			// if student is male...
+			if (unassigned[i].male) {
+
+				// add student object to roster and remove it from unassigned
+				ROSTER_ARR[rstrSelector].students.push(unassigned[i]);
+				unassigned.splice(i, 1);
+
+
+				// increment rstrSelector
+				if (rstrSelector < TEACHER_ARR.length - 1) {
+
+					rstrSelector++;
+
+				} else {
+
+					rstrSelector = 0;
+
+				}
+
+			// if student is female...
+			} else {
+
+				// increment loop index
+				i++;
+
+			}
+
+		}
+
+	}
+
+
+	// push males to rosters moncola style
+	pushMaleStudents();
+
+
+	for (var i = 0; i < unassigned.length; i++) {
+
+		ROSTER_ARR[rstrSelector].students.push(unassigned[i]);
+
+		// increment rstrSelector
+		if (rstrSelector < TEACHER_ARR.length - 1) {
+
+			rstrSelector++;
+
+		} else {
+
+			rstrSelector = 0;
+
+		}
+
+	}
 
 }
 
@@ -354,16 +416,21 @@ function initApp() {
 	// and balanced gender
 	initRosterObj();
 
-	// console.log(ROSTER_ARR);
-	var counts = [];
+
+	// log the number of males and females in each roster
+	var mCounts = [],
+		fCounts = [];
 	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		var count = countParams(ROSTER_ARR[i].students, "male");
-		counts.push(count);
+		var mCount = countParams(ROSTER_ARR[i].students, "male");
+		var fCount = ROSTER_ARR[i].students.length - mCount;
+		mCounts.push(mCount);
+		fCounts.push(fCount);
 
 	}
 
-	console.log(counts);
+	console.log(fCounts);
+	console.log(mCounts);
 
 }
 
