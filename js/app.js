@@ -100,40 +100,90 @@ function getStudentByName(name) {
 
 // test whether roster has target number of students
 // for given param
-function testRosterParam(param, tol) {
+// function testRosterParam(param, tol) {
 
-	var paramCount = 0;
+// 	var paramCount = 0;
 
-	// count how many students have param = true
-	for (var i = 0; i < currentRoster.length; i++) {
+// 	// count how many students have param = true
+// 	for (var i = 0; i < currentRoster.length; i++) {
 
-		if (currentRoster[i][param]) {
+// 		if (currentRoster[i][param]) {
 
-			paramCount++;
+// 			paramCount++;
 		
-		}
+// 		}
+
+// 	}
+
+
+// 	// calculate difference and absolute difference
+// 	var diff = paramCount - targets[param];
+// 	var absDiff = Math.abs(diff);
+
+// 	var low = "L",		// paramCount is lower than target
+// 		high = "H",		// paramCount is higher than target
+// 		nailedIt = "N"; // paramCount is within tolerance to target
+
+// 	if (absDiff <= tol) {
+
+// 		return nailedIt;
+
+// 	} else {
+
+// 		if (diff > 0) {return high;}
+// 		else {return low;}
+
+// 	}
+
+// }
+
+
+// function to remove student from given array by ID
+function removeStudent(arr, stu) {
+
+	// declare new array
+	var newArr = arr;
+
+
+	// find index of student within that array
+	var index = 0;
+	while (newArr[index].studentID != stu.studentID) {
+
+		index++;
 
 	}
 
 
-	// calculate difference and absolute difference
-	var diff = paramCount - targets[param];
-	var absDiff = Math.abs(diff);
+	// remove the student from the array
+	newArr.splice(index, 1);
 
-	var low = "L",		// paramCount is lower than target
-		high = "H",		// paramCount is higher than target
-		nailedIt = "N"; // paramCount is within tolerance to target
 
-	if (absDiff <= tol) {
+	return newArr;
 
-		return nailedIt;
+}
 
-	} else {
 
-		if (diff > 0) {return high;}
-		else {return low;}
+// trade given students between given arrays
+function trade(rstrIndex1, rstrIndex2, stu1, stu2) {
 
-	}
+	// declare new arrays
+	var newArr1 = ROSTER_ARR[rstrIndex1].students;
+	var newArr2 = ROSTER_ARR[rstrIndex2].students;
+
+
+	// push student objects to opposite arrays
+	newArr1.push(stu2);
+	newArr2.push(stu1);
+
+
+	// remove student objects from original ararys
+	newArr1 = removeStudent(newArr1, stu1);
+	newArr1 = removeStudent(newArr2, stu2);
+
+
+	// set roster arrays to new arrays
+	ROSTER_ARR[rstrIndex1].students = newArr1;
+	ROSTER_ARR[rstrIndex2].students = newArr2;
 
 }
 
@@ -395,12 +445,6 @@ function initRosterObj() {
 }
 
 
-// function to organize students into balanced rosters
-function balanceRosters() {
-
-}
-
-
 // function to get target numbers for each param and add
 // them to PARAM_TARGETS
 function getTargets() {
@@ -424,6 +468,13 @@ function getTargets() {
 }
 
 
+// function to organize students into balanced rosters
+function balanceRosters() {
+
+}
+
+
+
 // function to get the whole thing started
 function initApp() {
 
@@ -436,8 +487,21 @@ function initApp() {
 	// and balanced gender
 	initRosterObj();
 
+
+	// add target numbers to PARAM_TARGETS
 	getTargets();
-	console.log(PARAM_TARGETS);
+
+
+	console.log(ROSTER_ARR[0].students[0].studentName);
+	console.log(ROSTER_ARR[1].students[0].studentName);
+
+	// trade something
+	trade(0, 1, ROSTER_ARR[0].students[0], ROSTER_ARR[1].students[0]);
+	
+	console.log(ROSTER_ARR[0].students[0].studentName);
+	console.log(ROSTER_ARR[1].students[0].studentName);
+
+
 
 
 	// log the number of males and females in each roster
