@@ -231,9 +231,6 @@ function initRosterObj() {
 	}
 	unassigned = newUnassigned;
 
-	console.log("There are " + studentsWithRequests.length + " students with requests");
-	console.log("There are " + unassigned.length + " students left");
-
 
 	// place students from studentsWithRequests into
 	// appropriate rosters
@@ -352,11 +349,11 @@ function initRosterObj() {
 
 	// remove students in removeTheseMales from unassigned
 	var newUnassignedMales = [];
-	for (var i = 0; i < unassignedMales; i++) {
+	for (var i = 0; i < unassignedMales.length; i++) {
 
 		var remove = false;
 
-		for (var j = 0; j < removeTheseMales; j++) {
+		for (var j = 0; j < removeTheseMales.length; j++) {
 
 			if (unassignedMales[i].studentID === removeTheseMales[j].studentID) {
 
@@ -374,7 +371,6 @@ function initRosterObj() {
 
 	}
 	unassignedMales = newUnassignedMales;
-
 
 
 	// function to add students from unassigned into rosters
@@ -432,11 +428,11 @@ function initRosterObj() {
 
 	// remove students in remvoeTheseFemales fron unassignedFemales
 	var newUnassignedFemales = [];
-	for (var i = 0; i < unassignedFemales; i++) {
+	for (var i = 0; i < unassignedFemales.length; i++) {
 
 		var remove = false;
 
-		for (var j = 0; j < removeTheseFemales; j++) {
+		for (var j = 0; j < removeTheseFemales.length; j++) {
 
 			if (unassignedFemales[i].studentID === removeTheseFemales[j].studentID) {
 
@@ -456,48 +452,18 @@ function initRosterObj() {
 	unassignedFemales = newUnassignedFemales;
 
 
+	// declare var to cycle through rosters
+	var rstrSelector = 0;
+
+
 	// push male students to rosters moncola style
-	var rstrSelector = 0,
-		i = 0;
-	while (i < unassigned.length) {
+	for (var i = 0; i < unassignedMales.length; i++) {
 
-		// if student is male...
-		if (unassigned[i].male) {
+		// add student object to roster and remove it from unassigned
+		ROSTER_ARR[rstrSelector].students.push(unassignedMales[i]);
+		
 
-			// add student object to roster and remove it from unassigned
-			ROSTER_ARR[rstrSelector].students.push(unassigned[i]);
-			unassigned.splice(i, 1);
-
-
-			// increment rstrSelector
-			if (rstrSelector < TEACHER_ARR.length - 1) {
-
-				rstrSelector++;
-
-			} else {
-
-				rstrSelector = 0;
-
-			}
-
-		// if student is female...
-		} else {
-
-			// increment loop index
-			i++;
-
-		}
-
-	}
-
-
-	// push the rest of the students (females) to rosters
-	// moncola style
-	for (var i = 0; i < unassigned.length; i++) {
-
-		ROSTER_ARR[rstrSelector].students.push(unassigned[i]);
-
-		// increment rstrSelector
+		// cycle rstrSelector through rosters
 		if (rstrSelector < TEACHER_ARR.length - 1) {
 
 			rstrSelector++;
@@ -511,8 +477,29 @@ function initRosterObj() {
 	}
 
 
-	// clear unassigned
-	unassigned = [];
+	// push female students to rosters moncola style
+	for (var i = 0; i < unassignedFemales.length; i++) {
+
+		// add student object to roster and remove it from unassigned
+		ROSTER_ARR[rstrSelector].students.push(unassignedFemales[i]);
+		
+
+		// cycle rstrSelector through rosters
+		if (rstrSelector < TEACHER_ARR.length - 1) {
+
+			rstrSelector++;
+
+		} else {
+
+			rstrSelector = 0;
+
+		}
+
+	}
+
+	// clear unassignedMales and unassignedFemales
+	unassignedMales = [];
+	unassignedFemales = [];
 
 }
 
@@ -564,8 +551,8 @@ function initApp() {
 	// getTargets();
 
 
-	console.log(ROSTER_ARR[0].students[0].studentName);
-	console.log(ROSTER_ARR[1].students[0].studentName);
+	// console.log(ROSTER_ARR[0].students[0].studentName);
+	// console.log(ROSTER_ARR[1].students[0].studentName);
 	// console.log(ROSTER_ARR[0].students[0].studentID);
 	// console.log(ROSTER_ARR[0].students[0].studentID);
 
@@ -591,8 +578,25 @@ function initApp() {
 
 	}
 
-	// console.log(fCounts);
-	// console.log(mCounts);
+	console.log(fCounts);
+	console.log(mCounts);
+
+	var sCount = 0;
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+
+			
+				console.log(ROSTER_ARR[i].students[j].studentID);
+			
+			
+
+		}
+
+	}
+	// console.log(sCount + " students are accounted for");
+
+
 
 }
 
