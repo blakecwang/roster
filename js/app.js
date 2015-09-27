@@ -210,15 +210,14 @@ function initRosterObj() {
 	}
 
 
-	// assign students with teacher requests in an array
+	// place students with teacher requests in an array
+	// and 
 	var studentsWithRequests = [],
 		newUnassigned = [];
 	for (var i = 0; i < unassigned.length; i++) {
 		
-		// if student has a request...
 		if (unassigned[i].request != undefined) {
 
-			// add student object to studentsWithRequests
 			studentsWithRequests.push(unassigned[i]);
 
 		} else {
@@ -258,6 +257,10 @@ function initRosterObj() {
 	}
 
 
+	// empty studentsWithRequests
+	studentsWithRequests = [];
+
+
 	// count how many males and females in each roster and add those
 	// counts to maleCounts and femaleCounts arrays
 	var maleCounts = [],
@@ -269,6 +272,12 @@ function initRosterObj() {
 		femaleCounts.push(ROSTER_ARR[i].students.length - m)
 
 	}
+
+	// for (var i = 0; i < ROSTER_ARR.length; i++) {
+	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+	// 			console.log(ROSTER_ARR[i].students[j].studentID);
+	// 	}
+	// }
 
 
 	// split male and female students into individual arrays to be
@@ -290,7 +299,7 @@ function initRosterObj() {
 	}
 
 
-	// kill unassigned so I don't try to use it later
+	// empty unassigned
 	unassigned = [];
 
 
@@ -567,33 +576,22 @@ function initApp() {
 
 
 	// log the number of males and females in each roster
-	var mCounts = [],
-		fCounts = [];
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
+	// var mCounts = [],
+	// 	fCounts = [];
+	// for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		var mCount = countParams(ROSTER_ARR[i].students, "male");
-		var fCount = ROSTER_ARR[i].students.length - mCount;
-		mCounts.push(mCount);
-		fCounts.push(fCount);
+	// 	var mCount = countParams(ROSTER_ARR[i].students, "male");
+	// 	var fCount = ROSTER_ARR[i].students.length - mCount;
+	// 	mCounts.push(mCount);
+	// 	fCounts.push(fCount);
 
-	}
+	// }
 
-	console.log(fCounts);
-	console.log(mCounts);
+	// console.log(fCounts);
+	// console.log(mCounts);
 
-	var sCount = 0;
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
+	// var sCount = 0;
 
-		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-
-			
-				console.log(ROSTER_ARR[i].students[j].studentID);
-			
-			
-
-		}
-
-	}
 	// console.log(sCount + " students are accounted for");
 
 
