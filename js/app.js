@@ -98,34 +98,29 @@ function getStudentByName(name) {
 }
 
 
-
-
-
-
-
 // function to remove student from given array by ID
-function removeStudent(arr, stu) {
+// function removeStudent(arr, stu) {
 
-	// declare new array
-	var newArr = arr;
-
-
-	// find index of student within that array
-	var index = 0;
-	while (newArr[index].studentID != stu.studentID) {
-
-		index++;
-
-	}
+// 	// declare new array
+// 	var newArr = arr;
 
 
-	// remove the student from the array
-	newArr.splice(index, 1);
+// 	// find index of student within that array
+// 	var index = 0;
+// 	while (newArr[index].studentID != stu.studentID) {
+
+// 		index++;
+
+// 	}
 
 
-	return newArr;
+// 	// remove the student from the array
+// 	newArr.splice(index, 1);
 
-}
+
+// 	return newArr;
+
+// }
 
 
 // trade given students between given arrays
@@ -255,9 +250,69 @@ function populateRosters() {
 
 
 // function to trade students with teacher requests into
-// requested rosters
+// requested rosters without affecting gender balance
 function honorRequests() {
 
+	// find students with and without teacher requests and
+	// place them in separate arrays 
+	var withRequests = [],
+		rosterIndices = [];
+
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+
+			if (ROSTER_ARR[i].students[j].request != undefined) {
+
+				withRequests.push(ROSTER_ARR[i].students[j]);
+				rosterIndices.push(i);
+
+			}
+		
+		}
+
+	}
+
+
+	// trade students with requests into appropriate rosters
+	for (var i = 0; i < withRequests.length; i++) {
+
+		// test if the student is in the requested roster
+		var requestedTeacher = withRequests[i].request;
+		var rosterTeacher = ROSTER_ARR[rosterIndices[i]].teacher.teacherName;
+		if (!isEquiv(requestedTeacher, rosterTeacher)) {
+
+			// find the right roster
+			var rosterIndex;
+			for (var j = 0; j < ROSTER_ARR.length; j++) {
+
+				if (ROSTER_ARR[j].teacher.teacherName === requestedTeacher) {
+
+					rosterIndex = j;
+
+				}
+
+			}
+
+
+			// find student to trade that is same gender and does not have request
+			var studentIndex = 0,
+				tradeStudent = ROSTER_ARR[rosterIndex].students[studentIndex];
+			while (tradeStudent.male != withRequests[i].male
+				|| tradeStudent.request != undefined) {
+
+				studentIndex++;
+				tradeStudent = ROSTER_ARR[rosterIndex].students[studentIndex];
+
+			}
+
+
+			// trade students
+			trade(withRequests[i], tradeStudent);
+
+		}
+
+	}
 
 }
 
@@ -307,25 +362,38 @@ function initApp() {
 	STUDENT_ARR = testStudentArr;
 
 
-	
+	// call the functions!
 	initRosterObj();
 	populateRosters();
+
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+			var r = ROSTER_ARR[i].students[j].request;
+			if (r != undefined) {
+				console.log(r);
+				console.log(ROSTER_ARR[i].teacher.teacherName);
+			}
+		}
+	}
+	honorRequests();
+
+
 
 
 	// add target numbers to PARAM_TARGETS
 	// getTargets();
 
 
-	console.log(ROSTER_ARR[0].students[0].studentName);
-	console.log(ROSTER_ARR[1].students[0].studentName);
+	// console.log(ROSTER_ARR[0].students[0].studentName);
+	// console.log(ROSTER_ARR[1].students[0].studentName);
 
-	// trade something
-	var s1 = ROSTER_ARR[0].students[0];
-	var s2 = ROSTER_ARR[1].students[0];
-	trade(s1, s2);
+	// // trade something
+	// var s1 = ROSTER_ARR[0].students[0];
+	// var s2 = ROSTER_ARR[1].students[0];
+	// trade(s1, s2);
 
-	console.log(ROSTER_ARR[0].students[0].studentName);
-	console.log(ROSTER_ARR[1].students[0].studentName);
+	// console.log(ROSTER_ARR[0].students[0].studentName);
+	// console.log(ROSTER_ARR[1].students[0].studentName);
 
 
 	// log the number of males and females in each roster
@@ -344,11 +412,15 @@ function initApp() {
 	// console.log(mCounts);
 
 	// var sCount = 0;
-	// for (var i = 0; i < ROSTER_ARR.length; i++) {
-	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-	// 		sCount++;
-	// 	}
-	// }
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+			var r = ROSTER_ARR[i].students[j].request;
+			if (r != undefined) {
+				console.log(r);
+				console.log(ROSTER_ARR[i].teacher.teacherName);
+			}
+		}
+	}
 	// console.log(sCount + " students are accounted for");
 	// console.log(ROSTER_ARR);
 
