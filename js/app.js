@@ -5,20 +5,6 @@ CREATE BALANCED ROSTERS
 ----------------------------------------*/
 
 
-// function to count students with given param in given array
-function countParams(arr, param) {
-
-	var count = 0;
-	for (var i = 0; i < arr.length; i++) {
-
-		if (arr[i][param]) {count++;}
-
-	}
-
-	return count;
-
-}
-
 
 // function to return student object, given studentID
 function getStudentByID(id) {
@@ -356,23 +342,37 @@ function separateStudents() {
 
 // function to count how many students of
 // each param are in each roster
-function getParamCounts() {
+function getParamCounts(param) {
 
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
+	var countArr = [];
 
-		// declare a count object for each roster
-		var countObj = {};
 
-		for (var j = 0; j < PARAMS.length; j++) {
+	// function to count students with given param in given array
+	function countParams(arr) {
 
-			// count each param for each roster
-			countObj[PARAMS[j]] = countParams(ROSTER_ARR[i].students, [PARAMS[j]]);
+		var count = 0;
+		for (var i = 0; i < arr.length; i++) {
+
+			if (arr[i][param]) {count++;}
 
 		}
 
-		PARAM_COUNTS.push(countObj);
+		return count;
 
 	}
+
+
+	// loop through rosters and count the number of students
+	// with given param
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+
+		var c = countParams(ROSTER_ARR[i].students);
+		countArr.push(c);
+
+	}
+
+
+	return countArr;
 
 }
 
@@ -452,7 +452,9 @@ function balanceRosters() {
 
 		var currentParam = PARAMS[i];
 
-
+		// get an array of the counts for reach roster
+		// of currentParam
+		var currentCounts = getParamCounts(currentParam);
 
 
 
