@@ -257,7 +257,6 @@ function honorRequests() {
 	// place them in separate arrays 
 	var withRequests = [],
 		rosterIndices = [];
-
 	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
 		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
@@ -320,6 +319,62 @@ function honorRequests() {
 // function to separate designated students
 function separateStudents() {
 
+	// find all students with separate from defined
+	var withSeparateFroms = [],
+		rosterIndices = [];
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+
+			var s = ROSTER_ARR[i].students[j];
+			if (s.separate != undefined) {
+
+				withSeparateFroms.push(s);
+				rosterIndices.push(i);
+
+			}
+
+		}
+
+	}
+
+
+	// loop through all the students with separate defined
+	for (var i = 0; i < withSeparateFroms.length; i++) {
+
+		// test whether separate param has conflict
+		var sep = withSeparateFroms[i].separate,
+			roster = ROSTER_ARR[rosterIndices[i]].students;
+			t = false;
+		for (var j = 0; j < roster.length; j++) {
+
+			if (isEquiv(sep, roster[j].studentName)) {
+
+				t = true;
+
+			}
+
+		}
+
+
+		// if student is in same roster as separate param, trade it out
+		// without affecting gender balance or teacher requests
+		if (t) {
+
+			var tradeStudentIndex = 0;
+			while (STUDENT_ARR[tradeStudentIndex].male != withSeparateFroms[i].male
+				|| STUDENT_ARR[tradeStudentIndex].request != undefined) {
+
+				tradeStudentIndex++;
+
+			}
+
+
+			trade(withSeparateFroms[i], STUDENT_ARR[tradeStudentIndex]);
+
+		}
+
+	}
 
 }
 
@@ -343,7 +398,7 @@ function getTargets() {
 		PARAM_TARGETS.push(targetObj);
 
 	}
-// 
+
 }
 
 
@@ -351,7 +406,6 @@ function getTargets() {
 function balanceRosters() {
 
 }
-
 
 
 // function to get the whole thing started
@@ -365,17 +419,8 @@ function initApp() {
 	// call the functions!
 	initRosterObj();
 	populateRosters();
-
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
-		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-			var r = ROSTER_ARR[i].students[j].request;
-			if (r != undefined) {
-				console.log(r);
-				console.log(ROSTER_ARR[i].teacher.teacherName);
-			}
-		}
-	}
 	honorRequests();
+	separateStudents();
 
 
 
@@ -414,10 +459,13 @@ function initApp() {
 	// var sCount = 0;
 	for (var i = 0; i < ROSTER_ARR.length; i++) {
 		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-			var r = ROSTER_ARR[i].students[j].request;
-			if (r != undefined) {
-				console.log(r);
-				console.log(ROSTER_ARR[i].teacher.teacherName);
+			var r = ROSTER_ARR[i].students[j].separate;
+			for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
+
+				if (r === ROSTER_ARR[i].students[k].studentName) {
+
+					console.log("fail");
+				}
 			}
 		}
 	}
