@@ -98,31 +98,6 @@ function getStudentByName(name) {
 }
 
 
-// function to remove student from given array by ID
-// function removeStudent(arr, stu) {
-
-// 	// declare new array
-// 	var newArr = arr;
-
-
-// 	// find index of student within that array
-// 	var index = 0;
-// 	while (newArr[index].studentID != stu.studentID) {
-
-// 		index++;
-
-// 	}
-
-
-// 	// remove the student from the array
-// 	newArr.splice(index, 1);
-
-
-// 	return newArr;
-
-// }
-
-
 // trade given students between given arrays
 function trade(stu1, stu2) {
 
@@ -379,23 +354,84 @@ function separateStudents() {
 }
 
 
-// function to get target numbers for each param and add
-// them to PARAM_TARGETS
-function getTargets() {
+// function to count how many students of
+// each param are in each roster
+function getParamCounts() {
 
 	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		// declare a target object for each roster
-		var targetObj = {};
+		// declare a count object for each roster
+		var countObj = {};
 
 		for (var j = 0; j < PARAMS.length; j++) {
 
 			// count each param for each roster
-			targetObj[PARAMS[j]] = countParams(ROSTER_ARR[i].students, [PARAMS[j]]);
+			countObj[PARAMS[j]] = countParams(ROSTER_ARR[i].students, [PARAMS[j]]);
 
 		}
 
-		PARAM_TARGETS.push(targetObj);
+		PARAM_COUNTS.push(countObj);
+
+	}
+
+}
+
+
+// function to get target numbers for each param
+function getParamTargets() {
+
+	// find number of rosters to divide by
+	var rosters = TEACHER_ARR.length;
+
+
+	// count students of each param
+	for (var i = 0; i < PARAMS.length; i++) {
+
+		var count = 0;
+		for (var j = 0; j < STUDENT_ARR.length; j++) {
+
+			if (STUDENT_ARR[j][PARAMS[i]]) {
+
+				count++;
+
+			}
+
+		}
+
+
+		// calculate targets for each param and add them to PARAM_TARGETS
+		PARAM_TARGETS[PARAMS[i]] = Math.round(count / rosters);
+
+	}
+
+}
+
+
+// function to get all trades that don't compromise
+// gender balance, teacher requests, or separate froms
+function getLegalTrades() {
+
+	// get all legal trade pairs and push them to LEGAL_TRADES array
+	for (var i = 0; i < STUDENT_ARR.length - 1; i++) {
+
+		var x = STUDENT_ARR[i];
+
+		for (var j = i + 1; j < STUDENT_ARR.length; j++) {
+
+			var y = STUDENT_ARR[j];
+
+			if (x.request === undefined
+				&& y.request === undefined
+				&& x.separate === undefined
+				&& y.separate === undefined
+				&& x.male === y.male) {
+
+				var pair  = [x, y];
+				LEGAL_TRADES.push(pair);
+
+			}
+
+		}
 
 	}
 
@@ -404,6 +440,26 @@ function getTargets() {
 
 // function to organize students into balanced rosters
 function balanceRosters() {
+
+	getParamTargets();
+	getParamCounts();
+	getLegalTrades();
+
+	var lockedParams = ["male"];
+
+	// loop through params and balance them
+	for (var i = 0; i < PARAMS.length; i++) {
+
+		var currentParam = PARAMS[i];
+
+
+
+
+
+
+	}
+
+
 
 }
 
@@ -416,61 +472,13 @@ function initApp() {
 	STUDENT_ARR = testStudentArr;
 
 
-	// call the functions!
+	// calling functions!
 	initRosterObj();
 	populateRosters();
 	honorRequests();
 	separateStudents();
-
-
-
-
-	// add target numbers to PARAM_TARGETS
-	// getTargets();
-
-
-	// console.log(ROSTER_ARR[0].students[0].studentName);
-	// console.log(ROSTER_ARR[1].students[0].studentName);
-
-	// // trade something
-	// var s1 = ROSTER_ARR[0].students[0];
-	// var s2 = ROSTER_ARR[1].students[0];
-	// trade(s1, s2);
-
-	// console.log(ROSTER_ARR[0].students[0].studentName);
-	// console.log(ROSTER_ARR[1].students[0].studentName);
-
-
-	// log the number of males and females in each roster
-	// var mCounts = [],
-	// 	fCounts = [];
-	// for (var i = 0; i < ROSTER_ARR.length; i++) {
-
-	// 	var mCount = countParams(ROSTER_ARR[i].students, "male");
-	// 	var fCount = ROSTER_ARR[i].students.length - mCount;
-	// 	mCounts.push(mCount);
-	// 	fCounts.push(fCount);
-
-	// }
-
-	// console.log(fCounts);
-	// console.log(mCounts);
-
-	// var sCount = 0;
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
-		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-			var r = ROSTER_ARR[i].students[j].separate;
-			for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
-
-				if (r === ROSTER_ARR[i].students[k].studentName) {
-
-					console.log("fail");
-				}
-			}
-		}
-	}
-	// console.log(sCount + " students are accounted for");
-	// console.log(ROSTER_ARR);
+	balanceRosters();
+	getLegalTrades();
 
 
 }
