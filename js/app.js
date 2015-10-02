@@ -438,26 +438,259 @@ function getLegalTrades() {
 }
 
 
+// function to lock given param by removing trades that
+// would compromise it from LEGAL_TRADES
+function lockParam(param) {
+
+	var newLegalTrades = [];
+	for (var i = 0; i < LEGAL_TRADES.length; i++) {
+
+		if (LEGAL_TRADES[i][0][param] === LEGAL_TRADES[i][1][param]) {
+
+			newLegalTrades.push(LEGAL_TRADES[i]);
+
+		}
+
+	}
+
+	LEGAL_TRADES = newLegalTrades;
+
+}
+
+
 // function to organize students into balanced rosters
 function balanceRosters() {
 
 	getParamTargets();
-	getParamCounts();
 	getLegalTrades();
 
-	var lockedParams = ["male"];
 
 	// loop through params and balance them
-	for (var i = 0; i < PARAMS.length; i++) {
+	// for (var i = 0; i < PARAMS.length; i++) {
+	for (var i = 0; i < 1; i++) {
 
-		var currentParam = PARAMS[i];
+		var currentParam = PARAMS[i],
+			balanced = false,
+			tolerance = 0;
 
-		// get an array of the counts for reach roster
-		// of currentParam
-		var currentCounts = getParamCounts(currentParam);
+		console.log("LEGAL_TRADES.length: " + LEGAL_TRADES.length);
+		console.log("================");
 
 
+		// while (!balanced) {
+		var n = 0;
+		while (n < 3) {
 
+			console.log("enter while loop");
+			console.log("================");
+
+			// get an array of the currentParam counts for each roster
+			var currentParamCounts = getParamCounts(currentParam);
+
+
+			// find differences between counts and targets
+			var differences = [];
+			for (var j = 0; j < currentParamCounts.length; j++) {
+
+				var diff = currentParamCounts[j] - PARAM_TARGETS[currentParam];
+				differences.push(diff);
+
+			}
+			console.log("differences:")
+			console.log(differences);
+			console.log("================");
+
+
+			// test whether differences are all within tolerance
+			var bigDiff = false;
+			for (var j = 0; j < differences.length; j++) {
+
+				if (Math.abs(differences[j]) > tolerance) {
+
+					bigDiff = true;
+
+				}
+
+			}
+
+			console.log("bigDiff:");
+			console.log(bigDiff);
+			console.log("================");
+
+
+			if (!bigDiff) {
+
+				balanced = true;
+
+			} else {
+
+				// identify rosters with highest
+				// and lowest diffs
+				var highRosterIndex = 0;
+				var lowRosterIndex = 0;
+				for (var j = 0; j < differences.length; j++) {
+
+					if (differences[j] > differences[highRosterIndex]) {
+
+						highRosterIndex = j;
+
+					}
+
+					if (differences[j] < differences[lowRosterIndex]) {
+
+						lowRosterIndex = j;
+						
+					}
+
+				}
+				var highRoster = ROSTER_ARR[highRosterIndex].students;
+				var lowRoster = ROSTER_ARR[lowRosterIndex].students;
+
+				console.log("highRosterIndex: " + highRosterIndex);
+				console.log("highRoster.length: " + highRoster.length);
+				console.log("lowRosterIndex: " + lowRosterIndex);
+				console.log("lowRoster.length: " + lowRoster.length);
+				console.log("================");
+
+
+				// identify pair in LEGAL_TRADES that
+				// trade between these rosters and improve
+				// balance on currentParam
+				var tradePair = undefined,
+					j = 0;
+				var studentsTested = 0;
+				while (tradePair === undefined
+					&& j < LEGAL_TRADES.length) {
+
+					studentsTested++;
+
+					// create vars to reference student objects
+					var studentX = LEGAL_TRADES[j][0];
+					var studentY = LEGAL_TRADES[j][1];
+
+					// console.log("Students to be tested for trade");
+					// console.log(studentX.studentName);
+					// console.log(studentY.studentName);
+					// console.log("================");
+
+
+					// test whether x and/or y are in highRoster
+					var xInHighRoster = false,
+						yInHighRoster = false;
+					for (var k = 0; k < highRoster.length; k++) {
+
+						if (studentX.studentID === highRoster[k].studentID) {
+
+							xInHighRoster = true;
+
+						}
+
+						if (studentY.studentID === highRoster[k].studentID) {
+
+							yInHighRoster = true;
+
+						}
+
+					}
+
+
+					// test whether x and/or y are in lowRoster
+					var xInLowRoster = false,
+						yInLowRoster = false;
+					for (var k = 0; k < lowRoster.length; k++) {
+
+						if (studentX.studentID === lowRoster[k].studentID) {
+
+							xInLowRoster = true;
+
+						}
+
+						if (studentY.studentID === lowRoster[k].studentID) {
+
+							yInLowRoster = true;
+
+						}
+
+					}
+
+					// console.log("xInHighRoster: " + xInHighRoster);
+					// console.log("xInLowRoster: " + xInLowRoster);
+					// console.log("yInHighRoster: " + yInHighRoster);
+					// console.log("yInLowRoster: " + yInLowRoster);
+					// console.log("================");
+
+
+					// test whether trade would improve balance
+					// on currentParam
+					if ((xInHighRoster
+						&& yInLowRoster
+						&& studentX[currentParam] === true
+						&& studentY[currentParam] === false)
+						||
+						(xInLowRoster
+						&& yInHighRoster
+						&& studentX[currentParam] === false
+						&& studentY[currentParam] === true)) {
+
+						tradePair = [studentX, studentY];
+						
+					}
+
+					if (j === LEGAL_TRADES.length - 1) {
+
+						console.log("j reached end");
+						console.log("================");
+
+					}
+
+					j++;
+
+				}
+
+				if (tradePair != undefined) {
+
+					trade(tradePair[0], tradePair[1]);
+
+
+					var currentParamCounts = getParamCounts(currentParam);
+					var differences = [];
+					for (var j = 0; j < currentParamCounts.length; j++) {
+
+						var diff = currentParamCounts[j] - PARAM_TARGETS[currentParam];
+						differences.push(diff);
+
+
+					}
+
+					console.log(studentsTested + " student pairs were tested");
+					console.log("tradePair:");
+					console.log(tradePair);
+					console.log("================");
+					console.log("differences:");
+					console.log(differences);
+					console.log("================");
+
+				} else {
+
+					tolerance++;
+					
+					console.log("tolerance increased because");
+					console.log("there were no more pairs to test.")
+					console.log("================");
+
+				}
+
+				
+
+			}
+
+			n++;
+
+		}
+
+
+		// after balancing param, lock it
+		lockParam(currentParam);
 
 	}
 
