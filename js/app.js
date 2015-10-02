@@ -458,26 +458,12 @@ function lockParam(param) {
 }
 
 
-// function to get differences between counts are targets
-function getDifferences() {
-
-
-
-	return differences;
-
-}
-
-
 // function to organize students into balanced rosters
 function balanceRosters() {
 
-	getParamTargets();
-	getLegalTrades();
-
-
 	// loop through params and balance them
-	// for (var i = 0; i < PARAMS.length; i++) {
-	for (var i = 0; i < 1; i++) {
+	for (var i = 0; i < PARAMS.length; i++) {
+	// for (var i = 0; i < 3; i++) {
 
 		var currentParam = PARAMS[i],
 			balanced = false;
@@ -516,24 +502,32 @@ function balanceRosters() {
 
 				tolerance = Math.abs(t);
 
-				console.log("tolerance: " + tolerance);
-				console.log("================");
+				// console.log("tolerance: " + tolerance);
+				// console.log("================");
 
 			}
 			firstTime = false;
 			
 
 			// test whether differences are all within tolerance
-			var bigDiff = false;
+			// and whether sum of absolute values of differences
+			// is within tolerance
+			var bigDiff = false,
+				diffSum = 0;
 			for (var j = 0; j < differences.length; j++) {
 
-				if (Math.abs(differences[j]) > tolerance) {
+				var absDiff = Math.abs(differences[j]);
+
+				if (absDiff > tolerance) {
 
 					bigDiff = true;
 
 				}
 
+				diffSum += absDiff;
+
 			}
+			if (diffSum > tolerance) {bigDiff = true;}
 
 
 			// if none of the differences are bigger than tolerance...
@@ -637,13 +631,6 @@ function balanceRosters() {
 						
 					}
 
-					if (j === LEGAL_TRADES.length - 1) {
-
-						console.log("j reached end");
-						console.log("================");
-
-					}
-
 					j++;
 
 				}
@@ -656,10 +643,6 @@ function balanceRosters() {
 
 					tolerance++;
 
-					console.log("tolerance increased because");
-					console.log("there were no more pairs to test.")
-					console.log("================");
-
 				}
 
 				
@@ -670,21 +653,21 @@ function balanceRosters() {
 
 		}
 
-		// get an array of the currentParam counts for each roster
-		var currentParamCounts = getParamCounts(currentParam);
+		// // get an array of the currentParam counts for each roster
+		// var currentParamCounts = getParamCounts(currentParam);
 
-		// find differences between counts and targets
-		var differences = [];
-		for (var j = 0; j < currentParamCounts.length; j++) {
+		// // find differences between counts and targets
+		// var differences = [];
+		// for (var j = 0; j < currentParamCounts.length; j++) {
 
-			var diff = currentParamCounts[j] - PARAM_TARGETS[currentParam];
-			differences.push(diff);
+		// 	var diff = currentParamCounts[j] - PARAM_TARGETS[currentParam];
+		// 	differences.push(diff);
 
-		}
+		// }
 
-		console.log("differences:");
-		console.log(differences);
-		console.log("================");
+		// console.log("differences:");
+		// console.log(differences);
+		// console.log("================");
 
 
 
@@ -692,8 +675,6 @@ function balanceRosters() {
 		lockParam(currentParam);
 
 	}
-
-
 
 }
 
@@ -706,13 +687,70 @@ function initApp() {
 	STUDENT_ARR = testStudentArr;
 
 
-	// calling functions!
+	// calling all functions!
 	initRosterObj();
 	populateRosters();
 	honorRequests();
 	separateStudents();
-	balanceRosters();
+	getParamTargets();
 	getLegalTrades();
+
+	// test whether separate froms are honored
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+			var sep = ROSTER_ARR[i].students[j].separate;
+			for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
+				if (sep === ROSTER_ARR[i].students[k].studentName) {
+					console.log("failed to separate student - BEFORE");
+				}
+			}
+		}
+	}
+
+	balanceRosters();
+
+
+
+
+	//-------- CONSOLE TESTING --------//
+
+	// test whether teacher requests are honored
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+			var student = ROSTER_ARR[i].students[j];
+			if (student.request != undefined) {
+				if (student.request != ROSTER_ARR[i].teacher.teacherName) {
+					console.log("failed to honor teacher request");
+				}
+			}
+		}
+	}
+
+
+	// test whether separate froms are honored
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+			var sep = ROSTER_ARR[i].students[j].separate;
+			for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
+				if (sep === ROSTER_ARR[i].students[k].studentName) {
+					console.log("failed to separate student - AFTER");
+				}
+			}
+		}
+	}
+
+
+
+	// test balance on all params
+	console.log("male");
+	console.log(getParamCounts("male"));
+	for (var i = 0; i < PARAMS.length; i++) {
+		var p = PARAMS[i];
+		console.log(p);
+		console.log(getParamCounts(p));
+		console.log("===========");
+	}
+
 
 
 }
@@ -720,6 +758,21 @@ function initApp() {
 
 
 
+
+
+
+
+// tolerance type 1:
+//		add up absolute values of individual diffs
+//		and make sure that sum <= tolerance
+
+//		would catch [1,1,-1,-1]
+
+
+// tolerance type 2:
+//		make sure each individual diff <= tolerance
+
+//		would catch [2,0,0,0]
 
 
 
