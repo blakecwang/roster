@@ -8,7 +8,6 @@ var DATA_ARR = [],
 	LEGAL_TRADES = [],
 	PARAMS = [
 
-		// "male",
 		"redDot",
 		"celdt",
 		"iep",
