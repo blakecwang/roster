@@ -458,6 +458,16 @@ function lockParam(param) {
 }
 
 
+// function to get differences between counts are targets
+function getDifferences() {
+
+
+
+	return differences;
+
+}
+
+
 // function to organize students into balanced rosters
 function balanceRosters() {
 
@@ -470,23 +480,18 @@ function balanceRosters() {
 	for (var i = 0; i < 1; i++) {
 
 		var currentParam = PARAMS[i],
-			balanced = false,
+			balanced = false;
 			tolerance = 0;
 
-		console.log("LEGAL_TRADES.length: " + LEGAL_TRADES.length);
-		console.log("================");
-
-
-		// while (!balanced) {
+		var firstTime = true;
 		var n = 0;
-		while (n < 3) {
+		while (!balanced) {
 
-			console.log("enter while loop");
-			console.log("================");
+			// console.log("enter while loop");
+			// console.log("================");
 
 			// get an array of the currentParam counts for each roster
 			var currentParamCounts = getParamCounts(currentParam);
-
 
 			// find differences between counts and targets
 			var differences = [];
@@ -496,10 +501,27 @@ function balanceRosters() {
 				differences.push(diff);
 
 			}
-			console.log("differences:")
-			console.log(differences);
-			console.log("================");
 
+
+			// if it's the first time through the while loop, set
+			// tolerance to sum of differences
+			if (firstTime) {
+
+				var t = 0;
+				for (var j = 0; j < differences.length; j++) {
+
+					t += differences[j];
+
+				}
+
+				tolerance = Math.abs(t);
+
+				console.log("tolerance: " + tolerance);
+				console.log("================");
+
+			}
+			firstTime = false;
+			
 
 			// test whether differences are all within tolerance
 			var bigDiff = false;
@@ -513,15 +535,14 @@ function balanceRosters() {
 
 			}
 
-			console.log("bigDiff:");
-			console.log(bigDiff);
-			console.log("================");
 
-
+			// if none of the differences are bigger than tolerance...
 			if (!bigDiff) {
 
+				// rosters are balanced on currentParam!
 				balanced = true;
 
+			// if not...
 			} else {
 
 				// identify rosters with highest
@@ -546,32 +567,18 @@ function balanceRosters() {
 				var highRoster = ROSTER_ARR[highRosterIndex].students;
 				var lowRoster = ROSTER_ARR[lowRosterIndex].students;
 
-				console.log("highRosterIndex: " + highRosterIndex);
-				console.log("highRoster.length: " + highRoster.length);
-				console.log("lowRosterIndex: " + lowRosterIndex);
-				console.log("lowRoster.length: " + lowRoster.length);
-				console.log("================");
-
 
 				// identify pair in LEGAL_TRADES that
 				// trade between these rosters and improve
 				// balance on currentParam
 				var tradePair = undefined,
 					j = 0;
-				var studentsTested = 0;
 				while (tradePair === undefined
 					&& j < LEGAL_TRADES.length) {
-
-					studentsTested++;
 
 					// create vars to reference student objects
 					var studentX = LEGAL_TRADES[j][0];
 					var studentY = LEGAL_TRADES[j][1];
-
-					// console.log("Students to be tested for trade");
-					// console.log(studentX.studentName);
-					// console.log(studentY.studentName);
-					// console.log("================");
 
 
 					// test whether x and/or y are in highRoster
@@ -613,12 +620,6 @@ function balanceRosters() {
 
 					}
 
-					// console.log("xInHighRoster: " + xInHighRoster);
-					// console.log("xInLowRoster: " + xInLowRoster);
-					// console.log("yInHighRoster: " + yInHighRoster);
-					// console.log("yInLowRoster: " + yInLowRoster);
-					// console.log("================");
-
 
 					// test whether trade would improve balance
 					// on currentParam
@@ -651,29 +652,10 @@ function balanceRosters() {
 
 					trade(tradePair[0], tradePair[1]);
 
-
-					var currentParamCounts = getParamCounts(currentParam);
-					var differences = [];
-					for (var j = 0; j < currentParamCounts.length; j++) {
-
-						var diff = currentParamCounts[j] - PARAM_TARGETS[currentParam];
-						differences.push(diff);
-
-
-					}
-
-					console.log(studentsTested + " student pairs were tested");
-					console.log("tradePair:");
-					console.log(tradePair);
-					console.log("================");
-					console.log("differences:");
-					console.log(differences);
-					console.log("================");
-
 				} else {
 
 					tolerance++;
-					
+
 					console.log("tolerance increased because");
 					console.log("there were no more pairs to test.")
 					console.log("================");
@@ -687,6 +669,23 @@ function balanceRosters() {
 			n++;
 
 		}
+
+		// get an array of the currentParam counts for each roster
+		var currentParamCounts = getParamCounts(currentParam);
+
+		// find differences between counts and targets
+		var differences = [];
+		for (var j = 0; j < currentParamCounts.length; j++) {
+
+			var diff = currentParamCounts[j] - PARAM_TARGETS[currentParam];
+			differences.push(diff);
+
+		}
+
+		console.log("differences:");
+		console.log(differences);
+		console.log("================");
+
 
 
 		// after balancing param, lock it
