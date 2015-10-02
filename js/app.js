@@ -555,7 +555,7 @@ function separateStudents() {
 	// execute loop until there are no more separate conflicts
 	var noConflicts = false;
 	while (!noConflicts) {
-
+		console.log("begin outer loop");
 		// test whether separate froms are honored
 		var allGood = true,
 			conflicts = [];
@@ -599,10 +599,12 @@ function separateStudents() {
 			// that resolves conflict
 			for (var i = 0; i < conflicts.length; i++) {
 
-				var rosterIndex = conflicts[0];
+
+				var rosterIndex = conflicts[i][0];
 				var roster = ROSTER_ARR[rosterIndex].students;
-				var studentX = roster[conflicts[1]];
-				var studentY = roster[conflicts[2]];
+				var studentX = roster[conflicts[i][1]];
+				var studentY = roster[conflicts[i][2]];
+
 
 
 				// find trade involving either studentX or studentY
@@ -612,6 +614,8 @@ function separateStudents() {
 					numOfLockedParams = PARAMS.length;
 				while (j < LEGAL_TRADES.length
 						&& !foundTrade) {
+					console.log("begin inner loop");
+					console.log("===================");
 
 					// find indices of rosters of students in trade pair
 					var roster0, roster1;
@@ -635,21 +639,38 @@ function separateStudents() {
 
 					}
 
+					
+					// console.log("studentX: " + studentX.studentID);
+					// console.log("studentY: " + studentY.studentID);
+					// console.log("rosterIndex: " + rosterIndex);
+					// console.log("roster0: " + roster0);
+					// console.log("roster1: " + roster1);
+					
+					// console.log("pair[0]: " + LEGAL_TRADES[j][0].studentID);
+					// console.log("pair[1]: " + LEGAL_TRADES[j][1].studentID);
+					// console.log("===================");
+
 					if ((studentX.studentID === LEGAL_TRADES[j][0].studentID
 						|| studentY.studentID === LEGAL_TRADES[j][0].studentID)
-						&& rosterIndex != roster0) {
+						// && rosterIndex != roster1
+						) {
 
+						console.log("trade was found");
 						foundTrade = true;
 
 					} else if ((studentX.studentID === LEGAL_TRADES[j][1].studentID
 						|| studentY.studentID === LEGAL_TRADES[j][1].studentID)
-						&& rosterIndex != roster1) {
+						// && rosterIndex != roster0
+						) {
 
+						console.log("trade was found");
 						foundTrade = true;
 
-					}
+					} else {
 
-					j++;
+						j++;
+
+					}
 
 				}
 
@@ -669,6 +690,11 @@ function separateStudents() {
 						lockParam(PARAMS[j]);
 
 					}
+
+					console.log("===================");
+					console.log("LEGAL_TRADES.length: " + LEGAL_TRADES.length);
+					console.log("===================");
+					console.log("===================");
 
 				}
 
