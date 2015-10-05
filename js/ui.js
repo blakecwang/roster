@@ -5,14 +5,6 @@ DEFINE FUNCTIONS THAT MANIPULATE THE DOM
 ----------------------------------------*/
 
 
-// define general replaceAll function to be used
-// by addTeacher and addStudent (and whoever else)
-function replaceAll(str, find, replace) {
-
-	return str.replace(new RegExp(find, 'g'), replace);
-
-}
-
 
 // define 'add student' function
 var newStudentElem = $("#table-body").html();

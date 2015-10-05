@@ -6,8 +6,8 @@ var testTeacherArr = [];
 function initTestData() {
 
 	// set total number of students and rosters
-	var students = 94,
-		testRosters = 4;
+	var students = 30,
+		testRosters = 2;
 
 
 	// creat teacher objects
@@ -220,9 +220,10 @@ function initTestData() {
 
 		var separates = Math.round(ratios.separate * students);
 
-		// get some random indices to set teacher requests on
-		var indices = [];
-		for (var i = 0; i < separates; i++) {
+		// get some random indices to set 'separate from' requests on
+		var indices = [],
+			i = 0;
+		while (indices.length < separates) {
 
 			var index = Math.floor(Math.random() * students);
 
@@ -246,13 +247,17 @@ function initTestData() {
 		}
 
 
-		// set random teacher requests on random indices
+		// set random 'separate from' requests on random indices
 		for (var i = 0; i < indices.length; i++) {
 
 			var separateIndex = Math.floor(Math.random() * testStudentArr.length);
 
-			testStudentArr[indices[i]].separate = testStudentArr[separateIndex].studentName;
+			if (testStudentArr[indices[i]].studentID != testStudentArr[separateIndex].studentID) {
 
+				testStudentArr[indices[i]].separate = testStudentArr[separateIndex].studentName;
+
+			}
+			
 		}
 
 	}
@@ -266,7 +271,7 @@ function initTestData() {
 
 		// get some random indices to set teacher requests on
 		var indices = [];
-		for (var i = 0; i < requests; i++) {
+		while (indices < requests.length) {
 
 			var index = Math.floor(Math.random() * students);
 
@@ -318,11 +323,6 @@ function initTestData() {
 	setRequests();
 	setSeparates();
 
-	// for (var i = 0; i < testStudentArr.length; i++) {
-
-		// console.log(testStudentArr[i].separate);
-
-	// }
 }
 
 

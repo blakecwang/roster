@@ -81,6 +81,9 @@ function getParamCounts(param) {
 // gender balance, teacher requests, or separate froms
 function getLegalTrades() {
 
+	// reset LEGAL_TRADES
+	LEGAL_TRADES = [];
+
 	// get all legal trade pairs and push them to LEGAL_TRADES array
 	for (var i = 0; i < STUDENT_ARR.length - 1; i++) {
 
@@ -329,7 +332,7 @@ function balanceRosters() {
 	// get relevant data to balance rosters
 	getParamTargets();
 	getLegalTrades();
-
+	// console.log("LEGAL_TRADES.length: " + LEGAL_TRADES.length);
 
 	// loop through params and balance them
 	for (var i = 0; i < PARAMS.length; i++) {
@@ -343,11 +346,9 @@ function balanceRosters() {
 		var n = 0;
 		while (!balanced) {
 
-			// console.log("enter while loop");
-			// console.log("================");
-
 			// get an array of the currentParam counts for each roster
 			var currentParamCounts = getParamCounts(currentParam);
+
 
 			// find differences between counts and targets
 			var differences = [];
@@ -371,9 +372,6 @@ function balanceRosters() {
 				}
 
 				tolerance = Math.abs(t);
-
-				// console.log("tolerance: " + tolerance);
-				// console.log("================");
 
 			}
 			firstTime = false;
@@ -552,86 +550,105 @@ function balanceRosters() {
 // function to separate designated students
 function separateStudents() {
 
-	// execute loop until there are no more separate conflicts
 	var noConflicts = false;
+
 	while (!noConflicts) {
-		console.log("begin outer loop");
-		// test whether separate froms are honored
-		var allGood = true,
-			conflicts = [];
+
+		// test whether there are conflicts
+		var conflicts = [];
 		for (var i = 0; i < ROSTER_ARR.length; i++) {
 
 			for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-			
-				var sep = ROSTER_ARR[i].students[j].separate;
-				
-				for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
-			
-					if (sep === ROSTER_ARR[i].students[k].studentName) {
-			
-						allGood = false;
 
-						// i = roster index
-						// j = index of student with 'separate from'
-						// k = index of student to be separated from
-						var a = [i, j, k];
-						conflicts.push(a);
-			
+				var x = ROSTER_ARR[i].students[j].separate;
+
+				if (x != undefined) {
+
+					for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
+
+						var y = ROSTER_ARR[i].students[k].studentName;
+						if (isEquiv(x, y)) {
+
+							// i = index of the roster within ROSTER_ARR
+							// j = index of student with 'separate from'
+							// k = index of student to be separated from
+							var conflictArr = [i, j, k];
+							conflicts.push(conflictArr);
+
+						}
+
 					}
-		
+
 				}
-		
+			
 			}
-		
+
 		}
 
 
-		// if there are no separate from conflicts...
-		if (allGood) {
+		// if there are no conflicts, exit the loop
+		if (conflicts.length === 0) {
 
-			// end the loop
 			noConflicts = true;
 
-		// if there are conflicts...
+		// if there are conflicts, resolve them
 		} else {
 
-			// find trade within LEGAL_TRADES
-			// that resolves conflict
+			// loop through conflicts
 			for (var i = 0; i < conflicts.length; i++) {
 
-
+				// identify the roster with the conflict and the
+				// students within that roster that conflict
 				var rosterIndex = conflicts[i][0];
 				var roster = ROSTER_ARR[rosterIndex].students;
 				var studentX = roster[conflicts[i][1]];
 				var studentY = roster[conflicts[i][2]];
 
 
-
-				// find trade involving either studentX or studentY
-				// and a student not in same roster
-				var j = 0,
+				// find trades in LEGAL_TRADES that would resolve conflict
+				var possibleTrades = [],
 					foundTrade = false,
-					numOfLockedParams = PARAMS.length;
-				while (j < LEGAL_TRADES.length
-						&& !foundTrade) {
-					console.log("begin inner loop");
-					console.log("===================");
+					loosen = 0;
+				while (!foundTrade) {
 
-					// find indices of rosters of students in trade pair
-					var roster0, roster1;
-					for (var m = 0; m < ROSTER_ARR.length; m++) {
+					// loop through LEGAL_TRADES
+					for (var j = 0; j < LEGAL_TRADES.length; j++) {
 
-						for (var n = 0; n < ROSTER_ARR[m].students.length; n++) {
+						// figure out which rosters the students in each
+						// legal trade pair are currently in
+						var roster0, roster1;
+						for (var m = 0; m < ROSTER_ARR.length; m++) {
 
-							if (LEGAL_TRADES[j][0].studentID === ROSTER_ARR[m].students[n].studentID) {
+							for (var n = 0; n < ROSTER_ARR[m].students.length; n++) {
 
-								roster0 = m;
+								if (LEGAL_TRADES[j][0].studentID 
+									=== ROSTER_ARR[m].students[n].studentID) {
+
+									roster0 = m;
+
+								} else if (LEGAL_TRADES[j][1].studentID 
+									=== ROSTER_ARR[m].students[n].studentID) {
+
+									roster1 = m;
+
+								}
 
 							}
 
-							if (LEGAL_TRADES[j][1].studentID === ROSTER_ARR[m].students[n].studentID) {
+						}
 
-								roster1 = m;
+
+						// if the trade is not within the same roster...
+						if (roster1 != roster0) {
+
+							// if either student is part of the trade...
+							if (studentX.studentID === LEGAL_TRADES[j][0].studentID
+								|| studentY.studentID === LEGAL_TRADES[j][0].studentID
+								|| studentX.studentID === LEGAL_TRADES[j][1].studentID
+								|| studentY.studentID === LEGAL_TRADES[j][1].studentID) {
+
+								// add trade to possibleTrades
+								possibleTrades.push(LEGAL_TRADES[j]);
 
 							}
 
@@ -639,64 +656,36 @@ function separateStudents() {
 
 					}
 
-					
-					// console.log("studentX: " + studentX.studentID);
-					// console.log("studentY: " + studentY.studentID);
-					// console.log("rosterIndex: " + rosterIndex);
-					// console.log("roster0: " + roster0);
-					// console.log("roster1: " + roster1);
-					
-					// console.log("pair[0]: " + LEGAL_TRADES[j][0].studentID);
-					// console.log("pair[1]: " + LEGAL_TRADES[j][1].studentID);
-					// console.log("===================");
 
-					if ((studentX.studentID === LEGAL_TRADES[j][0].studentID
-						|| studentY.studentID === LEGAL_TRADES[j][0].studentID)
-						// && rosterIndex != roster1
-						) {
+					// if there are possible trades, exit loop
+					if (possibleTrades.length > 0) {
 
-						console.log("trade was found");
 						foundTrade = true;
-
-					} else if ((studentX.studentID === LEGAL_TRADES[j][1].studentID
-						|| studentY.studentID === LEGAL_TRADES[j][1].studentID)
-						// && rosterIndex != roster0
-						) {
-
-						console.log("trade was found");
-						foundTrade = true;
-
+					
+					// if not, unluck the last locked parameter
+					// and execute the loop again
 					} else {
 
-						j++;
+						loosen++;
+						
+						if (loosen <= PARAMS.length) {
 
+							getLegalTrades();
+		
+							for (var k = 0; k < PARAMS.length - loosen; k++) {
+
+								lockParam(PARAMS[k]);
+
+							}
+
+						}
+						
 					}
 
 				}
 
-				if (foundTrade) {
-
-					trade(LEGAL_TRADES[j][0], LEGAL_TRADES[j][1]);
-
-				} else {
-
-					numOfLockedParams--;
-
-					// reset LEGAL_TRADES to include more trades
-					// by unlocking params from last to first
-					getLegalTrades();
-					for (var j = 0; j < numOfLockedParams; j++) {
-
-						lockParam(PARAMS[j]);
-
-					}
-
-					console.log("===================");
-					console.log("LEGAL_TRADES.length: " + LEGAL_TRADES.length);
-					console.log("===================");
-					console.log("===================");
-
-				}
+				// trade the sutdents to resolve the conflict
+				trade(possibleTrades[0][0], possibleTrades[0][1]);
 
 			}
 
@@ -711,97 +700,84 @@ function separateStudents() {
 function initApp() {
 
 	// FOR TESTING ONLY!! - hook up app to testData
-	TEACHER_ARR = testTeacherArr;
-	STUDENT_ARR = testStudentArr;
+	// TEACHER_ARR = testTeacherArr;
+	// STUDENT_ARR = testStudentArr;
 
 
 	// calling all functions!
+	getData();
 	initRosterObj();
 	populateRosters();
 	honorRequests();
-	
-	
-
-	// test whether separate froms are honored
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
-		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-			var sep = ROSTER_ARR[i].students[j].separate;
-			for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
-				if (sep === ROSTER_ARR[i].students[k].studentName) {
-					console.log("failed to separate student - BEFORE");
-				}
-			}
-		}
-	}
-
 	balanceRosters();
 	separateStudents();
 
 
+
 	//-------- CONSOLE TESTING --------//
 
-	// test whether teacher requests are honored
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
-		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-			var student = ROSTER_ARR[i].students[j];
-			if (student.request != undefined) {
-				if (student.request != ROSTER_ARR[i].teacher.teacherName) {
-					console.log("failed to honor teacher request");
-				}
-			}
-		}
-	}
+	// // test whether teacher requests are honored
+	// for (var i = 0; i < ROSTER_ARR.length; i++) {
+	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+	// 		var student = ROSTER_ARR[i].students[j];
+	// 		if (student.request != undefined) {
+	// 			if (student.request != ROSTER_ARR[i].teacher.teacherName) {
+	// 				console.log("failed to honor teacher request");
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 
-	// test whether separate froms are honored
-	for (var i = 0; i < ROSTER_ARR.length; i++) {
-		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-			var sep = ROSTER_ARR[i].students[j].separate;
-			for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
-				if (sep === ROSTER_ARR[i].students[k].studentName) {
-					console.log("failed to separate student - AFTER");
-				}
-			}
-		}
-	}
+	// // test whether separate froms are honored
+	// for (var i = 0; i < ROSTER_ARR.length; i++) {
+	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+	// 		var sep = ROSTER_ARR[i].students[j].separate;
+	// 		for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
+	// 			if (sep === ROSTER_ARR[i].students[k].studentName) {
+	// 				console.log("failed to separate student");
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 
+	// // test balance on all params
+	// console.log("male");
+	// console.log("===========================");
+	// console.log(getParamCounts("male"));
+	// for (var i = 0; i < PARAMS.length; i++) {
+	// 	var p = PARAMS[i];
+	// 	console.log(p);
+	// 	console.log(getParamCounts(p));
+	// 	console.log("===========================");
+	// }
 
-	// test balance on all params
-	console.log("male");
-	console.log(getParamCounts("male"));
-	for (var i = 0; i < PARAMS.length; i++) {
-		var p = PARAMS[i];
-		console.log(p);
-		console.log(getParamCounts(p));
-		console.log("===========");
-	}
+
+	// // make sure all students are accounted for
+	// var studentCount = 0;
+	// for (var i = 0; i < ROSTER_ARR.length; i++) {
+	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+	// 		studentCount++;
+	// 	}
+	// }
+	// console.log(studentCount + " students are accounted for");
+
+
+	// // test to make sure there are no duplicate students
+	// for (var i = 0; i < ROSTER_ARR.length; i++) {
+	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+	// 		for (var k = 0; k < ROSTER_ARR.length; k++) {
+	// 			for (var m = 0; m < ROSTER_ARR[k].students.length; m++) {
+	// 				if (i != k) {
+	// 					if (ROSTER_ARR[i].students[j].studentID
+	// 						=== ROSTER_ARR[k].students[m].studentID) {
+	// 						console.log("duplicate student");
+	// 					}
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// test how long it takes to do something
-// function doSomething() {
-	
-// }
-
-// var t0 = performance.now();
-// doSomething();
-// var t1 = performance.now();
-// console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.");
-
-
-
