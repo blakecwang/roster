@@ -711,6 +711,7 @@ function initApp() {
 	honorRequests();
 	balanceRosters();
 	separateStudents();
+	displayRosters();
 
 
 

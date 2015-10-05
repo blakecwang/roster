@@ -39,9 +39,8 @@ function addTeacher() {
 // add rosters to DOM
 function displayRosters() {
 
-	// determine number of rows and columns
-	var columns = rosterArr.length;
-	var rows  = Math.ceil(columns / 3);
+	// determine number of rows to display rosters
+	var rows  = Math.ceil(ROSTER_ARR.length / 3);
 
 
 	// append rows to DOM
@@ -53,41 +52,41 @@ function displayRosters() {
 	}
 
 
-	// append columns to rows
-	for (var j = 0; j < columns; j++) {
+	// append ROSTER_ARR.length to rows
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		var row = Math.floor(j / 3);
+		var row = Math.floor(i / 3);
 
 		var rowId = "#r" + row;
-		var colElem = "<div class='col-md-4' id='c" + j +"'></div>";
+		var colElem = "<div class='col-md-4' id='c" + i +"'></div>";
 		$(rowId).append(colElem);
 
 	}
 
 
-	// append headers to columns
-	for (var k = 0; k < columns; k++) {
+	// append headers to ROSTER_ARR.length
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		var letter = String.fromCharCode(k + 97).toUpperCase();
-		var headerElem = "<h3>Roster " + letter + "</h3>";
-		var colId = "#c" + k;
+		var tn = ROSTER_ARR[i].teacher.teacherName;
+		var headerElem = "<h3>" + tn + "'s Class:</h3>";
+		var colId = "#c" + i;
 		$(colId).append(headerElem);
 
 	}
 
 
-	// append lists to columns
-	for (var m = 0; m < columns; m++) {
+	// append lists to ROSTER_ARR.length
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		var ulElem = "<ul id=u" + m + "></ul>";
-		var colId = "#c" + m;
+		var ulElem = "<ul id=u" + i + "></ul>";
+		var colId = "#c" + i;
 		$(colId).append(ulElem);
 
-		for (var n = 0; n < rosterArr[m].length; n++) {
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
 
-			var ulId = "#u" + m;
-			var studentName = rosterArr[m][n].name;
-			var liElem = "<li>" + studentName + "</li>";
+			var ulId = "#u" + i;
+			var sn = ROSTER_ARR[i].students[j].studentName;
+			var liElem = "<li>" + sn + "</li>";
 			$(ulId).append(liElem);
 
 		}
@@ -95,26 +94,123 @@ function displayRosters() {
 	}
 
 
-	// append parameters to columns
-	for (var x = 0; x < columns; x++) {
+	// append parameters to ROSTER_ARR.length
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		var boys = 0, girls = 0;
-		for (var y = 0; y < rosterArr[x].length; y++) {
+		// count params
+		var boys = 0,
+			girls = 0,
+			reddots = 0,
+			celdts = 0,
+			ieps = 0,
+			healths = 0,
+			tks = 0,
+			readingHighs = 0, readingMids = 0, readingLows = 0,
+			writingHighs = 0, writingMids = 0, writingLows = 0,
+			mathHighs = 0, mathMids = 0, mathLows = 0;
+			
 
-			if (rosterArr[x][y].male === true) {
+		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
+
+			var currentStudent = ROSTER_ARR[i].students[j];
+
+			// count boys and girls
+			if (currentStudent.male) {
 				boys++;
 			} else {
 				girls++;
 			}
 
+
+			// count red dots
+			if (currentStudent.redDot) {
+				reddots++;
+			}
+
+
+			// count CELDTs
+			if (currentStudent.celdt) {
+				celdts++;
+			}
+
+
+			if (currentStudent.iep) {
+				ieps++;
+			}
+
+
+			if (currentStudent.health) {
+				healths++;
+			}
+
+
+			if (currentStudent.tk) {
+				tks++;
+			}
+
+
+			if (currentStudent.readingHigh) {
+				readingHighs++;
+			} else if (currentStudent.readingMid) {
+				readingMids++;
+			} else {
+				readingLows++;
+			}
+
+
+			if (currentStudent.writingHigh) {
+				writingHighs++;
+			} else if (currentStudent.writingMid) {
+				writingMids++;
+			} else {
+				writingLows++;
+			}
+
+
+			if (currentStudent.mathHigh) {
+				mathHighs++;
+			} else if (currentStudent.mathMid) {
+				mathMids++;
+			} else {
+				mathLows++;
+			}
+
+
 		}
 
-		var boyElem = "<h4>Boys: " + boys + "</h4>";
-		var girlElem = "<h4>Girls: " + girls + "</h4>";
-		var boyGirlElem = boyElem + girlElem;
+		
 
-		var colId = "#c" + x;
-		$(colId).append(boyGirlElem);
+		// append boys and girls
+		var boyGirlElem = "<h4>" + boys + " boys, " + girls + " girls</h4>";
+		var redDotElem = "<h4>" + reddots + " red dots";
+		var celdtElem = "<h4>" + celdts + " students at CELDT level 1 or 2";
+		var iepElem = "<h4>" + ieps + " students with IEP's";
+		var healthElem = "<h4>" + healths + " students with health concerns";
+		var tkElem = "<h4>" + tks + " students who attended TK";
+		var readingElem = "<h4>" + readingHighs + " high-level readers, "
+							+ readingMids + " mid-level readers, "
+							+ readingLows + " low-level readers</h4>";
+		var writingElem = "<h4>" + writingHighs + " high-level writers, "
+							+ writingMids + " mid-level writers, "
+							+ writingLows + " low-level writers</h4>";
+		var mathElem = "<h4>" + mathHighs + " high-level math students, "
+							+ mathMids + " mid-level math students, "
+							+ mathLows + " low-level math students</h4>";
+
+
+
+
+		var colId = "#c" + i;
+		var paramElem = boyGirlElem
+						+ redDotElem
+						+ celdtElem
+						+ iepElem
+						+ healthElem
+						+ tkElem
+						+ readingElem
+						+ writingElem
+						+ mathElem;
+		$(colId).append(paramElem);
 
 	}
 
