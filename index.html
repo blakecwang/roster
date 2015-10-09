@@ -11,35 +11,44 @@
     <head>
 
     <body>
+        <div class="row centered dark-green" id="banner">
+            <div id="banner-text" class="centered vertical-middle">
+                <h1>Welcome to Roster Builder!</h1>
+                <h3>by Blake Wang</h3>
+            </div>
+        </div>
     	<div class="container">
-    		<div class="row centered">
-    			<h1>Welcome to Roster Builder!</h1>
-    		</div>
+            <br><br>
             <div class="row" id="teacher-row">
                 <div>
-                    Teacher #1: <input type="text" class="teacher-input" placeholder=" Name of teacher">
+                    Teacher #1: <input type="text" class="teacher-input has-border" placeholder=" Name of teacher">
                 </div>
                 <br>
             </div>
             <div class="row">
-                <button id="teacher-button" type="button">Add another teacher</button>
+                <button id="teacher-button" type="button" class="dark-green bolded">Add another teacher</button>
             </div>
             <br><br>
-            <div class="row">
-                <div class="col-num">#</div>
-                <div class="col-txt inverted">Name</div>
-                <div class="col-txt">Separate From</div>
-                <div class="col-txt inverted">Teacher Requested</div>
-                <div class="col-rad">Gender</div>
-                <div class="col-rad inverted">Red Dot</div>
-                <div class="col-rad">CELDT 1 or 2</div>
-                <div class="col-rad inverted">IEP</div>
-                <div class="col-rad">Health Concerns</div>
-                <div class="col-rad inverted">Attended TK</div>
-                <div class="col-rad">Reading</div>
-                <div class="col-rad inverted">Writing</div>
-                <div class="col-rad">Math</div>
-            </div>
+            <table id="header-table" class="dark-green">
+                <tbody>
+                    <tr>
+                        <td class="number"><p class="bolded">#</p></td>
+                        <td class="txt-input"><p class="bolded">Name</p></td>
+                        <td class="txt-input"><p class="bolded">Separate From</p></td>
+                        <td class="txt-input"><p class="bolded">Teacher Request</p></td>
+                        <td class="rad-input"><p class="bolded">Gender</p></td>
+                        <td class="rad-input"><p class="bolded">Red Dot</p></td>
+                        <td class="rad-input"><p class="bolded">CELDT 1 or 2</p></td>
+                        <td class="rad-input"><p class="bolded">IEP</p></td>
+                        <td class="rad-input"><p class="bolded">Health Concerns</p></td>
+                        <td class="rad-input"><p class="bolded">Attended TK</p></td>
+                        <td class="rad-input"><p class="bolded">Reading</p></td>
+                        <td class="rad-input"><p class="bolded">Writing</p></td>
+                        <td class="rad-input"><p class="bolded">Math</p></td>
+                        <td></td>
+                    </tr>
+                </thead>
+            </table>
             <div class="row table-container">
                 <table id="entry-table">
                     <tbody id="table-body">
@@ -47,21 +56,21 @@
                             <td class="number">
                                 <p>1</p>
                             </td>
-                            <td class="txt-input inverted">
-                                <input type="text" class="student-input field" placeholder=" Name of student">
+                            <td class="txt-input">
+                                <input type="text" class="student-input field has-border" placeholder=" Name of student">
                             </td>
                             <td class="txt-input">
-                                <input type="text" class="student-input field" placeholder=" Name of student">
+                                <input type="text" class="student-input field has-border" placeholder=" Name of student">
                             </td>
-                            <td class="txt-input inverted">
-                                <input type="text" class="student-input field" placeholder=" Name of teacher">
+                            <td class="txt-input">
+                                <input type="text" class="student-input field has-border" placeholder=" Name of teacher">
                             </td>
                             <td class="rad-input">
                                 <input type="radio" class="student-input" name="gender-1"> Boy
                                 <br>
                                 <input type="radio" class="student-input" name="gender-1"> Girl
                             </td>
-                            <td class="rad-input inverted">
+                            <td class="rad-input">
                                 <input type="radio" class="student-input" name="red-1"> Yes
                                 <br>
                                 <input type="radio" class="student-input" name="red-1"> No
@@ -71,7 +80,7 @@
                                 <br>
                                 <input type="radio" class="student-input" name="celdt-1"> No
                             </td>
-                            <td class="rad-input inverted">
+                            <td class="rad-input">
                                 <input type="radio" class="student-input" name="iep-1"> Yes
                                 <br>
                                 <input type="radio" class="student-input" name="iep-1"> No
@@ -81,7 +90,7 @@
                                 <br>
                                 <input type="radio" class="student-input" name="health-1"> No
                             </td>
-                            <td class="rad-input inverted">
+                            <td class="rad-input">
                                 <input type="radio" class="student-input" name="tk-1"> Yes
                                 <br>
                                 <input type="radio" class="student-input" name="tk-1"> No
@@ -93,7 +102,7 @@
                                 <br>
                                 <input type="radio" class="student-input" name="reading-1"> Low
                             </td>
-                            <td class="rad-input inverted">
+                            <td class="rad-input">
                                 <input type="radio" class="student-input" name="writing-1"> High
                                 <br>
                                 <input type="radio" class="student-input" name="writing-1"> Mid
@@ -113,11 +122,11 @@
             </div>
             <br>
             <div class="row">
-                <button id="student-button" type="button">Add another student</button>
+                <button id="student-button" type="button" class="dark-green bolded">Add another student</button>
             </div>
             <br><br>
             <div class="row centered">
-                <button id="roster-button" type="button">Build balanced rosters!</button>
+                <button id="roster-button" type="button" class="dark-green bolded">Build balanced rosters!</button>
             </div>
     </body>
 

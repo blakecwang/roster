@@ -29,6 +29,7 @@
 td {
 	padding: 8px;
 	border-spacing: 0px;
+	text-align: center;
 }
 
 tbody {
@@ -40,33 +41,13 @@ tbody {
 }
 
 .txt-input {
-	width: 186px;
+	width: 145px;
 }
 
 .rad-input {
-	width: 70px;
+	width: 80px;
 }
 
-.col-txt {
-	width: 186px;
-}
-
-.col-rad {
-	width: 70px;
-}
-
-.col-num {
-	width: 12px;
-}
-
-.col-rad, .col-txt, .col-num {
-	float: left;
-	height: auto;
-	padding: 8px;
-	text-align: center;
-	vertical-align: middle;
-	overflow: hidden;
-}
 
 .field {
 	width: 100%;
@@ -79,6 +60,7 @@ tbody {
 
 table {
 	border-spacing: 0px;
+	width: 100%;
 }
 
 button {
@@ -88,3 +70,35 @@ button {
 	padding-bottom: 5px;
 }
 
+p {
+	width: 100%;
+	position: relative;
+	text-align: center;;
+}
+
+.has-border {
+	border: 1px solid black;
+}
+
+.dark-green {
+	background-color: rgb(10, 160, 10);
+	color: white;
+}
+
+.light-green {
+	background-color: rgb(150, 230, 150);
+}
+
+#banner {
+	height: 80px;
+}
+
+.vertical-middle {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bolded {
+	font-weight: bold;
+}
