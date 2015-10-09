@@ -714,6 +714,11 @@ function initApp() {
 	displayRosters();
 
 
+	addTeacher();
+	addStudent();
+
+
+
 
 	//-------- CONSOLE TESTING --------//
 

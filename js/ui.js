@@ -216,6 +216,14 @@ function displayRosters() {
 
 }
 
+// add some teachers and student rows
+addTeacher();
+for (var i = 0; i < 6; i++) {
+	addStudent();
+}
+
+
+
 
 // add click listeners to buttons
 $("#student-button").click(addStudent);
