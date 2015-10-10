@@ -37,15 +37,15 @@ tbody {
 }
 
 .number {
-	width: 12px;
+	width: 35px;
 }
 
 .txt-input {
-	width: 145px;
+	width: 130px;
 }
 
 .rad-input {
-	width: 80px;
+	width: 85px;
 }
 
 
@@ -54,7 +54,7 @@ tbody {
 }
 
 .table-container {
-	height: 100px;
+	height: 350px;
 	overflow: auto;
 }
 
@@ -78,6 +78,7 @@ p {
 
 .has-border {
 	border: 1px solid black;
+	padding-left: 3px;
 }
 
 .dark-green {
@@ -101,4 +102,23 @@ p {
 
 .bolded {
 	font-weight: bold;
+}
+
+.inv {
+/*	background-color: black;
+	color: white;*/
+}
+
+.teacher-col {
+	width: 300px;
+	float: left;
+	overflow: hidden;
+}
+
+.teacher-row {
+	height: 30px;
+}
+
+.teacher-label {
+	width: 100px;
 }

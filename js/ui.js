@@ -22,16 +22,33 @@ function addStudent() {
 
 
 // define 'add teacher' function
-var newTeacherElem = $("#teacher-row").html();
-var addTeacherIndex = 1;
+var teacherRowElem = $("#teacher-section").html();
+var teacherColElem = $(".teacher-row").html();
+var teacherColIndex = 0;
+var teacherRowIndex = 0;
+var oneStr = 1 + "";
 function addTeacher() {
 
-	addTeacherIndex++;
-	var oneStr = 1 + ""; // convert 1 to string
-	var teachersStr = addTeacherIndex + ""; // convert teachers to string
-	var newTeacherElemMod = replaceAll(newTeacherElem, oneStr, teachersStr); // replace first string with second
+	teacherColIndex++;
+	var newTeacherRowIndex = Math.floor(teacherColIndex / 4 );
+	var teachersStr = (teacherColIndex + 1) + ""; // convert teachers to string
+	var colMod = replaceAll(teacherColElem, oneStr, teachersStr); // replace first string with second
+	var rowMod = replaceAll(teacherRowElem, oneStr, teachersStr);
 
-	$("#teacher-row").append(newTeacherElemMod);
+	// if new rows is higher than old rows...
+	if (newTeacherRowIndex > teacherRowIndex) {
+
+		// add a row (including a column)
+		$("#teacher-section").append(rowMod);
+
+		teacherRowIndex = newTeacherRowIndex;
+
+	// else, add a column
+	} else {
+
+		$(".teacher-row").last().append(colMod);
+
+	}
 
 }
 

@@ -4,9 +4,8 @@
     <head>
     	<title>Roster Maker</title>
         <meta charset="utf-8">
-<!--         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1"> -->
- <!--        <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/style.css">
     <head>
 
@@ -19,12 +18,14 @@
         </div>
     	<div class="container">
             <br><br>
-            <div class="row" id="teacher-row">
-                <div>
-                    Teacher #1: <input type="text" class="teacher-input has-border" placeholder=" Name of teacher">
+            <div id="teacher-section">
+                <div class="row teacher-row">
+                    <div class="teacher-col">
+                        Teacher 1 <input type="text" class="teacher-input has-border" placeholder=" Name of teacher">
+                    </div>
                 </div>
-                <br>
             </div>
+            <br>
             <div class="row">
                 <button id="teacher-button" type="button" class="dark-green bolded">Add another teacher</button>
             </div>
@@ -33,17 +34,17 @@
                 <tbody>
                     <tr>
                         <td class="number"><p class="bolded">#</p></td>
-                        <td class="txt-input"><p class="bolded">Name</p></td>
+                        <td class="txt-input inv"><p class="bolded">Name</p></td>
                         <td class="txt-input"><p class="bolded">Separate From</p></td>
-                        <td class="txt-input"><p class="bolded">Teacher Request</p></td>
+                        <td class="txt-input inv"><p class="bolded">Teacher Request</p></td>
                         <td class="rad-input"><p class="bolded">Gender</p></td>
-                        <td class="rad-input"><p class="bolded">Red Dot</p></td>
+                        <td class="rad-input inv"><p class="bolded">Red Dot</p></td>
                         <td class="rad-input"><p class="bolded">CELDT 1 or 2</p></td>
-                        <td class="rad-input"><p class="bolded">IEP</p></td>
+                        <td class="rad-input inv"><p class="bolded">IEP</p></td>
                         <td class="rad-input"><p class="bolded">Health Concerns</p></td>
-                        <td class="rad-input"><p class="bolded">Attended TK</p></td>
+                        <td class="rad-input inv"><p class="bolded">Attended TK</p></td>
                         <td class="rad-input"><p class="bolded">Reading</p></td>
-                        <td class="rad-input"><p class="bolded">Writing</p></td>
+                        <td class="rad-input inv"><p class="bolded">Writing</p></td>
                         <td class="rad-input"><p class="bolded">Math</p></td>
                         <td></td>
                     </tr>
@@ -56,13 +57,13 @@
                             <td class="number">
                                 <p>1</p>
                             </td>
-                            <td class="txt-input">
+                            <td class="txt-input inv">
                                 <input type="text" class="student-input field has-border" placeholder=" Name of student">
                             </td>
                             <td class="txt-input">
                                 <input type="text" class="student-input field has-border" placeholder=" Name of student">
                             </td>
-                            <td class="txt-input">
+                            <td class="txt-input inv">
                                 <input type="text" class="student-input field has-border" placeholder=" Name of teacher">
                             </td>
                             <td class="rad-input">
@@ -70,7 +71,7 @@
                                 <br>
                                 <input type="radio" class="student-input" name="gender-1"> Girl
                             </td>
-                            <td class="rad-input">
+                            <td class="rad-input inv">
                                 <input type="radio" class="student-input" name="red-1"> Yes
                                 <br>
                                 <input type="radio" class="student-input" name="red-1"> No
@@ -80,7 +81,7 @@
                                 <br>
                                 <input type="radio" class="student-input" name="celdt-1"> No
                             </td>
-                            <td class="rad-input">
+                            <td class="rad-input inv">
                                 <input type="radio" class="student-input" name="iep-1"> Yes
                                 <br>
                                 <input type="radio" class="student-input" name="iep-1"> No
@@ -90,7 +91,7 @@
                                 <br>
                                 <input type="radio" class="student-input" name="health-1"> No
                             </td>
-                            <td class="rad-input">
+                            <td class="rad-input inv">
                                 <input type="radio" class="student-input" name="tk-1"> Yes
                                 <br>
                                 <input type="radio" class="student-input" name="tk-1"> No
@@ -102,7 +103,7 @@
                                 <br>
                                 <input type="radio" class="student-input" name="reading-1"> Low
                             </td>
-                            <td class="rad-input">
+                            <td class="rad-input inv">
                                 <input type="radio" class="student-input" name="writing-1"> High
                                 <br>
                                 <input type="radio" class="student-input" name="writing-1"> Mid
