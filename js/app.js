@@ -704,6 +704,16 @@ function initApp() {
 	// STUDENT_ARR = testStudentArr;
 
 
+	// reset
+	DATA_ARR = [];
+	TEACHER_ARR = [];
+	STUDENT_ARR = [];
+	ROSTER_ARR = [];
+	PARAM_TARGETS = {};
+	LEGAL_TRADES = [];
+	$("#output-section").html("");
+
+
 	// calling all functions!
 	getData();
 	initRosterObj();
@@ -712,78 +722,7 @@ function initApp() {
 	balanceRosters();
 	separateStudents();
 	displayRosters();
+	displayMetrics();
 
-
-	addTeacher();
-	addStudent();
-
-
-
-
-	//-------- CONSOLE TESTING --------//
-
-	// // test whether teacher requests are honored
-	// for (var i = 0; i < ROSTER_ARR.length; i++) {
-	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-	// 		var student = ROSTER_ARR[i].students[j];
-	// 		if (student.request != undefined) {
-	// 			if (student.request != ROSTER_ARR[i].teacher.teacherName) {
-	// 				console.log("failed to honor teacher request");
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-
-	// // test whether separate froms are honored
-	// for (var i = 0; i < ROSTER_ARR.length; i++) {
-	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-	// 		var sep = ROSTER_ARR[i].students[j].separate;
-	// 		for (var k = 0; k < ROSTER_ARR[i].students.length; k++) {
-	// 			if (sep === ROSTER_ARR[i].students[k].studentName) {
-	// 				console.log("failed to separate student");
-	// 			}
-	// 		}
-	// 	}
-	// }
-
-
-	// // test balance on all params
-	// console.log("male");
-	// console.log("===========================");
-	// console.log(getParamCounts("male"));
-	// for (var i = 0; i < PARAMS.length; i++) {
-	// 	var p = PARAMS[i];
-	// 	console.log(p);
-	// 	console.log(getParamCounts(p));
-	// 	console.log("===========================");
-	// }
-
-
-	// // make sure all students are accounted for
-	// var studentCount = 0;
-	// for (var i = 0; i < ROSTER_ARR.length; i++) {
-	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-	// 		studentCount++;
-	// 	}
-	// }
-	// console.log(studentCount + " students are accounted for");
-
-
-	// // test to make sure there are no duplicate students
-	// for (var i = 0; i < ROSTER_ARR.length; i++) {
-	// 	for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
-	// 		for (var k = 0; k < ROSTER_ARR.length; k++) {
-	// 			for (var m = 0; m < ROSTER_ARR[k].students.length; m++) {
-	// 				if (i != k) {
-	// 					if (ROSTER_ARR[i].students[j].studentID
-	// 						=== ROSTER_ARR[k].students[m].studentID) {
-	// 						console.log("duplicate student");
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 }

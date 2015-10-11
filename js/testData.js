@@ -7,7 +7,7 @@ function initTestData() {
 
 	// set total number of students and rosters
 	var students = 94,
-		testRosters = 4;
+		testRosters = 10;
 
 
 	// creat teacher objects

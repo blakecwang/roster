@@ -8,15 +8,34 @@ DEFINE FUNCTIONS THAT MANIPULATE THE DOM
 
 // define 'add student' function
 var newStudentElem = $("#table-body").html();
-var addStudentIndex = 1;
+var addStudentIndex = 0;
+var oneStr = 1 + "";
 function addStudent() {
 	
 	addStudentIndex++;
-	var oneStr = 1 + ""; // convert 1 to string
-	var studentsStr = addStudentIndex + ""; // convert students to string
-	var newStudentElemMod = replaceAll(newStudentElem, oneStr, studentsStr); // replace first string with second
+	
+	var studentsStr = (addStudentIndex + 1) + "";
+	var newID = "scr" + addStudentIndex;
+	newStudentElem = newStudentElem.replace("-scrl-", newID);
+	var newStudentElemMod = replaceAll(newStudentElem, oneStr, studentsStr);
+
+	if (addStudentIndex % 2 === 1) {
+
+		var r = newStudentElemMod.replace("-x-", "light-green");
+		newStudentElemMod = r;
+
+	}
+
 
 	$("#table-body").append(newStudentElemMod);
+
+
+	if (addStudentIndex > 4) {
+
+		var selectID = "#" + newID;
+		$(".table-container").scrollTo(selectID);
+
+	}
 
 }
 
@@ -26,14 +45,14 @@ var teacherRowElem = $("#teacher-section").html();
 var teacherColElem = $(".teacher-row").html();
 var teacherColIndex = 0;
 var teacherRowIndex = 0;
-var oneStr = 1 + "";
+var toReplace = " A ";
 function addTeacher() {
 
 	teacherColIndex++;
 	var newTeacherRowIndex = Math.floor(teacherColIndex / 4 );
-	var teachersStr = (teacherColIndex + 1) + ""; // convert teachers to string
-	var colMod = replaceAll(teacherColElem, oneStr, teachersStr); // replace first string with second
-	var rowMod = replaceAll(teacherRowElem, oneStr, teachersStr);
+	var letter = " " + String.fromCharCode(97 + teacherColIndex).toUpperCase() + " ";
+	var colMod = replaceAll(teacherColElem, toReplace, letter);
+	var rowMod = replaceAll(teacherRowElem, toReplace, letter);
 
 	// if new rows is higher than old rows...
 	if (newTeacherRowIndex > teacherRowIndex) {
@@ -56,36 +75,43 @@ function addTeacher() {
 // add rosters to DOM
 function displayRosters() {
 
+	// append table to DOM
+	var tableElem = "<table><tbody id='roster-body'></tbody></table>";
+	$("#output-section").append(tableElem);
+
+
 	// determine number of rows to display rosters
-	var rows  = Math.ceil(ROSTER_ARR.length / 3);
+	var colsPerRow = 6;
+	var rows  = Math.ceil(ROSTER_ARR.length / colsPerRow);
 
 
 	// append rows to DOM
 	for (var i = 0; i < rows; i++) {
 
-		var rowElem = "<div class='row' id='r" + i + "'></div>";
-		$(".container").append(rowElem);
+		var rowElem = "<tr id='r" + i + "'></tr>";
+		$("#roster-body").append(rowElem);
 
 	}
 
 
-	// append ROSTER_ARR.length to rows
+	// append columns (td's) to rows (tr's)
 	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		var row = Math.floor(i / 3);
+		var row = Math.floor(i / colsPerRow);
 
 		var rowId = "#r" + row;
-		var colElem = "<div class='col-md-4' id='c" + i +"'></div>";
+		var colElem = "<td class='roster-col' id='c" + i +"'></td>";
 		$(rowId).append(colElem);
 
 	}
 
 
-	// append headers to ROSTER_ARR.length
+	// append headers to columns
 	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
 		var tn = ROSTER_ARR[i].teacher.teacherName;
-		var headerElem = "<h3>" + tn + "'s Class:</h3>";
+		var letter = String.fromCharCode(97 + i).toUpperCase();
+		var headerElem = "<h3 class='roster-header'>(" + letter + ") " + tn + "'s Class</h3>";
 		var colId = "#c" + i;
 		$(colId).append(headerElem);
 
@@ -108,14 +134,95 @@ function displayRosters() {
 
 		}
 
+		$(ulId).append("<br>");
+
+	}
+
+	$("#output-section").append("<br><br>");
+
+}
+
+
+// function to display how many of each param are in each roster
+function displayMetrics() {
+
+	var metricsArr = [
+
+		"Class Size",
+		"Boys",
+		"Girls",
+		"Red Dot Students",
+		"Students at CELDT Level 1 or 2",
+		"Students with IEPs",
+		"Students with Health Concerns",
+		"Students who attended TK",
+		"High-Level Reading Students",
+		"Mid-Level Reading Students",
+		"Low-Level Reading Students",
+		"High-Level Writing Students",
+		"Mid-Level Writing Students",
+		"Low-Level Writing Students",
+		"High-Level Math Students",
+		"Mid-Level Math Students",
+		"Low-Level Math Students"
+
+	];
+
+
+	// append table to DOM
+	var tableElem = "<table><tbody id='metrics-body'><tr id='first-row' class='dark-green'></tr></tbody></table>";
+	$("#output-section").append(tableElem);
+
+
+	// add first (empty) column to label row
+	$("#first-row").append("<td class='first-col'></td>");
+
+
+	// add the rest of teh columns to label row
+	for (var i = 0; i < ROSTER_ARR.length; i++) {
+
+		var letter = String.fromCharCode(97 + i).toUpperCase();
+		var labelElem = "<td class='m-width'><p class='bolded'>" + letter + "</p></td>";
+
+		$("#first-row").append(labelElem);
+
 	}
 
 
-	// append parameters to ROSTER_ARR.length
+	// function to convert a count into a td elem
+	function elementize(count) {
+
+		var elem = "<td class='m-width'><p>" + count + "</p></td>";
+		return elem;
+
+	}
+
+
+	// append rows and metrics labels to table
+	for (var i = 0; i < metricsArr.length; i++) {
+
+		var rowElem = "<tr class='-c-' id='tr" + i + "'><td class='first-col bolded'>"
+			+ metricsArr[i] + "</td></tr>";
+
+		if (i % 2 === 1) {
+
+			var r = rowElem.replace("-c-", "light-green");
+			rowElem = r;
+
+		}
+
+		$("#metrics-body").append(rowElem);
+
+	}
+
+
+	// loop through rosters appending counts row by row
 	for (var i = 0; i < ROSTER_ARR.length; i++) {
 
-		// count params
-		var boys = 0,
+
+		// create some vars for counting
+		var classSize = 0,
+			boys = 0,
 			girls = 0,
 			reddots = 0,
 			celdts = 0,
@@ -127,9 +234,15 @@ function displayRosters() {
 			mathHighs = 0, mathMids = 0, mathLows = 0;
 			
 
+		// loop through the current roster and count params
 		for (var j = 0; j < ROSTER_ARR[i].students.length; j++) {
 
 			var currentStudent = ROSTER_ARR[i].students[j];
+
+
+			// get class size
+			classSize++;
+ 
 
 			// count boys and girls
 			if (currentStudent.male) {
@@ -192,50 +305,38 @@ function displayRosters() {
 				mathLows++;
 			}
 
-
 		}
 
-		
-
-		// append boys and girls
-		var boyGirlElem = "<h4>" + boys + " boys, " + girls + " girls</h4>";
-		var redDotElem = "<h4>" + reddots + " red dots";
-		var celdtElem = "<h4>" + celdts + " students at CELDT level 1 or 2";
-		var iepElem = "<h4>" + ieps + " students with IEP's";
-		var healthElem = "<h4>" + healths + " students with health concerns";
-		var tkElem = "<h4>" + tks + " students who attended TK";
-		var readingElem = "<h4>" + readingHighs + " high-level readers, "
-							+ readingMids + " mid-level readers, "
-							+ readingLows + " low-level readers</h4>";
-		var writingElem = "<h4>" + writingHighs + " high-level writers, "
-							+ writingMids + " mid-level writers, "
-							+ writingLows + " low-level writers</h4>";
-		var mathElem = "<h4>" + mathHighs + " high-level math students, "
-							+ mathMids + " mid-level math students, "
-							+ mathLows + " low-level math students</h4>";
-
-
-
-
-		var colId = "#c" + i;
-		var paramElem = boyGirlElem
-						+ redDotElem
-						+ celdtElem
-						+ iepElem
-						+ healthElem
-						+ tkElem
-						+ readingElem
-						+ writingElem
-						+ mathElem;
-		$(colId).append(paramElem);
+		$("#tr0").append(elementize(classSize));
+		$("#tr1").append(elementize(boys));
+		$("#tr2").append(elementize(girls));
+		$("#tr3").append(elementize(reddots));
+		$("#tr4").append(elementize(celdts));
+		$("#tr5").append(elementize(ieps));
+		$("#tr6").append(elementize(healths));
+		$("#tr7").append(elementize(tks));
+		$("#tr8").append(elementize(readingHighs));
+		$("#tr9").append(elementize(readingMids));
+		$("#tr10").append(elementize(readingLows));
+		$("#tr11").append(elementize(writingHighs));
+		$("#tr12").append(elementize(writingMids));
+		$("#tr13").append(elementize(writingLows));
+		$("#tr14").append(elementize(mathHighs));
+		$("#tr15").append(elementize(mathMids));
+		$("#tr16").append(elementize(mathLows));
 
 	}
 
+	$("#output-section").append("<div style='height: 300px''></div>");
+
+	$("body").scrollTo(770);
+
 }
 
-// add some teachers and student rows
+
+// add some teachers and student rows to start with
 addTeacher();
-for (var i = 0; i < 6; i++) {
+for (var i = 0; i < 4; i++) {
 	addStudent();
 }
 

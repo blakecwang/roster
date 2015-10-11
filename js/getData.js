@@ -142,7 +142,7 @@ function getData() {
 
 
 		// set text inputs
-		setTextInput("name", startIndex);
+		setTextInput("studentName", startIndex);
 		setTextInput("separate", startIndex + 1);
 		setTextInput("request", startIndex + 2);
 
@@ -196,7 +196,13 @@ function getData() {
 	// push student objects to STUDENT_ARR
 	for (var i = 0; i < (studentData.length - 1) / 24; i++) {
 
-		STUDENT_ARR.push(buildStudentObj(studentData, i * 24, i));
+		var s = buildStudentObj(studentData, i * 24, i);
+
+		if (s.studentName != undefined) {
+
+			STUDENT_ARR.push(s);
+
+		}
 
 	}
 
@@ -204,10 +210,15 @@ function getData() {
 	// push teacher objects to TEACHER_ARR
 	for (var i = 0; i < teacherData.length; i++) {
 
-		TEACHER_ARR.push(buildTeacherObj(teacherData[i], i));
+		var t = buildTeacherObj(teacherData[i], i);
 
+		if (t.teacherName != undefined) {
+
+			TEACHER_ARR.push(t);
+
+		}
+		
 	}
-
 
 }
 
