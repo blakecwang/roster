@@ -175,6 +175,15 @@ function trade(stu1, stu2) {
 /*--------------- MAIN FUNCTIONS ---------------*/
 
 
+// function to shuffle student order
+function shuffleStudents() {
+
+	var newArr = shuffle(STUDENT_ARR);
+	STUDENT_ARR = newArr;
+
+}
+
+
 // function to create roster objects with teachers assigned
 function initRosterObj() {
 
@@ -716,6 +725,7 @@ function initApp() {
 
 	// calling all functions!
 	getData();
+	shuffleStudents();
 	initRosterObj();
 	populateRosters();
 	honorRequests();

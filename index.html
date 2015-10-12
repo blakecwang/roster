@@ -1,8 +1,11 @@
 <!-- TODO:
-    - allow multiple presses of 'build balanced rosters!' button
-        - clear ROSTER_ARR
-        - clear rosters from DOM
-        - clear metrics from DOM
+    x allow multiple presses of 'build balanced rosters!' button
+        x clear ROSTER_ARR
+        x clear rosters from DOM
+        x clear metrics from DOM
+    x move cursor to new teacher name when add teacher is clicked
+    x same for students
+    - function to randomly jumble students then resort them into rosters
  -->
 
 <!doctype html>
@@ -20,7 +23,7 @@
         <div class="row centered dark-green" id="banner">
             <div id="banner-text" class="centered vertical-middle">
                 <h1>Welcome to Roster Builder!</h1>
-                <h3>by Blake Wang</h3>
+                <h3>Created by Blake Wang</h3>
             </div>
         </div>
     	<div class="container">
@@ -136,7 +139,7 @@
             <div class="row centered">
                 <button id="roster-button" type="button" class="dark-green bolded">Build balanced rosters!</button>
             </div>
-            <br id="scroll-here"><br>
+            <br><br>
             <div id="output-section" class="row"></div>
         </div>
     </body>

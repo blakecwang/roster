@@ -34,6 +34,7 @@ function addStudent() {
 
 		var selectID = "#" + newID;
 		$(".table-container").scrollTo(selectID);
+		$("#table-body").find("tr:last").find("input:first").focus();
 
 	}
 
@@ -69,11 +70,21 @@ function addTeacher() {
 
 	}
 
+	if (teacherColIndex > 1) {
+
+		$("#teacher-section").find("input:last").focus();
+
+	}
+
 }
 
 
 // add rosters to DOM
 function displayRosters() {
+
+	// change roster button text
+	$("#roster-button").html("Recalculate");
+
 
 	// append table to DOM
 	var tableElem = "<table><tbody id='roster-body'></tbody></table>";
@@ -170,8 +181,17 @@ function displayMetrics() {
 
 
 	// append table to DOM
-	var tableElem = "<table><tbody id='metrics-body'><tr id='first-row' class='dark-green'></tr></tbody></table>";
+	var tableElem = "<div class='row'><table id='metrics-table'>"
+		+ "<tbody id='metrics-body'><tr id='first-row' class='dark-green'>"
+		+ "</tr></tbody></table></div>";
 	$("#output-section").append(tableElem);
+
+
+	// center the table
+	var tableWidth = 240 + (40 * TEACHER_ARR.length);
+	var tableMargin = (1200 - tableWidth) / 2;
+	$("#metrics-table").css("width", tableWidth);
+	$("#metrics-table").css("margin-left", tableMargin);
 
 
 	// add first (empty) column to label row
@@ -327,17 +347,28 @@ function displayMetrics() {
 
 	}
 
+    var recalcButtonDiv = "<br><div class='row centered'><button id='recalc-button' type='button' class='dark-green bolded'>"
+        + "Recalculate</button></div>";
+    $("#output-section").append(recalcButtonDiv);
+  
+
 	$("#output-section").append("<div style='height: 300px''></div>");
 
-	$("body").scrollTo(770);
+
+	var scrlPosition = 740 + (Math.ceil(TEACHER_ARR.length / 4) * 30);
+	// var scrlPosition = 800;
+	$("body").scrollTo(scrlPosition);
 
 }
 
 
 // add some teachers and student rows to start with
+$("#teacher-section").find("input:last").focus();
 addTeacher();
 for (var i = 0; i < 4; i++) {
+
 	addStudent();
+
 }
 
 
@@ -347,3 +378,4 @@ for (var i = 0; i < 4; i++) {
 $("#student-button").click(addStudent);
 $("#teacher-button").click(addTeacher);
 $("#roster-button").click(initApp);
+$("#recalc-button").click(initApp);
